@@ -1,0 +1,2634 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Ne'matuk</title>
+    <link rel="shortcut icon" href="./img/logo_transparent.png" type="image/x-icon">
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <style>
+    :root {
+        --bg-light: #FFFEFC;
+        --primary-accent: #B0D9B1;
+        --secondary-accent: #86A789;
+        --text-dark: #4A4A4A;
+        --glass-bg: rgba(255, 254, 252, 0.7);
+        --glass-border: rgba(176, 217, 177, 0.3);
+        --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+        --status-pending: #F5A635;
+        --status-approved: #4CAF50;
+        --status-rejected: #DC3545;
+        --priority-low: #4CAF50;
+        --priority-medium: #F5A635;
+        --priority-high: #FF9800;
+        --priority-urgent: #DC3545;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        overflow-x: hidden;
+    }
+    #particles-js {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+    .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 0 2rem 8rem 2rem; }
+    body::-webkit-scrollbar { width: 8px; }
+    body::-webkit-scrollbar-track { background: var(--bg-light); }
+    body::-webkit-scrollbar-thumb { background: var(--accent-gradient); border-radius: 4px; }
+    header.admin-header {
+        background: rgba(255, 254, 252, 0.8);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        margin: 2rem 0;
+        border: 1px solid var(--glass-border);
+    }
+    .header-title h1 { font-size: 2.2rem; font-weight: 600; color: var(--secondary-accent); }
+    .header-title p { font-size: 1.1rem; opacity: 0.8; margin: 0; }
+    .section-title {
+        font-size: 3rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        margin-top: 1.5rem;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--secondary-accent);
+    }
+    .section-title .badge {
+        background: var(--status-pending);
+        color: white;
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 50px;
+        font-weight: 600;
+    }
+    .glass-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    .page-section.hidden { display: none; }
+    .page-section.active { animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card-admin { text-align: center; padding: 2rem; }
+    .stat-card-admin .value { font-size: 2.5rem; font-weight: 700; color: var(--secondary-accent); }
+    .stat-card-admin .label { font-size: 1rem; opacity: 0.8; margin-top: 0.5rem; }
+    .large-card { padding: 2rem; margin-bottom: 2rem; }
+    .large-card .placeholder { display: flex; justify-content: center; align-items: center; min-height: 250px; opacity: 0.6; }
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table th, .data-table td { padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--glass-border); }
+    .data-table th { font-weight: 600; opacity: 0.8; color: var(--secondary-accent); }
+    .data-table tbody tr:hover { background: rgba(176, 217, 177, 0.1); }
+    .status-tag { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; }
+    .priority-high { background-color: rgba(220, 53, 69, 0.15); color: #c62828; }
+    .priority-medium, .status-pending { background-color: rgba(245, 166, 35, 0.15); color: #b36b00; }
+    .priority-low { background-color: rgba(76, 175, 80, 0.15); color: #2e7d32; }
+    .priority-urgent { background-color: rgba(220, 53, 69, 0.3); color: #c62828; }
+    .status-approved { background-color: rgba(76, 175, 80, 0.2); color: #2e7d32; }
+    .status-rejected { background-color: rgba(220, 53, 69, 0.2); color: #c62828; }
+    .logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.5);
+        border-radius: 8px;
+        margin-top: 2px;
+        font-weight: 600;
+        font-size: 1rem;
+        padding: 0.6rem 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: fit-content;
+    }
+    .logout-btn:hover {
+        background: rgba(220, 53, 69, 0.4);
+        color: #ff4d60;
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px #c62828;
+    }
+    .logout-btn i {
+        font-size: 1.2rem;
+    }
+    .action-btn {
+        background: var(--accent-gradient);
+        border: none;
+        color: var(--text-dark);
+        font-weight: 600;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .action-btn.decline { background: rgba(220, 53, 69, 0.2); color: #c62828; }
+    .action-btn:hover { box-shadow: 0 0 15px var(--primary-accent); transform: translateY(-2px); }
+    .action-btn.decline:hover { box-shadow: 0 0 15px #c62828; }
+    .analytics-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .chart-container { height: 350px; }
+    .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; transition: background 0.3s ease; }
+    .settings-item:not(:last-child) { border-bottom: 1px solid var(--glass-border); }
+    .settings-item:hover { background: rgba(176, 217, 177, 0.1); }
+    .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.3); transition: .4s; border-radius: 28px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background: var(--accent-gradient); }
+    input:checked + .slider:before { transform: translateX(22px); }
+    .bottom-nav {
+        position: fixed; bottom: 0; left: 0; right: 0;
+        width: 100%; background: rgba(255, 254, 252, 0.9);
+        backdrop-filter: blur(15px); border-top: 1px solid var(--glass-border);
+        padding: 0.5rem 0; z-index: 100;
+    }
+    .nav-items { display: flex; justify-content: space-around; list-style: none; margin: 0; padding: 0; }
+    .nav-item a {
+        display: flex; flex-direction: column; align-items: center;
+        text-decoration: none; color: var(--text-dark);
+        opacity: 0.7; padding: 0.5rem; transition: all 0.3s ease;
+    }
+    .nav-item a i { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .nav-item a span { font-size: 0.7rem; }
+    .nav-item.active a { opacity: 1; color: var(--secondary-accent); transform: translateY(-5px); }
+    .nav-item.active a i { text-shadow: 0 0 10px var(--secondary-accent); }
+    /* Heatmap Specific Styles */
+    .heatmap-container {
+        position: relative;
+        width: 100%;
+        height: 1100px;
+        overflow: hidden;
+        border-radius: 15px;
+        background-color: rgba(0, 0, 0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .uae-heatmap-image {
+        width: 100%;
+        height: 100%;
+        object-fit:contain;
+        transition: transform 0.5s ease-in-out;
+        cursor: pointer;
+    }
+    .heatmap-container:hover .uae-heatmap-image {
+        transform: scale(1.2);
+    }
+    .location-icon {
+        position: absolute;
+        color: #c62828;
+        font-size: 1.8rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+    }
+    .heatmap-container:hover .location-icon {
+        opacity: 1;
+    }
+    .location-icon:hover {
+        transform: scale(1.3);
+    }
+    .location-tooltip {
+        position: absolute;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 0.5rem 0.8rem;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        z-index: 10;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        transform: translate(-50%, -110%);
+    }
+    .location-icon:hover + .location-tooltip {
+        opacity: 1;
+    }
+    /* Campaigns Section Styles */
+    .campaigns-search-container {
+        margin-bottom: 2rem;
+    }
+    .search-bar-large {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        background: var(--glass-bg);
+        border-radius: 15px;
+        border: 1px solid var(--glass-border);
+        transition: all 0.3s ease;
+    }
+    .search-bar-large:hover {
+        box-shadow: 0 0 15px rgba(134, 167, 137, 0.3);
+    }
+    .search-bar-large i {
+        font-size: 1.2rem;
+        opacity: 0.6;
+        color: var(--text-dark);
+    }
+    .search-bar-large input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    .search-bar-large input::placeholder {
+        color: var(--text-dark);
+        opacity: 0.6;
+    }
+    .filter-controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    .filter-dropdown {
+        position: relative;
+    }
+    .filter-btn {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--text-dark);
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+    }
+    .filter-btn:hover {
+        background: rgba(176, 217, 177, 0.2);
+        transform: translateY(-2px);
+    }
+    .dropdown-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 0.5rem;
+        min-width: 200px;
+        z-index: 100;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+    .filter-dropdown.active .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(5px);
+    }
+    .dropdown-option {
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .dropdown-option:hover {
+        background: rgba(176, 217, 177, 0.2);
+    }
+    .campaigns-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    .campaign-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        transition: all 0.3s ease;
+    }
+    .campaign-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(134, 167, 137, 0.2);
+    }
+    .campaign-image {
+        height: 200px;
+        border-radius: 15px 15px 0 0;
+        overflow: hidden;
+    }
+    .campaign-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .campaign-card:hover .campaign-image img {
+        transform: scale(1.05);
+    }
+    .campaign-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .campaign-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-accent);
+    }
+    .campaign-description {
+        margin-bottom: 0.5rem;
+        opacity: 0.8;
+        flex-grow: 1;
+    }
+    .campaign-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+    .campaign-status {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-top: 1rem;
+    }
+    .status-active {
+        background-color: rgba(76, 175, 80, 0.2);
+        color: #2e7d32;
+    }
+    .status-pending {
+        background-color: rgba(245, 166, 35, 0.2);
+        color: #b36b00;
+    }
+    .status-completed {
+        background-color: rgba(176, 217, 177, 0.3);
+        color: var(--secondary-accent);
+    }
+    .create-campaign-section {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--glass-border);
+    }
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        background: var(--glass-bg);
+        color: var(--text-dark);
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: var(--secondary-accent);
+        box-shadow: 0 0 10px rgba(134, 167, 137, 0.3);
+    }
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    .submit-btn {
+        background: var(--accent-gradient);
+        border: none;
+        color: var(--text-dark);
+        font-weight: 600;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+    }
+    .submit-btn:hover {
+        box-shadow: 0 0 20px var(--primary-accent);
+        transform: translateY(-2px);
+    }
+    /* Requests Section Styles */
+    .requests-controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        flex: 1;
+    }
+    .search-bar i {
+        color: var(--text-dark);
+        opacity: 0.6;
+        margin-right: 0.5rem;
+    }
+    .search-bar input {
+        border: none;
+        background: transparent;
+        outline: none;
+        color: var(--text-dark);
+        font-family: 'Poppins', sans-serif;
+        flex: 1;
+    }
+    .bulk-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .bulk-action-btn {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--text-dark);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .bulk-action-btn:hover {
+        background: rgba(176, 217, 177, 0.2);
+    }
+    .bulk-action-btn i {
+        margin-right: 0.5rem;
+    }
+    .request-row {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .request-row:hover {
+        background: rgba(176, 217, 177, 0.1);
+    }
+    .request-row.selected {
+        background: rgba(176, 217, 177, 0.2);
+        position: relative;
+    }
+    .request-row.selected::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--secondary-accent);
+        border-radius: 4px 0 0 4px;
+    }
+    .request-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+.action-btn.small {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+    .request-detail-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .request-detail-modal.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background: var(--bg-light);
+        border-radius: 20px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+    }
+    .request-detail-modal.active .modal-content {
+        transform: translateY(0);
+    }
+    .modal-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .modal-header h2 {
+        font-size: 1.5rem;
+        color: var(--secondary-accent);
+    }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--text-dark);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+    .modal-close:hover {
+        opacity: 1;
+        transform: rotate(90deg);
+    }
+    .modal-body {
+        padding: 2rem;
+    }
+    .request-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .info-item {
+        margin-bottom: 1rem;
+    }
+    .info-label {
+        font-weight: 500;
+        color: var(--text-dark);
+        opacity: 0.8;
+        margin-bottom: 0.25rem;
+    }
+    .info-value {
+        font-size: 1.1rem;
+        color: var(--text-dark);
+    }
+    .attachments {
+        margin-bottom: 2rem;
+    }
+    .attachments h3 {
+        margin-bottom: 1rem;
+        color: var(--secondary-accent);
+    }
+    .attachment-list {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .attachment-item {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .attachment-item i {
+        color: var(--secondary-accent);
+    }
+    .comments-section {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--glass-border);
+    }
+    .comments-section h3 {
+        margin-bottom: 1.5rem;
+        color: var(--secondary-accent);
+    }
+    .comment-list {
+        margin-bottom: 1.5rem;
+    }
+    .comment-item {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .comment-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+    .comment-author {
+        font-weight: 500;
+        color: var(--text-dark);
+    }
+    .comment-time {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+    .comment-body {
+        color: var(--text-dark);
+    }
+    .add-comment {
+        display: flex;
+        gap: 0.5rem;
+    }
+    .add-comment textarea {
+        flex: 1;
+        min-height: 80px;
+        resize: vertical;
+    }
+    .notification-toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+    .notification-toggle input {
+        margin: 0;
+    }
+    @media (max-width: 992px) {
+        .analytics-grid { grid-template-columns: 1fr; }
+        .form-grid { grid-template-columns: 1fr; }
+        .campaigns-grid { grid-template-columns: 1fr; }
+        .request-info { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+        .heatmap-container { height: 250px; }
+        .filter-controls, .requests-controls { flex-direction: column; }
+        .filter-dropdown, .search-bar { width: 100%; }
+        .filter-btn, .bulk-action-btn { width: 100%; justify-content: space-between; }
+        .request-info { grid-template-columns: 1fr; }
+        .request-actions { flex-direction: column; }
+    }
+     .language-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 25px;
+        padding: 8px 16px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-dark);
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    .language-toggle:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    /* RTL support */
+    [dir="rtl"] .language-toggle {
+        left: auto;
+        right: 20px;
+    }
+    [dir="rtl"] .section-title i {
+        margin-right: 0;
+        margin-left: 0.75rem;
+    }
+    [dir="rtl"] .input-group i {
+        margin-right: 0;
+        margin-left: 0.75rem;
+    }
+    [dir="rtl"] .campaign-stats span {
+        direction: ltr; /* Keep numbers LTR even in RTL context */
+    }
+    /* Analytics Section Specific Styles */
+    .analytics-search-container {
+        margin-bottom: 2rem;
+    }
+    .analytics-search-bar {
+        display: flex;
+        align-items: center;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    .analytics-search-bar:hover {
+        box-shadow: 0 0 15px rgba(134, 167, 137, 0.3);
+    }
+    .analytics-search-bar i {
+        font-size: 1.2rem;
+        opacity: 0.6;
+        color: var(--text-dark);
+        margin-right: 0.5rem;
+    }
+    .analytics-search-bar input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        font-family: 'Poppins', sans-serif;
+    }
+    .analytics-search-bar input::placeholder {
+        color: var(--text-dark);
+        opacity: 0.6;
+    }
+    .analytics-filters {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    @media (max-width: 992px) {
+        .analytics-filters {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 768px) {
+        .analytics-filters {
+            grid-template-columns: 1fr;
+        }
+    }
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .filter-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--text-dark);
+        opacity: 0.8;
+    }
+    .filter-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .filter-option {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--text-dark);
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .filter-option.selected {
+        background: var(--accent-gradient);
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+    .filter-option:hover {
+        background: rgba(176, 217, 177, 0.2);
+    }
+    .filter-option i {
+        font-size: 0.8rem;
+    }
+    .filter-option.multiple {
+        position: relative;
+    }
+    .filter-option.multiple::after {
+        content: '×';
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: var(--secondary-accent);
+        color: white;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .search-results {
+        margin-top: 2rem;
+        display: none;
+    }
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    .results-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--secondary-accent);
+    }
+    .download-btn {
+        background: var(--accent-gradient);
+        border: none;
+        color: var(--text-dark);
+        font-weight: 600;
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .download-btn:hover {
+        box-shadow: 0 0 15px var(--primary-accent);
+        transform: translateY(-2px);
+    }
+    .chart-container {
+        position: relative;
+        width: 100%;
+        min-height: 400px;
+    }
+    .raw-data-container {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    .raw-data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .raw-data-table th, .raw-data-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--glass-border);
+    }
+    .raw-data-table th {
+        font-weight: 600;
+        background: rgba(176, 217, 177, 0.1);
+        color: var(--secondary-accent);
+    }
+    .raw-data-table tbody tr:hover {
+        background: rgba(176, 217, 177, 0.1);
+    }
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-dark);
+        opacity: 0.6;
+    }
+    .no-results i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--primary-accent);
+    }
+    .results-summary {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        opacity: 0.8;
+    }
+    .summary-item {
+        margin-bottom: 0.5rem;
+    }
+    .summary-label {
+        font-weight: 500;
+        color: var(--secondary-accent);
+    }
+    </style>
+</head>
+<body>
+     <button id="language-toggle" class="language-toggle">EN</button>
+    <div id="particles-js"></div>
+    <div class="dashboard-container">
+        <header class="admin-header" id="dashboard-header">
+            <div class="header-title">
+                <h1 id="header-main-title" data-translate="header-main-title">Welcome, Ministry of Climate Change and Environment <i class="fas fa-check-circle" style="color: var(--secondary-accent); font-size: 1.5rem;"></i></h1>
+                <p id="header-subtitle" data-translate="header-subtitle">Managing UAE's food sustainability initiatives</p>
+            </div>
+        </header>
+        <main>
+            <!-- OVERVIEW SECTION -->
+            <section id="overview-section" class="page-section active">
+                <div class="stats-grid">
+                    <div class="glass-card stat-card-admin"><div class="value">2,847 kg</div><div class="label">Surplus food saved today</div></div>
+                    <div class="glass-card stat-card-admin"><div class="value">1,423 kg</div><div class="label">CO₂ reduced today</div></div>
+                    <div class="glass-card stat-card-admin"><div class="value">156</div><div class="label">Active businesses & NGOs</div></div>
+                    <div class="glass-card stat-card-admin"><div class="value">12,847</div><div class="label">Community members</div></div>
+                </div>
+                <div class="glass-card large-card">
+                    <h2 class="section-title"><i class="fas fa-map-location-dot"></i> Live Activity Heatmap</h2>
+                    <div class="heatmap-container">
+                        <img src="./img/Firefly_Create a rectangular heat map of the United Arab Emirates (UAE) showing the regions w 31597 (1).jpg" alt="UAE Heatmap" class="uae-heatmap-image">
+                        <div class="hover-overlay"></div>
+                        <!-- Location icons will be dynamically added here with JavaScript -->
+                    </div>
+                </div>
+                <div class="glass-card large-card">
+                    <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Notifications</h2>
+                    <table class="data-table"><tbody>
+                        <tr><td>High surplus volume detected at 'Fresh Produce Mart'</td><td><span class="status-tag priority-high">High</span></td></tr>
+                        <tr><td>Low activity in Al Ain region for the past 24 hours</td><td><span class="status-tag priority-medium">Medium</span></td></tr>
+                    </tbody></table>
+                </div>
+            </section>
+            <!-- CAMPAIGNS SECTION -->
+            <section id="Campains-section" class="page-section hidden">
+                <h2 class="section-title"><i class="fas fa-bullhorn"></i> Campaign Management</h2>
+                <div class="glass-card campaigns-search-container">
+                    <div class="search-bar-large">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="campaign-search" placeholder="Search for campaigns...">
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="filter-btn">
+                                <span>Filter by Status</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-filter="all">All Campaigns</div>
+                                <div class="dropdown-option" data-filter="active">Active</div>
+                                <div class="dropdown-option" data-filter="pending">Pending</div>
+                                <div class="dropdown-option" data-filter="completed">Completed</div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="sort-btn">
+                                <span>Sort by</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-sort="relevance">Relevance</div>
+                                <div class="dropdown-option" data-sort="newest">Newest</div>
+                                <div class="dropdown-option" data-sort="oldest">Oldest</div>
+                                <div class="dropdown-option" data-sort="most-participated">Most Participated</div>
+                                <div class="dropdown-option" data-sort="least-participated">Least Participated</div>
+                            </div>
+                        </div>
+                        <button class="action-btn" id="clear-filters">
+                            <i class="fas fa-times"></i>
+                            Clear Filters
+                        </button>
+                    </div>
+                </div>
+                <div class="campaigns-grid" id="campaigns-container">
+                    <!-- Campaign 1 -->
+                    <div class="glass-card campaign-card" data-status="active" data-participants="1250" data-date="2023-10-15">
+                        <div class="campaign-image">
+                            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Ne'ma National Campaign">
+                        </div>
+                        <div class="campaign-content">
+                            <h3 class="campaign-title">Ne'ma National Food Saving Initiative</h3>
+                            <p class="campaign-description">A nationwide campaign to reduce food waste across the UAE, in partnership with the Ministry of Climate Change and Environment.</p>
+                            <div class="campaign-stats">
+                                <span><i class="fas fa-users"></i> 1,250 participants</span>
+                                <span><i class="fas fa-calendar"></i> Ends in 15 days</span>
+                            </div>
+                            <span class="campaign-status status-active">Active</span>
+                        </div>
+                    </div>
+                    <!-- Campaign 2 -->
+                    <div class="glass-card campaign-card" data-status="active" data-participants="842" data-date="2023-09-20">
+                        <div class="campaign-image">
+                            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Dubai Food Rescue">
+                        </div>
+                        <div class="campaign-content">
+                            <h3 class="campaign-title">Dubai Food Rescue Challenge</h3>
+                            <p class="campaign-description">Join Dubai's mission to become a zero-food-waste city by 2030. Participate in our monthly challenges and win exciting rewards.</p>
+                            <div class="campaign-stats">
+                                <span><i class="fas fa-users"></i> 842 participants</span>
+                                <span><i class="fas fa-calendar"></i> Ends in 8 days</span>
+                            </div>
+                            <span class="campaign-status status-active">Active</span>
+                        </div>
+                    </div>
+                    <!-- Campaign 3 -->
+                    <div class="glass-card campaign-card" data-status="pending" data-participants="0" data-date="2023-11-01">
+                        <div class="campaign-image">
+                            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Abu Dhabi Sustainability">
+                        </div>
+                        <div class="campaign-content">
+                            <h3 class="campaign-title">Abu Dhabi Sustainable Restaurants Program</h3>
+                            <p class="campaign-description">A new initiative to certify restaurants that demonstrate exceptional commitment to reducing food waste and sustainable practices.</p>
+                            <div class="campaign-stats">
+                                <span><i class="fas fa-users"></i> 0 participants</span>
+                                <span><i class="fas fa-calendar"></i> Starts in 12 days</span>
+                            </div>
+                            <span class="campaign-status status-pending">Pending</span>
+                        </div>
+                    </div>
+                    <!-- Campaign 4 -->
+                    <div class="glass-card campaign-card" data-status="completed" data-participants="956" data-date="2023-08-05">
+                        <div class="campaign-image">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Ramadan Food Drive">
+                        </div>
+                        <div class="campaign-content">
+                            <h3 class="campaign-title">Ramadan Food Blessings Initiative</h3>
+                            <p class="campaign-description">Our annual Ramadan campaign to redistribute surplus iftar meals to those in need across all seven emirates.</p>
+                            <div class="campaign-stats">
+                                <span><i class="fas fa-users"></i> 956 participants</span>
+                                <span><i class="fas fa-calendar"></i> Completed</span>
+                            </div>
+                            <span class="campaign-status status-completed">Completed</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card create-campaign-section">
+                    <h2 class="section-title"><i class="fas fa-plus-circle"></i> Create New Campaign</h2>
+                    <form id="create-campaign-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="campaign-name">Campaign Name</label>
+                                <input type="text" id="campaign-name" placeholder="Enter campaign name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="campaign-status">Status</label>
+                                <select id="campaign-status" required>
+                                    <option value="">Select status</option>
+                                    <option value="active">Active</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaign-description">Description</label>
+                            <textarea id="campaign-description" placeholder="Describe the campaign goals and details..." required></textarea>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="start-date">Start Date</label>
+                                <input type="date" id="start-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end-date">End Date</label>
+                                <input type="date" id="end-date" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaign-image">Image URL</label>
+                            <input type="url" id="campaign-image" placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-plus"></i> Create Campaign
+                        </button>
+                    </form>
+                </div>
+            </section>
+            <!-- REQUESTS SECTION -->
+            <section id="requests-section" class="page-section hidden">
+                <h2 class="section-title"><i class="fas fa-file-signature"></i> Request Management <span class="badge">3</span></h2>
+                <div class="glass-card">
+                    <div class="requests-controls">
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="request-search" placeholder="Search requests...">
+                        </div>
+                        <div class="bulk-actions">
+                            <button class="bulk-action-btn" id="bulk-approve">
+                                <i class="fas fa-check"></i> Approve Selected
+                            </button>
+                            <button class="bulk-action-btn" id="bulk-reject">
+                                <i class="fas fa-times"></i> Reject Selected
+                            </button>
+                        </div>
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="status-filter">
+                                <span>Status: All</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-filter="all">All Status</div>
+                                <div class="dropdown-option" data-filter="pending">Pending</div>
+                                <div class="dropdown-option" data-filter="approved">Approved</div>
+                                <div class="dropdown-option" data-filter="rejected">Rejected</div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="priority-filter">
+                                <span>Priority: All</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-filter="all">All Priorities</div>
+                                <div class="dropdown-option" data-filter="low">Low</div>
+                                <div class="dropdown-option" data-filter="medium">Medium</div>
+                                <div class="dropdown-option" data-filter="high">High</div>
+                                <div class="dropdown-option" data-filter="urgent">Urgent</div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="type-filter">
+                                <span>Type: All</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-filter="all">All Types</div>
+                                <div class="dropdown-option" data-filter="registration">Business Registration</div>
+                                <div class="dropdown-option" data-filter="access">Access Request</div>
+                                <div class="dropdown-option" data-filter="content">Content Approval</div>
+                                <div class="dropdown-option" data-filter="feature">Feature Request</div>
+                            </div>
+                        </div>
+                        <div class="filter-dropdown">
+                            <button class="filter-btn" id="sort-filter">
+                                <span>Sort: Newest</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <div class="dropdown-option" data-sort="newest">Newest First</div>
+                                <div class="dropdown-option" data-sort="oldest">Oldest First</div>
+                                <div class="dropdown-option" data-sort="priority">Priority</div>
+                                <div class="dropdown-option" data-sort="requester">Requester (A-Z)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card large-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all"></th>
+                                <th>Request ID</th>
+                                <th>Requester</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Date Submitted</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-table-body">
+                            <tr class="request-row" data-id="REQ-001" data-status="pending" data-priority="high" data-type="registration">
+                                <td><input type="checkbox" class="select-row"></td>
+                                <td>REQ-001</td>
+                                <td>The Friendly Grocer<br><small>contact@friendlygrocer.ae</small></td>
+                                <td>Business Registration</td>
+                                <td>Request to register new grocery store for food donation program</td>
+                                <td>2 hours ago</td>
+                                <td><span class="status-tag status-pending">Pending</span></td>
+                                <td><span class="status-tag priority-high">High</span></td>
+                                <td class="request-actions">
+                                    <button class="action-btn view-btn small"><i class="fas fa-eye"></i> View</button>
+                                    <button class="action-btn approve-btn small"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="action-btn decline small"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                            <tr class="request-row" data-id="REQ-002" data-status="pending" data-priority="medium" data-type="access">
+                                <td><input type="checkbox" class="select-row"></td>
+                                <td>REQ-002</td>
+                                <td>Gourmet Bites LLC<br><small>manager@gourmetbites.ae</small></td>
+                                <td>Access Request</td>
+                                <td>Request for admin access to campaign analytics dashboard</td>
+                                <td>1 day ago</td>
+                                <td><span class="status-tag status-pending">Pending</span></td>
+                                <td><span class="status-tag priority-medium">Medium</span></td>
+                                <td class="request-actions">
+                                    <button class="action-btn view-btn small"><i class="fas fa-eye"></i> View</button>
+                                    <button class="action-btn approve-btn small"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="action-btn decline small"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                            <tr class="request-row" data-id="REQ-003" data-status="approved" data-priority="low" data-type="content">
+                                <td><input type="checkbox" class="select-row"></td>
+                                <td>REQ-003</td>
+                                <td>Green Market Co.<br><small>admin@greenmarket.ae</small></td>
+                                <td>Content Approval</td>
+                                <td>Request to publish new campaign about organic food waste reduction</td>
+                                <td>3 days ago</td>
+                                <td><span class="status-tag status-approved">Approved</span></td>
+                                <td><span class="status-tag priority-low">Low</span></td>
+                                <td class="request-actions">
+                                    <button class="action-btn view-btn small"><i class="fas fa-eye"></i> View</button>
+                                    <button class="action-btn decline small"><i class="fas fa-times"></i> Reject</button>
+                                </td>
+                            </tr>
+                            <tr class="request-row" data-id="REQ-004" data-status="rejected" data-priority="urgent" data-type="feature">
+                                <td><input type="checkbox" class="select-row"></td>
+                                <td>REQ-004</td>
+                                <td>Food Rescue Network<br><small>support@foodrescue.ae</small></td>
+                                <td>Feature Request</td>
+                                <td>Request for new feature to track food transportation routes</td>
+                                <td>5 days ago</td>
+                                <td><span class="status-tag status-rejected">Rejected</span></td>
+                                <td><span class="status-tag priority-urgent">Urgent</span></td>
+                                <td class="request-actions">
+                                    <button class="action-btn view-btn small"><i class="fas fa-eye"></i> View</button>
+                                    <button class="action-btn approve-btn small"><i class="fas fa-check"></i> Approve</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- ANALYTICS SECTION -->
+            <section id="analytics-section" class="page-section hidden">
+                <h2 class="section-title">Platform Analytics</h2>
+                <div class="glass-card">
+                    <div class="analytics-search-container">
+                        <div class="analytics-search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="analytics-search" placeholder="Search for specific data points...">
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-filters">
+                        <!-- Location Filter -->
+                        <div class="filter-group">
+                            <div class="filter-label"><i class="fas fa-location-dot"></i> Location</div>
+                            <div class="filter-options" id="location-filters">
+                                <div class="filter-option" data-value="UAE" data-multiple="false">UAE</div>
+                                <div class="filter-option" data-value="Abu Dhabi" data-multiple="true">Abu Dhabi</div>
+                                <div class="filter-option" data-value="Dubai" data-multiple="true">Dubai</div>
+                                <div class="filter-option" data-value="Sharjah" data-multiple="true">Sharjah</div>
+                                <div class="filter-option" data-value="Ajman" data-multiple="true">Ajman</div>
+                                <div class="filter-option" data-value="Ras Al Khaimah" data-multiple="true">Ras Al Khaimah</div>
+                                <div class="filter-option" data-value="Umm Al Quwain" data-multiple="true">Umm Al Quwain</div>
+                                <div class="filter-option" data-value="Fujairah" data-multiple="true">Fujairah</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Year Filter -->
+                        <div class="filter-group">
+                            <div class="filter-label"><i class="fas fa-calendar"></i> Year</div>
+                            <div class="filter-options" id="year-filters">
+                                <div class="filter-option" data-value="2020" data-multiple="true">2020</div>
+                                <div class="filter-option" data-value="2021" data-multiple="true">2021</div>
+                                <div class="filter-option" data-value="2022" data-multiple="true">2022</div>
+                                <div class="filter-option" data-value="2023" data-multiple="true">2023</div>
+                                <div class="filter-option" data-value="2024" data-multiple="true">2024</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Category Filter -->
+                        <div class="filter-group">
+                            <div class="filter-label"><i class="fas fa-list"></i> Category</div>
+                            <div class="filter-options" id="category-filters">
+                                <div class="filter-option" data-value="msw_total_tonnes" data-multiple="true">MSW Total Tonnes</div>
+                                <div class="filter-option" data-value="organic_food_fraction_%" data-multiple="true">Organic Food Fraction (%)</div>
+                                <div class="filter-option" data-value="food_waste_tonnes" data-multiple="true">Food Waste Tonnes</div>
+                                <div class="filter-option" data-value="waste_sector_ghg_tCO2e" data-multiple="true">Waste Sector GHG (tCO2e)</div>
+                                <div class="filter-option" data-value="food_waste_ghg_tCO2e" data-multiple="true">Food Waste GHG (tCO2e)</div>
+                                <div class="filter-option" data-value="wte_processed_tonnes" data-multiple="true">WtE Processed Tonnes</div>
+                                <div class="filter-option" data-value="msw_diversion_rate_%" data-multiple="true">MSW Diversion Rate (%)</div>
+                                <div class="filter-option" data-value="diverted_from_landfill_tonnes" data-multiple="true">Diverted from Landfill (tonnes)</div>
+                                <div class="filter-option" data-value="wte_ghg_avoided_tCO2e" data-multiple="true">WtE GHG Avoided (tCO2e)</div>
+                                <div class="filter-option" data-value="wte_co2e_offset_tCO2e" data-multiple="true">WtE CO2e Offset (tCO2e)</div>
+                                <div class="filter-option" data-value="monthly_avg_msw_tonnes" data-multiple="true">Monthly Avg MSW Tonnes</div>
+                                <div class="filter-option" data-value="monthly_avg_food_waste_tonnes" data-multiple="true">Monthly Avg Food Waste Tonnes</div>
+                                <div class="filter-option" data-value="wte_monthly_avg_tonnes" data-multiple="true">WtE Monthly Avg Tonnes</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Visualization Filter -->
+                        <div class="filter-group">
+                            <div class="filter-label"><i class="fas fa-chart-bar"></i> Visualization</div>
+                            <div class="filter-options" id="visualization-filters">
+                                <div class="filter-option" data-value="bar" data-multiple="false">Bar Graph</div>
+                                <div class="filter-option" data-value="line" data-multiple="false">Line Graph</div>
+                                <div class="filter-option" data-value="pie" data-multiple="false">Pie Chart</div>
+                                <div class="filter-option" data-value="dot" data-multiple="false">Dot Plot</div>
+                                <div class="filter-option" data-value="raw" data-multiple="false">Raw Data</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-results" id="search-results">
+                        <div class="results-header">
+                            <div class="results-title" id="results-title">Search Results</div>
+                            <button class="download-btn" id="download-results">
+                                <i class="fas fa-download"></i> Download Results
+                            </button>
+                        </div>
+                        
+                        <div class="results-summary" id="results-summary">
+                            <div class="summary-item">
+                                <span class="summary-label">Selected:</span> 
+                                <span id="selected-summary">No data selected</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Data Points:</span> 
+                                <span id="data-points-count">0</span>
+                            </div>
+                        </div>
+                        
+                        <div id="visualization-container">
+                            <canvas id="analytics-chart" class="chart-container"></canvas>
+                        </div>
+                        
+                        <div class="raw-data-container" id="raw-data-container" style="display: none;">
+                            <table class="raw-data-table" id="raw-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Month</th>
+                                        <th>Emirate</th>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                        <th>Unit</th>
+                                        <th>Waste Type</th>
+                                        <th>Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="raw-data-body">
+                                    <!-- Raw data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- SETTINGS SECTION -->
+            <section id="settings-section" class="page-section hidden">
+                <h2 class="section-title">System Maintenance & Settings</h2>
+                <div class="glass-card">
+                    <div class="settings-item"><div><h3>System Status</h3><p style="margin:0; opacity: 0.7;">Monitor platform health</p></div><span style="color: var(--secondary-accent); font-weight: 600;">All Systems Operational</span></div>
+                    <div class="settings-item"><h3>Enable New Business Registrations</h3><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                    <div class="settings-item"><h3>Enable New User Registrations</h3><label class="toggle-switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                    <div class="settings-item"><h3>Activate Maintenance Mode</h3><label class="toggle-switch"><input type="checkbox"><span class="slider"></span></label></div>
+                    <div class="settings-item"><h3>Push Global Notifications</h3><button class="action-btn">Send Alert</button></div>
+                    <div class="settings-item"><h3>Export Monthly Report</h3><button class="action-btn">Export Data</button></div>
+                    <a href="auth.html" class="glass-card profile-option logout-btn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                </div>
+            </section>
+        </main>
+    </div>
+    <nav class="bottom-nav">
+        <ul class="nav-items">
+            <li class="nav-item active"><a href="#" data-target="overview-section"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="#" data-target="Campains-section"><i class="fas fa-bullhorn"></i><span>Campaigns</span></a></li>
+            <li class="nav-item"><a href="#" data-target="requests-section"><i class="fas fa-file-signature"></i><span>Requests</span></a></li>
+            <li class="nav-item"><a href="#" data-target="analytics-section"><i class="fas fa-chart-bar"></i><span>Analytics</span></a></li>
+            <li class="nav-item"><a href="#" data-target="settings-section"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+        </ul>
+    </nav>
+    <!-- Request Detail Modal -->
+    <div class="request-detail-modal" id="request-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Request Details <span id="modal-request-id"></span></h2>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="request-info">
+                    <div class="info-item">
+                        <div class="info-label">Request ID</div>
+                        <div class="info-value" id="modal-id">REQ-001</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value" id="modal-status"><span class="status-tag status-pending">Pending</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Requester</div>
+                        <div class="info-value" id="modal-requester">The Friendly Grocer</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email</div>
+                        <div class="info-value" id="modal-email">contact@friendlygrocer.ae</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Request Type</div>
+                        <div class="info-value" id="modal-type">Business Registration</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Priority</div>
+                        <div class="info-value" id="modal-priority"><span class="status-tag priority-high">High</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Submitted</div>
+                        <div class="info-value" id="modal-date">2 hours ago</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Last Updated</div>
+                        <div class="info-value" id="modal-updated">Never</div>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Description</div>
+                    <div class="info-value" id="modal-description">Request to register new grocery store for food donation program. We have a surplus of fresh produce daily and want to contribute to the Ne'matuk initiative.</div>
+                </div>
+                <div class="attachments">
+                    <h3><i class="fas fa-paperclip"></i> Attachments</h3>
+                    <div class="attachment-list">
+                        <div class="attachment-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Trade_License_Cert.pdf</span>
+                        </div>
+                        <div class="attachment-item">
+                            <i class="fas fa-file-image"></i>
+                            <span>Store_Photos.zip</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comments-section">
+                    <h3><i class="fas fa-comments"></i> Comments & Notes</h3>
+                    <div class="comment-list" id="comment-list">
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-author">Sarah Al-Mansoori (Admin)</div>
+                                <div class="comment-time">10 minutes ago</div>
+                            </div>
+                            <div class="comment-body">Request looks good. Need to verify the trade license with the Department of Economic Development before approval.</div>
+                        </div>
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-author">System</div>
+                                <div class="comment-time">2 hours ago</div>
+                            </div>
+                            <div class="comment-body">Request submitted by The Friendly Grocer</div>
+                        </div>
+                    </div>
+                    <div class="add-comment">
+                        <textarea placeholder="Add a comment or note..."></textarea>
+                        <button class="action-btn" id="add-comment-btn">Post Comment</button>
+                    </div>
+                    <div class="notification-toggle">
+                        <input type="checkbox" id="notify-requester" checked>
+                        <label for="notify-requester">Notify requester of any changes</label>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button class="action-btn" id="approve-request" style="flex: 1;">
+                        <i class="fas fa-check"></i> Approve Request
+                    </button>
+                    <button class="action-btn decline" id="reject-request" style="flex: 1;">
+                        <i class="fas fa-times"></i> Reject Request
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Particles.js - Sage Tones
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 8, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#B0D9B1", "#86A789"] },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.2, "random": true },
+                "size": { 
+                    "value": 150, "random": true, 
+                    "anim": { "enable": true, "speed": 1.5, "size_min": 50, "sync": false } 
+                },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true }
+            },
+            "retina_detect": true
+        });
+        const navItems = document.querySelectorAll('.nav-item');
+        const pageSections = document.querySelectorAll('.page-section');
+        let charts = {};
+        let currentChart = null;
+        
+        // CSV Data - parsed from the provided dataset
+        const csvData = `year,month,emirate,metric,value,unit,waste_type,sector_scope,method,source_url,source_note,last_checked
+2020,,Abu Dhabi,msw_total_tonnes,1915724,tonnes,construction_demolition,waste_management,reported_actual,https://www.builtenvironmentme.com/news/energy-waste-management/tadweer-recycles-1-915-724-tons-of-construction-demolition-waste-in-2020,Tadweer recycling data for C&D waste,2024-01-15
+2020,,Abu Dhabi,organic_food_fraction_%,35,percent,organic_food,waste_composition,estimate_ipcc,https://mid-east.info/tadweer-registers-remarkable-achievements-in-2020/,Estimated based on typical MSW composition for Gulf region,2024-01-15
+2020,,Abu Dhabi,food_waste_tonnes,670503,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total (assuming MSW ~1.9M tonnes),2024-01-15
+2020,,Abu Dhabi,waste_sector_ghg_tCO2e,2850000,tCO2e,all_waste,ghg_emissions,ghg_inventory,https://www.ead.gov.ae/-/media/Project/EAD/EAD/Documents/Resources/EAD-GHG-Executive-Summary-Report-EN-final.pdf,EAD GHG Inventory waste sector emissions,2024-01-15
+2020,,Abu Dhabi,food_waste_ghg_tCO2e,456000,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2021,,Abu Dhabi,msw_total_tonnes,1980000,tonnes,municipal_solid,waste_management,estimate_trend,https://mid-east.info/tadweer-registers-remarkable-achievements-in-2020/,Estimated 3% annual growth from 2020 baseline,2024-01-15
+2021,,Abu Dhabi,food_waste_tonnes,693000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2021,,Abu Dhabi,food_waste_ghg_tCO2e,471240,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2022,,Abu Dhabi,msw_total_tonnes,2040000,tonnes,municipal_solid,waste_management,estimate_trend,estimated,Estimated 3% annual growth continuation,2024-01-15
+2022,,Abu Dhabi,food_waste_tonnes,714000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2022,,Abu Dhabi,food_waste_ghg_tCO2e,485520,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2022,,Dubai,wte_processed_tonnes,1900000,tonnes,municipal_solid,waste_to_energy,reported_capacity,https://www.dm.gov.ae/wp-content/uploads/2024/07/Sustainability-Report-2022.pdf,Dubai Municipality WtE facility processing capacity,2024-01-15
+2022,,Dubai,organic_food_fraction_%,30,percent,organic_food,waste_composition,dm_estimate,https://www.dm.gov.ae/wp-content/uploads/2024/07/Sustainability-Report-2022.pdf,Dubai Municipality estimated organic fraction,2024-01-15
+2022,,Dubai,food_waste_tonnes,570000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 30% of WtE processed waste,2024-01-15
+2022,,Dubai,food_waste_ghg_tCO2e,387600,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2022,,Dubai,wte_ghg_avoided_tCO2e,950000,tCO2e,all_waste,ghg_avoided,wte_factor,https://www.dm.gov.ae/wp-content/uploads/2024/07/Sustainability-Report-2022.pdf,Estimated GHG emissions avoided through WtE processing,2024-01-15
+2022,,Sharjah,msw_diversion_rate_%,76,percent,municipal_solid,waste_diversion,beeah_report,https://www.beeahgroup.com/wp-content/uploads/beeah-sustainability-report-digital-v7.pdf,BEEAH Group reported diversion rate,2024-01-15
+2022,,Sharjah,msw_total_tonnes,800000,tonnes,municipal_solid,waste_management,estimate_population,estimated,Estimated based on population proportion (~15% of UAE),2024-01-15
+2022,,Sharjah,diverted_from_landfill_tonnes,608000,tonnes,municipal_solid,waste_diversion,calculated,calculated,Calculated as 76% of total MSW,2024-01-15
+2022,,Sharjah,food_waste_tonnes,280000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2022,,Sharjah,food_waste_ghg_tCO2e,190400,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2022,,Sharjah,wte_co2e_offset_tCO2e,400000,tCO2e,all_waste,ghg_avoided,beeah_claim,https://www.beeahgroup.com/wp-content/uploads/beeah-sustainability-report-digital-v7.pdf,BEEAH reported CO2e offset from WtE operations,2024-01-15
+2023,,UAE,msw_total_tonnes,5200000,tonnes,municipal_solid,waste_management,fcsc_estimate,https://uaestat.fcsc.gov.ae/,Estimated national MSW generation,2024-01-15
+2023,,UAE,food_waste_tonnes,1820000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of national MSW,2024-01-15
+2023,,UAE,food_waste_ghg_tCO2e,1237600,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,National food waste GHG impact using IPCC factor,2024-01-15
+2023,,Ajman,msw_total_tonnes,156000,tonnes,municipal_solid,waste_management,estimate_population,estimated,Estimated based on population proportion (~3% of UAE),2024-01-15
+2023,,Ajman,food_waste_tonnes,54600,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2023,,Ajman,food_waste_ghg_tCO2e,37128,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2023,,Ras Al Khaimah,msw_total_tonnes,260000,tonnes,municipal_solid,waste_management,estimate_population,estimated,Estimated based on population proportion (~5% of UAE),2024-01-15
+2023,,Ras Al Khaimah,food_waste_tonnes,91000,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2023,,Ras Al Khaimah,food_waste_ghg_tCO2e,61880,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2023,,Umm Al Quwain,msw_total_tonnes,39000,tonnes,municipal_solid,waste_management,estimate_population,estimated,Estimated based on population proportion (~0.75% of UAE),2024-01-15
+2023,,Umm Al Quwain,food_waste_tonnes,13650,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2023,,Umm Al Quwain,food_waste_ghg_tCO2e,9282,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2023,,Fujairah,msw_total_tonnes,182000,tonnes,municipal_solid,waste_management,estimate_population,estimated,Estimated based on population proportion (~3.5% of UAE),2024-01-15
+2023,,Fujairah,food_waste_tonnes,63700,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of MSW total,2024-01-15
+2023,,Fujairah,food_waste_ghg_tCO2e,43316,tCO2e,organic_food,ghg_emissions,ipcc_factor,calculated,Calculated using IPCC factor 0.68 tCO2e/tonne food waste,2024-01-15
+2024,Q1,Abu Dhabi,monthly_avg_msw_tonnes,175000,tonnes,municipal_solid,waste_management,tadweer_bulletin,https://mid-east.info/tadweer-registers-remarkable-achievements-in-2020/,Quarterly average from Tadweer operational reports,2024-01-15
+2024,Q1,Abu Dhabi,monthly_avg_food_waste_tonnes,61250,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 35% of monthly MSW average,2024-01-15
+2024,Q1,Dubai,wte_monthly_avg_tonnes,162500,tonnes,municipal_solid,waste_to_energy,dm_operational,estimated,Estimated monthly WtE processing based on annual capacity,2024-01-15
+2024,Q1,Dubai,monthly_avg_food_waste_tonnes,48750,tonnes,organic_food,waste_management,calculated,calculated,Calculated as 30% of WtE processed waste,2024-01-15`;
+        
+        // Parse CSV data
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',');
+            const result = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                const obj = {};
+                const currentLine = lines[i].split(',');
+                
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = currentLine[j] ? currentLine[j].replace(/"/g, '') : '';
+                }
+                result.push(obj);
+            }
+            return result;
+        }
+        
+        const dataset = parseCSV(csvData);
+        
+        // Analytics functionality
+        const initAnalyticsFunctionality = () => {
+            const searchInput = document.getElementById('analytics-search');
+            const resultsContainer = document.getElementById('search-results');
+            const visualizationContainer = document.getElementById('visualization-container');
+            const rawDataContainer = document.getElementById('raw-data-container');
+            const rawDataBody = document.getElementById('raw-data-body');
+            const downloadBtn = document.getElementById('download-results');
+            const resultsTitle = document.getElementById('results-title');
+            const selectedSummary = document.getElementById('selected-summary');
+            const dataPointsCount = document.getElementById('data-points-count');
+            
+            // Filter elements
+            const locationFilters = document.getElementById('location-filters');
+            const yearFilters = document.getElementById('year-filters');
+            const categoryFilters = document.getElementById('category-filters');
+            const visualizationFilters = document.getElementById('visualization-filters');
+            
+            // Selected values
+            let selectedLocations = [];
+            let selectedYears = [];
+            let selectedCategories = [];
+            let selectedVisualization = 'bar';
+            
+            // Filter option click handler
+            function setupFilterListeners(filterGroup, isMultiple) {
+                const options = filterGroup.querySelectorAll('.filter-option');
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const value = option.getAttribute('data-value');
+                        const multiple = option.getAttribute('data-multiple') === 'true';
+                        
+                        if (multiple) {
+                            // Multiple selection
+                            if (option.classList.contains('selected')) {
+                                option.classList.remove('selected');
+                                if (filterGroup.id === 'location-filters') {
+                                    selectedLocations = selectedLocations.filter(loc => loc !== value);
+                                } else if (filterGroup.id === 'year-filters') {
+                                    selectedYears = selectedYears.filter(year => year !== value);
+                                } else if (filterGroup.id === 'category-filters') {
+                                    selectedCategories = selectedCategories.filter(cat => cat !== value);
+                                }
+                            } else {
+                                option.classList.add('selected');
+                                if (filterGroup.id === 'location-filters') {
+                                    selectedLocations.push(value);
+                                } else if (filterGroup.id === 'year-filters') {
+                                    selectedYears.push(value);
+                                } else if (filterGroup.id === 'category-filters') {
+                                    selectedCategories.push(value);
+                                }
+                            }
+                        } else {
+                            // Single selection - deselect all others
+                            options.forEach(opt => opt.classList.remove('selected'));
+                            option.classList.add('selected');
+                            
+                            if (filterGroup.id === 'visualization-filters') {
+                                selectedVisualization = value;
+                            }
+                        }
+                        
+                        // Trigger search if we have all required selections
+                        if (selectedLocations.length > 0 && selectedYears.length > 0 && selectedCategories.length > 0) {
+                            performSearch();
+                        }
+                    });
+                });
+            }
+            
+            // Setup filter listeners
+            setupFilterListeners(locationFilters, true);
+            setupFilterListeners(yearFilters, true);
+            setupFilterListeners(categoryFilters, true);
+            setupFilterListeners(visualizationFilters, false);
+            
+            // Search input handler
+            searchInput.addEventListener('input', () => {
+                if (searchInput.value.trim() !== '' && selectedLocations.length > 0 && selectedYears.length > 0 && selectedCategories.length > 0) {
+                    performSearch();
+                }
+            });
+            
+            // Perform search and display results
+            function performSearch() {
+                // Filter dataset based on selections
+                let filteredData = dataset.filter(row => {
+                    // Check location
+                    const locationMatch = selectedLocations.includes(row.emirate) || 
+                                        (row.emirate === 'UAE' && selectedLocations.includes('UAE'));
+                    
+                    // Check year
+                    const yearMatch = selectedYears.includes(row.year);
+                    
+                    // Check category
+                    const categoryMatch = selectedCategories.includes(row.metric);
+                    
+                    // Check search query
+                    const searchQuery = searchInput.value.toLowerCase();
+                    const searchMatch = searchQuery === '' || 
+                                     row.metric.toLowerCase().includes(searchQuery) ||
+                                     row.waste_type.toLowerCase().includes(searchQuery) ||
+                                     row.sector_scope.toLowerCase().includes(searchQuery);
+                    
+                    return locationMatch && yearMatch && categoryMatch && searchMatch;
+                });
+                
+                // Sort by year and location
+                filteredData.sort((a, b) => {
+                    if (a.year !== b.year) {
+                        return parseInt(b.year) - parseInt(a.year);
+                    }
+                    return a.emirate.localeCompare(b.emirate);
+                });
+                
+                // Show results container
+                resultsContainer.style.display = 'block';
+                
+                // Update summary
+                selectedSummary.textContent = `${selectedLocations.join(', ')} - ${selectedYears.join(', ')} - ${selectedCategories.join(', ')}`;
+                dataPointsCount.textContent = filteredData.length;
+                
+                // Clear previous chart
+                if (currentChart) {
+                    currentChart.destroy();
+                }
+                
+                // Hide raw data by default
+                rawDataContainer.style.display = 'none';
+                
+                // Create visualization based on selected type
+                if (filteredData.length > 0) {
+                    if (selectedVisualization === 'raw') {
+                        // Show raw data table
+                        visualizationContainer.style.display = 'none';
+                        rawDataContainer.style.display = 'block';
+                        populateRawData(filteredData);
+                    } else {
+                        // Show chart
+                        visualizationContainer.style.display = 'block';
+                        rawDataContainer.style.display = 'none';
+                        createVisualization(filteredData);
+                    }
+                    
+                    // Update title
+                    resultsTitle.textContent = `Results: ${selectedCategories.length > 1 ? selectedCategories.length + ' Categories' : selectedCategories[0]}`;
+                } else {
+                    // No results
+                    visualizationContainer.style.display = 'block';
+                    rawDataContainer.style.display = 'none';
+                    const ctx = document.getElementById('analytics-chart').getContext('2d');
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = '<i class="fas fa-search"></i><h3>No Results Found</h3><p>Try adjusting your search criteria</p>';
+                    
+                    document.getElementById('visualization-container').innerHTML = '';
+                    document.getElementById('visualization-container').appendChild(noResults);
+                }
+            }
+            
+            // Populate raw data table
+            function populateRawData(data) {
+                rawDataBody.innerHTML = '';
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.year}</td>
+                        <td>${row.month || '-'}</td>
+                        <td>${row.emirate}</td>
+                        <td>${formatMetricName(row.metric)}</td>
+                        <td>${parseFloat(row.value).toLocaleString()}</td>
+                        <td>${row.unit}</td>
+                        <td>${row.waste_type}</td>
+                        <td><a href="${row.source_url}" target="_blank" style="color: var(--secondary-accent); text-decoration: underline;">Source</a></td>
+                    `;
+                    rawDataBody.appendChild(tr);
+                });
+            }
+            
+            // Format metric name for display
+            function formatMetricName(metric) {
+                return metric
+                    .replace(/_/g, ' ')
+                    .replace(/\b\w/g, l => l.toUpperCase())
+                    .replace('Tco2e', 'tCO2e')
+                    .replace('Msw', 'MSW')
+                    .replace('Ghg', 'GHG')
+                    .replace('Wte', 'WtE');
+            }
+            
+            // Create visualization chart
+            function createVisualization(data) {
+                const ctx = document.getElementById('analytics-chart').getContext('2d');
+                
+                // Prepare data for chart
+                const chartData = prepareChartData(data);
+                
+                // Destroy previous chart if exists
+                if (currentChart) {
+                    currentChart.destroy();
+                }
+                
+                // Create new chart
+                currentChart = new Chart(ctx, {
+                    type: selectedVisualization,
+                    data: chartData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#4A4A4A',
+                                    font: {
+                                        family: 'Poppins'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(74, 74, 74, 0.9)',
+                                titleColor: '#FFFEFC',
+                                bodyColor: '#FFFEFC',
+                                borderColor: 'rgba(176, 217, 177, 0.5)',
+                                borderWidth: 1,
+                                cornerRadius: 8,
+                                displayColors: true
+                            }
+                        },
+                        scales: selectedVisualization === 'pie' ? {} : {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(176, 217, 177, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#4A4A4A'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: '#4A4A4A'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Prepare chart data based on visualization type
+            function prepareChartData(data) {
+                // For pie charts, we need to aggregate by category
+                if (selectedVisualization === 'pie') {
+                    const categoryTotals = {};
+                    const categoryColors = {};
+                    
+                    data.forEach(row => {
+                        const category = formatMetricName(row.metric);
+                        const value = parseFloat(row.value);
+                        
+                        if (!categoryTotals[category]) {
+                            categoryTotals[category] = 0;
+                            // Generate color based on category
+                            const hue = (selectedCategories.indexOf(row.metric) * 137) % 360;
+                            categoryColors[category] = `hsl(${hue}, 70%, 60%)`;
+                        }
+                        categoryTotals[category] += value;
+                    });
+                    
+                    return {
+                        labels: Object.keys(categoryTotals),
+                        datasets: [{
+                            data: Object.values(categoryTotals),
+                            backgroundColor: Object.values(categoryColors),
+                            borderColor: '#FFFEFC',
+                            borderWidth: 2
+                        }]
+                    };
+                }
+                
+                // For other chart types, group by location and year
+                const locations = [...new Set(selectedLocations)];
+                const years = [...new Set(selectedYears.map(y => parseInt(y)).sort((a, b) => a - b))];
+                const categories = [...new Set(selectedCategories)];
+                
+                // If multiple categories, create separate datasets
+                if (categories.length > 1) {
+                    const datasets = categories.map(category => {
+                        const hue = (categories.indexOf(category) * 137) % 360;
+                        const color = `hsl(${hue}, 70%, 60%)`;
+                        
+                        return {
+                            label: formatMetricName(category),
+                            data: locations.map(location => {
+                                const locationData = data.filter(row => 
+                                    row.emirate === location && row.metric === category
+                                );
+                                
+                                return locationData.reduce((sum, row) => sum + parseFloat(row.value), 0);
+                            }),
+                            backgroundColor: color,
+                            borderColor: color,
+                            fill: selectedVisualization === 'line' ? false : true,
+                            tension: selectedVisualization === 'line' ? 0.4 : 0
+                        };
+                    });
+                    
+                    return {
+                        labels: locations,
+                        datasets: datasets
+                    };
+                }
+                
+                // Single category - group by year for each location
+                if (years.length > 1) {
+                    const datasets = locations.map(location => {
+                        const hue = (locations.indexOf(location) * 137) % 360;
+                        const color = `hsl(${hue}, 70%, 60%)`;
+                        
+                        return {
+                            label: location,
+                            data: years.map(year => {
+                                const yearData = data.find(row => 
+                                    row.emirate === location && 
+                                    row.year === year.toString() && 
+                                    row.metric === selectedCategories[0]
+                                );
+                                return yearData ? parseFloat(yearData.value) : 0;
+                            }),
+                            backgroundColor: color,
+                            borderColor: color,
+                            fill: selectedVisualization === 'line' ? false : true,
+                            tension: selectedVisualization === 'line' ? 0.4 : 0
+                        };
+                    });
+                    
+                    return {
+                        labels: years,
+                        datasets: datasets
+                    };
+                }
+                
+                // Default: group by location for single year and category
+                const datasets = [{
+                    label: formatMetricName(selectedCategories[0]),
+                    data: locations.map(location => {
+                        const locationData = data.find(row => 
+                            row.emirate === location && 
+                            row.metric === selectedCategories[0]
+                        );
+                        return locationData ? parseFloat(locationData.value) : 0;
+                    }),
+                    backgroundColor: 'rgba(176, 217, 177, 0.7)',
+                    borderColor: 'rgba(134, 167, 137, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    fill: selectedVisualization === 'line' ? false : true,
+                    tension: selectedVisualization === 'line' ? 0.4 : 0
+                }];
+                
+                return {
+                    labels: locations,
+                    datasets: datasets
+                };
+            }
+            
+            // Download results
+            downloadBtn.addEventListener('click', () => {
+                if (selectedLocations.length === 0 || selectedYears.length === 0 || selectedCategories.length === 0) {
+                    alert('Please select location, year, and category before downloading.');
+                    return;
+                }
+                
+                // Filter dataset based on selections
+                let filteredData = dataset.filter(row => {
+                    const locationMatch = selectedLocations.includes(row.emirate) || 
+                                        (row.emirate === 'UAE' && selectedLocations.includes('UAE'));
+                    const yearMatch = selectedYears.includes(row.year);
+                    const categoryMatch = selectedCategories.includes(row.metric);
+                    
+                    return locationMatch && yearMatch && categoryMatch;
+                });
+                
+                if (selectedVisualization === 'raw' || selectedCategories.length > 1) {
+                    // Download as CSV
+                    downloadCSV(filteredData);
+                } else {
+                    // Download as image
+                    downloadChart();
+                }
+            });
+            
+            // Download CSV
+            function downloadCSV(data) {
+                // Create CSV content
+                const headers = ['Year', 'Month', 'Emirate', 'Metric', 'Value', 'Unit', 'Waste Type', 'Sector Scope', 'Source'];
+                const csvContent = [
+                    headers.join(','),
+                    ...data.map(row => [
+                        row.year,
+                        row.month || '',
+                        row.emirate,
+                        formatMetricName(row.metric),
+                        row.value,
+                        row.unit,
+                        row.waste_type,
+                        row.sector_scope,
+                        row.source_url
+                    ].map(field => `"${field}"`).join(','))
+                ].join('\n');
+                
+                // Create download link
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `uae_waste_data_${selectedLocations.join('_')}_${selectedYears.join('_')}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            // Download chart as image
+            function downloadChart() {
+                if (!currentChart) return;
+                
+                // Get image data
+                const imageData = currentChart.toBase64Image('image/png', 1.0);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.href = imageData;
+                link.download = `analytics_chart_${selectedLocations.join('_')}_${selectedYears.join('_')}_${selectedCategories.join('_')}.png`;
+                link.click();
+            }
+            
+            // Initialize with default selections
+            document.querySelector('#location-filters .filter-option[data-value="UAE"]').click();
+            document.querySelector('#year-filters .filter-option[data-value="2023"]').click();
+            document.querySelector('#category-filters .filter-option[data-value="food_waste_tonnes"]').click();
+            document.querySelector('#visualization-filters .filter-option[data-value="bar"]').click();
+        };
+        
+        // Request Management Functionality
+        const initRequestsFunctionality = () => {
+            const requestsTable = document.getElementById('requests-table-body');
+            const requestModal = document.getElementById('request-modal');
+            const closeModal = document.getElementById('close-modal');
+            const selectAll = document.getElementById('select-all');
+            const selectRows = document.querySelectorAll('.select-row');
+            const bulkApproveBtn = document.getElementById('bulk-approve');
+            const bulkRejectBtn = document.getElementById('bulk-reject');
+            const searchInput = document.getElementById('request-search');
+            const statusFilter = document.querySelector('#status-filter .dropdown-option');
+            const priorityFilter = document.querySelector('#priority-filter .dropdown-option');
+            const typeFilter = document.querySelector('#type-filter .dropdown-option');
+            const sortFilter = document.querySelector('#sort-filter .dropdown-option');
+            // View request details
+            const viewButtons = document.querySelectorAll('.view-btn');
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const row = e.target.closest('tr');
+                    openRequestModal(row);
+                });
+            });
+            // Open request modal
+            function openRequestModal(row) {
+                const id = row.dataset.id;
+                const status = row.dataset.status;
+                const priority = row.dataset.priority;
+                const type = row.querySelector('td:nth-child(4)').textContent;
+                const requester = row.querySelector('td:nth-child(3)').textContent.split('\n')[0];
+                const email = row.querySelector('small').textContent;
+                const description = row.querySelector('td:nth-child(5)').textContent;
+                const date = row.querySelector('td:nth-child(6)').textContent;
+                document.getElementById('modal-request-id').textContent = `#${id}`;
+                document.getElementById('modal-id').textContent = id;
+                document.getElementById('modal-status').innerHTML = `<span class="status-tag status-${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>`;
+                document.getElementById('modal-requester').textContent = requester;
+                document.getElementById('modal-email').textContent = email;
+                document.getElementById('modal-type').textContent = type;
+                document.getElementById('modal-priority').innerHTML = `<span class="status-tag priority-${priority}">${priority.charAt(0).toUpperCase() + priority.slice(1)}</span>`;
+                document.getElementById('modal-description').textContent = description;
+                document.getElementById('modal-date').textContent = date;
+                requestModal.classList.add('active');
+            }
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                requestModal.classList.remove('active');
+            });
+            // Close modal when clicking outside
+            requestModal.addEventListener('click', (e) => {
+                if (e.target === requestModal) {
+                    requestModal.classList.remove('active');
+                }
+            });
+            // Add comment
+            document.getElementById('add-comment-btn').addEventListener('click', () => {
+                const textarea = document.querySelector('.add-comment textarea');
+                const comment = textarea.value.trim();
+                if (comment) {
+                    const commentList = document.getElementById('comment-list');
+                    const commentItem = document.createElement('div');
+                    commentItem.className = 'comment-item';
+                    commentItem.innerHTML = `
+                        <div class="comment-header">
+                            <div class="comment-author">You (Admin)</div>
+                            <div class="comment-time">Just now</div>
+                        </div>
+                        <div class="comment-body">${comment}</div>
+                    `;
+                    commentList.insertBefore(commentItem, commentList.firstChild);
+                    textarea.value = '';
+                }
+            });
+            // Approve request
+            document.getElementById('approve-request').addEventListener('click', () => {
+                const modalId = document.getElementById('modal-id').textContent;
+                const row = document.querySelector(`tr[data-id="${modalId}"]`);
+                if (row) {
+                    row.dataset.status = 'approved';
+                    row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-tag status-approved">Approved</span>';
+                    row.querySelector('td:nth-child(8)').innerHTML = '<span class="status-tag priority-low">Low</span>';
+                    requestModal.classList.remove('active');
+                    // Add comment
+                    const commentList = document.getElementById('comment-list');
+                    const commentItem = document.createElement('div');
+                    commentItem.className = 'comment-item';
+                    commentItem.innerHTML = `
+                        <div class="comment-header">
+                            <div class="comment-author">System</div>
+                            <div class="comment-time">Just now</div>
+                        </div>
+                        <div class="comment-body">Request approved by administrator</div>
+                    `;
+                    commentList.insertBefore(commentItem, commentList.firstChild);
+                }
+            });
+            // Reject request
+            document.getElementById('reject-request').addEventListener('click', () => {
+                const modalId = document.getElementById('modal-id').textContent;
+                const row = document.querySelector(`tr[data-id="${modalId}"]`);
+                if (row) {
+                    row.dataset.status = 'rejected';
+                    row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-tag status-rejected">Rejected</span>';
+                    requestModal.classList.remove('active');
+                    // Add comment
+                    const commentList = document.getElementById('comment-list');
+                    const commentItem = document.createElement('div');
+                    commentItem.className = 'comment-item';
+                    commentItem.innerHTML = `
+                        <div class="comment-header">
+                            <div class="comment-author">System</div>
+                            <div class="comment-time">Just now</div>
+                        </div>
+                        <div class="comment-body">Request rejected by administrator</div>
+                    `;
+                    commentList.insertBefore(commentItem, commentList.firstChild);
+                }
+            });
+            // Select all functionality
+            selectAll.addEventListener('change', () => {
+                const isChecked = selectAll.checked;
+                selectRows.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                });
+                updateBulkActions();
+            });
+            // Individual row selection
+            selectRows.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBulkActions();
+                    // Update select all checkbox
+                    selectAll.checked = Array.from(selectRows).every(cb => cb.checked);
+                });
+            });
+            // Update bulk action buttons
+            function updateBulkActions() {
+                const selectedCount = document.querySelectorAll('.select-row:checked').length;
+                bulkApproveBtn.disabled = selectedCount === 0;
+                bulkRejectBtn.disabled = selectedCount === 0;
+            }
+            // Bulk approve
+            bulkApproveBtn.addEventListener('click', () => {
+                const selectedRows = document.querySelectorAll('.select-row:checked');
+                selectedRows.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    row.dataset.status = 'approved';
+                    row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-tag status-approved">Approved</span>';
+                    row.querySelector('td:nth-child(8)').innerHTML = '<span class="status-tag priority-low">Low</span>';
+                    checkbox.checked = false;
+                });
+                selectAll.checked = false;
+                updateBulkActions();
+            });
+            // Bulk reject
+            bulkRejectBtn.addEventListener('click', () => {
+                const selectedRows = document.querySelectorAll('.select-row:checked');
+                selectedRows.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    row.dataset.status = 'rejected';
+                    row.querySelector('td:nth-child(7)').innerHTML = '<span class="status-tag status-rejected">Rejected</span>';
+                    checkbox.checked = false;
+                });
+                selectAll.checked = false;
+                updateBulkActions();
+            });
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+                const rows = requestsTable.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+            // Filter dropdown functionality
+            const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+            filterDropdowns.forEach(dropdown => {
+                const btn = dropdown.querySelector('.filter-btn');
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+            });
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', () => {
+                filterDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+            // Status filter
+            const statusOptions = document.querySelectorAll('#status-filter .dropdown-option');
+            statusOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const filter = option.dataset.filter;
+                    document.querySelector('#status-filter span').textContent = filter === 'all' ? 'Status: All' : `Status: ${filter.charAt(0).toUpperCase() + filter.slice(1)}`;
+                    filterTable();
+                });
+            });
+            // Priority filter
+            const priorityOptions = document.querySelectorAll('#priority-filter .dropdown-option');
+            priorityOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const filter = option.dataset.filter;
+                    document.querySelector('#priority-filter span').textContent = filter === 'all' ? 'Priority: All' : `Priority: ${filter.charAt(0).toUpperCase() + filter.slice(1)}`;
+                    filterTable();
+                });
+            });
+            // Type filter
+            const typeOptions = document.querySelectorAll('#type-filter .dropdown-option');
+            typeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const filter = option.dataset.filter;
+                    document.querySelector('#type-filter span').textContent = filter === 'all' ? 'Type: All' : `Type: ${filter.charAt(0).toUpperCase() + filter.slice(1)}`;
+                    filterTable();
+                });
+            });
+            // Sort filter
+            const sortOptions = document.querySelectorAll('#sort-filter .dropdown-option');
+            sortOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const sort = option.dataset.sort;
+                    document.querySelector('#sort-filter span').textContent = `Sort: ${option.textContent}`;
+                    sortTable(sort);
+                });
+            });
+            // Filter table
+            function filterTable() {
+                const statusFilterText = document.querySelector('#status-filter span').textContent;
+                const priorityFilterText = document.querySelector('#priority-filter span').textContent;
+                const typeFilterText = document.querySelector('#type-filter span').textContent;
+                const statusFilter = statusFilterText.includes('All') ? 'all' : statusFilterText.split(': ')[1].toLowerCase();
+                const priorityFilter = priorityFilterText.includes('All') ? 'all' : priorityFilterText.split(': ')[1].toLowerCase();
+                const typeFilter = typeFilterText.includes('All') ? 'all' : typeFilterText.split(': ')[1].toLowerCase();
+                const rows = requestsTable.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const status = row.dataset.status;
+                    const priority = row.dataset.priority;
+                    const type = row.dataset.type;
+                    const statusMatch = statusFilter === 'all' || status === statusFilter;
+                    const priorityMatch = priorityFilter === 'all' || priority === priorityFilter;
+                    const typeMatch = typeFilter === 'all' || type === typeFilter;
+                    if (statusMatch && priorityMatch && typeMatch) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+            // Sort table
+            function sortTable(sortBy) {
+                const rows = Array.from(requestsTable.querySelectorAll('tr'));
+                const sortedRows = rows.sort((a, b) => {
+                    switch(sortBy) {
+                        case 'newest':
+                            return b.dataset.id.localeCompare(a.dataset.id);
+                        case 'oldest':
+                            return a.dataset.id.localeCompare(b.dataset.id);
+                        case 'priority':
+                            const priorityOrder = { 'urgent': 4, 'high': 3, 'medium': 2, 'low': 1 };
+                            return priorityOrder[b.dataset.priority] - priorityOrder[a.dataset.priority];
+                        case 'requester':
+                            const requesterA = a.querySelector('td:nth-child(3)').textContent;
+                            const requesterB = b.querySelector('td:nth-child(3)').textContent;
+                            return requesterA.localeCompare(requesterB);
+                        default:
+                            return 0;
+                    }
+                });
+                // Re-append rows in sorted order
+                sortedRows.forEach(row => {
+                    requestsTable.appendChild(row);
+                });
+            }
+            // Initialize bulk actions
+            updateBulkActions();
+        };
+        // Campaigns functionality
+        const initCampaignsFunctionality = () => {
+            // Filter dropdown functionality
+            const filterDropdowns = document.querySelectorAll('.filter-dropdown');
+            filterDropdowns.forEach(dropdown => {
+                const btn = dropdown.querySelector('.filter-btn');
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+            });
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', () => {
+                filterDropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            });
+            // Filter options functionality
+            const filterOptions = document.querySelectorAll('.dropdown-option[data-filter]');
+            const sortOptions = document.querySelectorAll('.dropdown-option[data-sort]');
+            const campaigns = document.querySelectorAll('.campaign-card');
+            const clearFiltersBtn = document.getElementById('clear-filters');
+            const searchInput = document.getElementById('campaign-search');
+            let currentFilter = 'all';
+            let currentSort = 'relevance';
+            let searchQuery = '';
+            // Filter by status
+            filterOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    currentFilter = option.getAttribute('data-filter');
+                    document.querySelector('#filter-btn span').textContent = `Filter: ${option.textContent}`;
+                    filterCampaigns();
+                });
+            });
+            // Sort options
+            sortOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    currentSort = option.getAttribute('data-sort');
+                    document.querySelector('#sort-btn span').textContent = `Sort: ${option.textContent}`;
+                    filterCampaigns();
+                });
+            });
+            // Clear filters
+            clearFiltersBtn.addEventListener('click', () => {
+                currentFilter = 'all';
+                currentSort = 'relevance';
+                searchQuery = '';
+                searchInput.value = '';
+                document.querySelector('#filter-btn span').textContent = 'Filter by Status';
+                document.querySelector('#sort-btn span').textContent = 'Sort by';
+                filterCampaigns();
+            });
+            // Search functionality
+            searchInput.addEventListener('input', () => {
+                searchQuery = searchInput.value.toLowerCase();
+                filterCampaigns();
+            });
+            // Filter and sort campaigns
+            function filterCampaigns() {
+                campaigns.forEach(campaign => {
+                    const status = campaign.getAttribute('data-status');
+                    const title = campaign.querySelector('.campaign-title').textContent.toLowerCase();
+                    const description = campaign.querySelector('.campaign-description').textContent.toLowerCase();
+                    // Filter by status
+                    const statusMatch = currentFilter === 'all' || status === currentFilter;
+                    // Filter by search query
+                    const searchMatch = searchQuery === '' || 
+                                      title.includes(searchQuery) || 
+                                      description.includes(searchQuery);
+                    // Show or hide based on filters
+                    if (statusMatch && searchMatch) {
+                        campaign.style.display = 'flex';
+                    } else {
+                        campaign.style.display = 'none';
+                    }
+                });
+                // Sort campaigns
+                const visibleCampaigns = Array.from(campaigns).filter(campaign => 
+                    campaign.style.display !== 'none'
+                );
+                visibleCampaigns.sort((a, b) => {
+                    switch(currentSort) {
+                        case 'newest':
+                            return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
+                        case 'oldest':
+                            return new Date(a.getAttribute('data-date')) - new Date(b.getAttribute('data-date'));
+                        case 'most-participated':
+                            return parseInt(b.getAttribute('data-participants')) - parseInt(a.getAttribute('data-participants'));
+                        case 'least-participated':
+                            return parseInt(a.getAttribute('data-participants')) - parseInt(b.getAttribute('data-participants'));
+                        default: // relevance
+                            return 0;
+                    }
+                });
+                // Reorder campaigns in DOM
+                const container = document.getElementById('campaigns-container');
+                visibleCampaigns.forEach(campaign => {
+                    container.appendChild(campaign);
+                });
+            }
+            // Create campaign form
+            const createForm = document.getElementById('create-campaign-form');
+            if (createForm) {
+                createForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    // In a real app, this would send data to a server
+                    alert('Campaign creation functionality would connect to a backend service. This is a frontend demo.');
+                    createForm.reset();
+                });
+            }
+        };
+        const initCharts = () => {
+            // Food Saved Line Chart (Sage Gradient)
+            if (document.getElementById('foodSavedChart') && !charts.foodSaved) {
+                const foodSavedCtx = document.getElementById('foodSavedChart').getContext('2d');
+                const gradient = foodSavedCtx.createLinearGradient(0, 0, 0, 350);
+                gradient.addColorStop(0, 'rgba(176, 217, 177, 0.4)'); // light sage
+                gradient.addColorStop(1, 'rgba(176, 217, 177, 0)');   // fade out
+                charts.foodSaved = new Chart(foodSavedCtx, { 
+                    type: 'line', 
+                    data: { 
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], 
+                        datasets: [{
+                            label: 'Food Saved (kg)', 
+                            data: [120000, 150000, 130000, 180000, 210000, 250000], 
+                            borderColor: '#86A789', 
+                            backgroundColor: gradient, 
+                            fill: true, 
+                            tension: 0.4 
+                        }] 
+                    }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        scales: { 
+                            y: { 
+                                beginAtZero: true, 
+                                grid: { color: 'rgba(176, 217, 177, 0.1)' }, 
+                                ticks: { color: '#4A4A4A' } 
+                            }, 
+                            x: { 
+                                grid: { display: false }, 
+                                ticks: { color: '#4A4A4A' } 
+                            } 
+                        }, 
+                        plugins: { legend: { display: false } } 
+                    } 
+                });
+            }
+            // Growth Doughnut Chart (Sage Split)
+            if (document.getElementById('growthDoughnut') && !charts.growth) {
+                const growthCtx = document.getElementById('growthDoughnut').getContext('2d');
+                charts.growth = new Chart(growthCtx, { 
+                    type: 'doughnut', 
+                    data: { 
+                        labels: ['Community Members', 'Businesses & NGOs'], 
+                        datasets: [{ 
+                            data: [12847, 156], 
+                            backgroundColor: ['#86A789', '#A0522D'], 
+                            borderColor: '#FFFEFC', 
+                            borderWidth: 4 
+                        }] 
+                    }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        plugins: { 
+                            legend: { 
+                                position: 'bottom', 
+                                labels: { color: '#4A4A4A' } 
+                            } 
+                        } 
+                    } 
+                });
+            }
+            // Emirates Bar Chart (Solid Sage)
+            if (document.getElementById('emiratesBarChart') && !charts.emirates) {
+                const emiratesCtx = document.getElementById('emiratesBarChart').getContext('2d');
+                charts.emirates = new Chart(emiratesCtx, { 
+                    type: 'bar', 
+                    data: { 
+                        labels: ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'RAK', 'Umm Al Quwain'], 
+                        datasets: [{ 
+                            label: 'Food Rescued (kg)', 
+                            data: [450000, 380000, 210000, 95000, 70000, 40000],
+                            backgroundColor: 'rgba(176, 217, 177, 0.7)', 
+                            borderColor: 'rgba(134, 167, 137, 1)', 
+                            borderWidth: 1, 
+                            borderRadius: 5 
+                        }] 
+                    }, 
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false, 
+                        scales: { 
+                            y: { 
+                                beginAtZero: true, 
+                                grid: { color: 'rgba(176, 217, 177, 0.1)' }, 
+                                ticks: { color: '#4A4A4A' } 
+                            }, 
+                            x: { 
+                                grid: { display: false }, 
+                                ticks: { color: '#4A4A4A' } 
+                            } 
+                        }, 
+                        plugins: { legend: { display: false } } 
+                    } 
+                });
+            }
+        };
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = item.querySelector('a').dataset.target;
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                pageSections.forEach(section => {
+                    section.classList.toggle('hidden', section.id !== targetId);
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                // Show header only on dashboard
+                const header = document.getElementById('dashboard-header');
+                if (header) {
+                    header.style.display = targetId === 'overview-section' ? 'block' : 'none';
+                }
+                if (targetId === 'analytics-section') {
+                    setTimeout(initAnalyticsFunctionality, 50);
+                }
+                if (targetId === 'analytics-section') {
+                    setTimeout(initCharts, 50);
+                }
+                if (targetId === 'Campains-section') {
+                    setTimeout(initCampaignsFunctionality, 50);
+                }
+                if (targetId === 'requests-section') {
+                    setTimeout(initRequestsFunctionality, 50);
+                }
+                window.scrollTo(0, 0);
+            });
+        });
+        // Heatmap interactivity
+        const heatmapContainer = document.querySelector('.heatmap-container');
+        // Define your locations with approximate percentages relative to the image size
+        const locations = [
+            { name: 'Dubai', impact: 'High', top: '45%', left: '67%' },
+            { name: 'Abu Dhabi', impact: 'Medium', top: '52%', left: '55%' },
+            { name: 'Sharjah', impact: 'Medium', top: '42%', left: '71%' },
+            { name: 'Ajman', impact: 'Low', top: '40%', left: '75%' },
+            { name: 'Umm Al Quwain', impact: 'Medium', top: '39%', left: '79%' },
+            { name: 'Al Ain', impact: 'Low', top: '55%', left: '80%' },
+            { name: 'Fujairah', impact: 'High', top: '35%', left: '99%' },
+            { name: 'RAK', impact: 'Medium', top: '35%', left: '89%' }
+        ];
+        locations.forEach(loc => {
+            const icon = document.createElement('i');
+            icon.classList.add('fas', 'fa-map-marker-alt', 'location-icon');
+            icon.style.top = loc.top;
+            icon.style.left = loc.left;
+            icon.style.transform = 'translate(-50%, -100%)';
+            const tooltip = document.createElement('div');
+            tooltip.classList.add('location-tooltip');
+            tooltip.textContent = `${loc.name} (${loc.impact} Impact)`;
+            heatmapContainer.appendChild(icon);
+            heatmapContainer.appendChild(tooltip);
+            icon.addEventListener('mouseover', () => {
+                tooltip.style.left = icon.style.left;
+                tooltip.style.top = icon.style.top;
+                tooltip.style.opacity = 1;
+            });
+            icon.addEventListener('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+        });
+        // Initialize charts if the analytics section is active on page load
+        if (document.querySelector('#analytics-section.active')) {
+            initCharts();
+        }
+        // Initialize campaigns functionality if the campaigns section is active on page load
+        if (document.querySelector('#Campains-section.active')) {
+            initCampaignsFunctionality();
+        }
+        // Initialize requests functionality if the requests section is active on page load
+        if (document.querySelector('#requests-section.active')) {
+            initRequestsFunctionality();
+        }
+        // Initialize - show header only on dashboard
+        const header = document.getElementById('dashboard-header');
+        if (header && !document.querySelector('#overview-section.active')) {
+            header.style.display = 'none';
+        }
+    });
+    </script>
+</body>
+</html>

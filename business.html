@@ -1,0 +1,1375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Dashboard | Ne'matuk</title>
+    <link rel="shortcut icon" href="./img/logo_transparent.png" type="image/x-icon">
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <style>
+        /* --- "Sage & Earth Tones" Color Scheme --- */
+        :root {
+            --bg-light: #FFFEFC;
+            --primary-accent: #B0D9B1;
+            --secondary-accent: #86A789;
+            --text-dark: #4A4A4A;
+            --glass-bg: rgba(248, 244, 227, 0.6);
+            --glass-border: rgba(176, 217, 177, 0.8);
+            --light-overlay-bg: rgba(248, 244, 227, 0.8);
+            --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+            --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        #particles-js { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; }
+        .dashboard-container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar-track { background: var(--bg-light); }
+        body::-webkit-scrollbar-thumb { background: var(--accent-gradient); border-radius: 4px; }
+
+        header { display: flex; align-items: center; margin-bottom: 2rem; }
+        .header-icon { font-size: 2.5rem; margin-right: 1.5rem; color: var(--secondary-accent); }
+        .header-title h1 { font-size: 2.5rem; font-weight: 600; color: var(--text-dark); }
+        .header-title p { font-size: 1.1rem; opacity: 0.8; color: var(--text-dark); }
+
+        .section-title { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; opacity: 0.9; text-align: left; color: var(--text-dark); }
+        .glass-card { 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 20px; 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px); 
+            padding: 1.5rem; 
+            transition: all 0.3s ease; 
+            box-shadow: var(--card-shadow);
+        }
+        .glass-card:hover { transform: translateY(-3px); }
+
+        .page-section { display: none; }
+        .page-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .action-bar { 
+            display: inline-flex; 
+            align-items: center; 
+            padding: 0.8rem 1.5rem; 
+            background: var(--accent-gradient); 
+            border: none; 
+            border-radius: 12px; 
+            color: var(--text-dark); 
+            font-weight: 600; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            margin-bottom: 1.5rem;
+        }
+        .action-bar:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-3px); }
+        .action-bar i { margin-right: 0.75rem; }
+
+        .carousel { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 1rem; 
+            padding: 0.5rem 0 1.5rem 0; 
+            scroll-behavior: smooth; 
+            scrollbar-width: thin; 
+        }
+        .carousel::-webkit-scrollbar { display: none; }
+        .stat-card { 
+            min-width: 220px; 
+            text-align: center; 
+            padding: 1.5rem; 
+            flex-shrink: 0;
+        }
+        .stat-card i { font-size: 2rem; margin-bottom: 0.8rem; color: var(--secondary-accent); }
+        .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary-accent); }
+        .stat-card .label { font-size: 0.9rem; opacity: 0.8; color: var(--text-dark); }
+
+        .search-filter-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .search-bar {
+            flex-grow: 1;
+            max-width: 600px;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            font-family: inherit;
+            color: var(--text-dark);
+            backdrop-filter: blur(10px);
+        }
+        .filter-select {
+            padding: 0.8rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .inventory-table th, .inventory-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .inventory-table th {
+            background: rgba(134, 167, 137, 0.1);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .inventory-table tr:last-child td { border-bottom: none; }
+        .low-stock { color: #d9534f; font-weight: 600; }
+
+        .status-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-available { background-color: rgba(176, 217, 177, 0.3); color: var(--secondary-accent); }
+        .status-reserved { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
+        .status-collected { background-color: rgba(74, 74, 74, 0.2); color: #aab8c5; }
+        .time-left { font-size: 0.9rem; opacity: 0.8; }
+
+        .request-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 1rem;
+            background: rgba(248, 244, 227, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+        }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .user-info i { font-size: 2rem; color: var(--secondary-accent); }
+        .user-details h3 { margin: 0; font-size: 1.1rem; color: var(--text-dark); }
+        .user-details p { margin: 0; font-size: 0.9rem; opacity: 0.8; color: var(--text-dark); }
+        .request-details { flex: 2; margin-left: 1rem; }
+        .request-details h4 { margin: 0 0 0.3rem 0; font-size: 1rem; color: var(--text-dark); }
+        .request-details p { margin: 0; font-size: 0.9rem; opacity: 0.8; color: var(--text-dark); }
+        .actions { display: flex; gap: 0.5rem; }
+        .action-btn { 
+            background: var(--accent-gradient); 
+            border: none; 
+            color: var(--text-dark); 
+            font-weight: 600; 
+            padding: 0.6rem 1rem; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-size: 0.9rem;
+        }
+        .action-btn.decline { background: rgba(220, 53, 69, 0.3); }
+        .action-btn:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-2px); }
+        .action-btn.decline:hover { box-shadow: 0 0 15px #dc3545; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .badge-user { background-color: rgba(134, 167, 137, 0.3); color: #86A789; }
+        .badge-business { background-color: rgba(74, 74, 74, 0.3); color: #4A4A4A; }
+        .badge-pending { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
+        .badge-approved { background-color: rgba(176, 217, 177, 0.3); color: #B0D9B1; }
+        .badge-rejected { background-color: rgba(220, 53, 69, 0.3); color: #dc3545; }
+
+        .impact-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 2rem; 
+            margin-bottom: 3rem; 
+        }
+        .chart-container { height: 350px; }
+
+        .telegram-layout {
+            display: flex;
+            height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        .chat-sidebar {
+            width: 30%;
+            background: var(--primary-accent);
+            color: white;
+            overflow-y: auto;
+        }
+        .chat-contact {
+            padding: 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .chat-contact:hover, .chat-contact.active {
+            background: rgba(255,255,255,0.2);
+        }
+        .chat-contact i { font-size: 1.5rem; }
+        .chat-main {
+            width: 70%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            padding: 1rem;
+            background: var(--primary-accent);
+            color: white;
+            font-weight: 600;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .message-row {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .message-row.received .message-bubble {
+            background: white;
+            border-radius: 12px 12px 12px 0;
+            align-self: flex-start;
+        }
+        .message-row.sent .message-bubble {
+            background: var(--primary-accent);
+            color: white;
+            margin-left: auto;
+            border-radius: 12px 12px 0 12px;
+            align-self: flex-end;
+        }
+        .message-bubble {
+            padding: 0.8rem 1rem;
+            max-width: 70%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+            text-align: right;
+        }
+        .chat-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+            gap: 0.5rem;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .chat-input button {
+            padding: 0 1.2rem;
+            background: var(--accent-gradient);
+            border: none;
+            color: var(--text-dark);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .profile-options { display: flex; flex-direction: column; gap: 1rem; }
+        .profile-option { 
+            display: flex; 
+            align-items: center; 
+            padding: 1.2rem 1.5rem; 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            transition: all 0.3s ease; 
+            border-radius: 12px;
+        }
+        .profile-option:hover { background: rgba(74, 74, 74, 0.1); transform: translateX(5px); }
+        .profile-option i { font-size: 1.2rem; width: 40px; opacity: 0.8; }
+        .profile-option span { flex: 1; font-weight: 500; }
+
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            width: 100%; 
+            background: rgba(248, 244, 227, 0.8); 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px); 
+            border-top: 1px solid var(--glass-border); 
+            padding: 0.5rem 0; 
+            z-index: 100; 
+        }
+        .nav-items { 
+            display: flex; 
+            justify-content: space-around; 
+            list-style: none; 
+            margin: 0; 
+            padding: 0; 
+        }
+        .nav-item a { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            text-decoration: none; 
+            color: var(--text-dark); 
+            opacity: 0.7; 
+            padding: 0.5rem; 
+            transition: all 0.3s ease; 
+        }
+        .nav-item a i { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .nav-item a span { font-size: 0.7rem; }
+        .nav-item.active a { opacity: 1; color: var(--secondary-accent); transform: translateY(-5px); }
+        .nav-item.active a i { text-shadow: 0 0 10px var(--secondary-accent); }
+
+        /* Language Toggle Button */
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 8px 16px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .language-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .impact-grid { grid-template-columns: 1fr; }
+            .search-filter-container { flex-direction: column; }
+            .carousel { flex-direction: column; }
+            .stat-card { min-width: auto; }
+            .telegram-layout { flex-direction: column; }
+            .chat-sidebar, .chat-main { width: 100%; }
+            .request-item { flex-direction: column; align-items: flex-start; }
+            .actions { margin-top: 1rem; align-self: flex-end; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <!-- Language Toggle Button -->
+    <button id="language-toggle" class="language-toggle">EN</button>
+
+    <div class="dashboard-container">
+        <header>
+            <div class="header-icon"><i class="fas fa-store"></i></div>
+            <div class="header-title">
+                <h1 id="header-main-title">Dashboard</h1>
+                <p id="header-subtitle">Welcome to Artisan Bakes Cafe</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- DASHBOARD SECTION -->
+            <section id="surplus-section" class="page-section active">
+                <h2 class="section-title" id="welcome-title">Welcome, Artisan Bakes Cafe!</h2>
+                
+                <div class="carousel">
+                    <div class="glass-card stat-card">
+                        <i class="fas fa-utensils"></i>
+                        <div class="value" id="meals-sold">1,248</div>
+                        <div class="label" id="meals-label">Meals Sold (This Week)</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <i class="fas fa-dollar-sign"></i>
+                        <div class="value" id="weekly-revenue">$14,200</div>
+                        <div class="label" id="revenue-label">Revenue (This Week)</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <i class="fas fa-leaf"></i>
+                        <div class="value" id="co2-saved">1.85</div>
+                        <div class="label" id="co2-label">CO₂ Saved (Tonnes)</div>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div class="value" id="near-expiry">9</div>
+                        <div class="label" id="expiry-label">Items Near Expiry</div>
+                    </div>
+                </div>
+
+                <div class="search-filter-container">
+                    <input type="text" class="search-bar" id="inventory-search" placeholder="Search inventory..." />
+                    <select class="filter-select" id="availability-filter">
+                        <option value="all">All Items</option>
+                        <option value="low">Low Availability</option>
+                        <option value="available">Available</option>
+                    </select>
+                    <button class="action-bar" id="add-item-btn">
+                        <i class="fas fa-plus"></i> <span id="add-item-text">Add New Item</span>
+                    </button>
+                </div>
+
+                <div class="glass-card">
+                    <table class="inventory-table">
+                        <thead>
+                            <tr>
+                                <th id="item-header">Item</th>
+                                <th id="quantity-header">Quantity</th>
+                                <th id="weight-header">Weight (g)</th>
+                                <th id="calories-header">Calories</th>
+                                <th id="co2-header">CO₂ (g)</th>
+                                <th id="expiry-header">Expiry (hrs)</th>
+                                <th id="price-header">Price</th>
+                                <th id="status-header">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-body">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- REQUESTS SECTION -->
+            <section id="requests-section" class="page-section">
+                <h2 class="section-title" id="requests-title">Requests Management</h2>
+                
+                <div class="search-filter-container">
+                    <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
+                    <select class="filter-select" id="request-type-filter">
+                        <option value="all">All Types</option>
+                        <option value="user">User</option>
+                        <option value="company">Company</option>
+                    </select>
+                    <select class="filter-select" id="request-status-filter">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <button class="action-bar" id="issue-request-btn">
+                    <i class="fas fa-file-alt"></i> <span id="issue-request-text">Issue a Request</span>
+                </button>
+
+                <div class="glass-card" id="requests-list" style="margin-top: 1.5rem;">
+                    <!-- Requests will be populated by JS -->
+                </div>
+            </section>
+
+            <!-- IMPACT SECTION -->
+            <section id="impact-section" class="page-section">
+                <h2 class="section-title" id="impact-title">Business Impact</h2>
+                
+                <div class="search-filter-container">
+                    <select class="filter-select" id="impact-year-filter">
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                    <select class="filter-select" id="impact-month-filter">
+                        <option value="all">All Months</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
+                    </select>
+                    <select class="filter-select" id="chart-type-filter">
+                        <option value="bar">Bar Chart</option>
+                        <option value="line">Line Chart</option>
+                        <option value="pie">Pie Chart</option>
+                        <option value="raw">Raw Data</option>
+                    </select>
+                    <button class="action-bar" id="download-data-btn">
+                        <i class="fas fa-download"></i> <span id="download-text">Download Data</span>
+                    </button>
+                </div>
+
+                <div class="impact-grid">
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 1.5rem; font-weight: 600;" id="revenue-chart-title">Revenue & Savings</h3>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="margin-bottom: 1.5rem; font-weight: 600;" id="environmental-chart-title">Environmental Impact</h3>
+                        <div class="chart-container">
+                            <canvas id="impactDoughnut"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="action-bar" style="margin-top: 2rem;" id="certificate-btn">
+                    <i class="fas fa-certificate"></i> <span id="certificate-text">Generate Impact Certificate</span>
+                </button>
+            </section>
+
+            <!-- MESSAGES SECTION -->
+            <section id="messages-section" class="page-section">
+                <h2 class="section-title" id="messages-title">Messages</h2>
+                
+                <div class="telegram-layout">
+                    <div class="chat-sidebar">
+                        <div class="chat-contact active">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <div id="ahmed-contact">Ahmed A.</div>
+                                <div style="font-size: 0.8rem; opacity: 0.8;">Hi, about the croissants...</div>
+                            </div>
+                        </div>
+                        <div class="chat-contact">
+                            <i class="fas fa-building"></i>
+                            <div>
+                                <div id="supplier-contact">Bakery Supplies Co.</div>
+                                <div style="font-size: 0.8rem; opacity: 0.8;">Delivery scheduled for tomorrow</div>
+                            </div>
+                        </div>
+                        <div class="chat-contact">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <div id="sara-contact">Sara M.</div>
+                                <div style="font-size: 0.8rem; opacity: 0.8;">Thank you for the pastries!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-main">
+                        <div class="chat-header">Ahmed A.</div>
+                        <div class="chat-messages">
+                            <div class="message-row received">
+                                <div class="message-bubble">
+                                    Hi, I just reserved the croissants for tomorrow morning. Is that okay?
+                                    <div class="message-time">10:30 AM</div>
+                                </div>
+                            </div>
+                            <div class="message-row sent">
+                                <div class="message-bubble">
+                                    Yes, that works perfectly! We'll have them ready for you.
+                                    <div class="message-time">10:32 AM</div>
+                                </div>
+                            </div>
+                            <div class="message-row received">
+                                <div class="message-bubble">
+                                    Great! Also, do you have any almond croissants available this week?
+                                    <div class="message-time">10:35 AM</div>
+                                </div>
+                            </div>
+                            <div class="message-row sent">
+                                <div class="message-bubble">
+                                    Yes, we have 9 almond croissants available. Would you like to reserve some?
+                                    <div class="message-time">10:36 AM</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Type a message..." />
+                            <button><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROFILE SECTION -->
+            <section id="profile-section" class="page-section">
+                <h2 class="section-title" id="profile-title">Business Profile</h2>
+                <div class="profile-options">
+                    <a href="#" class="glass-card profile-option">
+                        <i class="fas fa-store"></i>
+                        <span id="store-settings">Store Settings</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="glass-card profile-option">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span id="billing-payouts">Billing & Payouts</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="glass-card profile-option">
+                        <i class="fas fa-users"></i>
+                        <span id="manage-staff">Manage Staff</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="glass-card profile-option">
+                        <i class="fas fa-file-contract"></i>
+                        <span id="compliance-docs">Compliance Documents</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="auth.html" class="glass-card profile-option" style="color: #ff4d60;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span id="logout-text">Logout</span>
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <nav class="bottom-nav">
+        <ul class="nav-items">
+            <li class="nav-item active">
+                <a href="#" data-target="surplus-section">
+                    <i class="fas fa-box-open"></i>
+                    <span id="nav-dashboard">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-target="requests-section">
+                    <i class="fas fa-receipt"></i>
+                    <span id="nav-requests">Requests</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-target="impact-section">
+                    <i class="fas fa-chart-pie"></i>
+                    <span id="nav-impact">Impact</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-target="messages-section">
+                    <i class="fas fa-comments"></i>
+                    <span id="nav-messages">Messages</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-target="profile-section">
+                    <i class="fas fa-user-cog"></i>
+                    <span id="nav-profile">Profile</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Mock Data from CSV files
+        const inventoryData = [
+            {Item:"Croissant",Quantity:15,Weight_per_piece:60,Calories_per_piece:272,CO2_footprint_per_piece:550,Expiry_time_left:48,Price_before_discount:3.50,Price_after_discount:1.75},
+            {Item:"Chocolate Chip Cookie",Quantity:20,Weight_per_piece:45,Calories_per_piece:223,CO2_footprint_per_piece:480,Expiry_time_left:72,Price_before_discount:2.50,Price_after_discount:1.25},
+            {Item:"Blueberry Muffin",Quantity:12,Weight_per_piece:85,Calories_per_piece:385,CO2_footprint_per_piece:620,Expiry_time_left:36,Price_before_discount:4.00,Price_after_discount:2.00},
+            {Item:"Baguette",Quantity:8,Weight_per_piece:250,Calories_per_piece:650,CO2_footprint_per_piece:850,Expiry_time_left:24,Price_before_discount:5.00,Price_after_discount:2.50},
+            {Item:"Cinnamon Roll",Quantity:10,Weight_per_piece:90,Calories_per_piece:420,CO2_footprint_per_piece:780,Expiry_time_left:48,Price_before_discount:3.75,Price_after_discount:1.88},
+            {Item:"Apple Pie",Quantity:6,Weight_per_piece:200,Calories_per_piece:710,CO2_footprint_per_piece:1250,Expiry_time_left:96,Price_before_discount:12.00,Price_after_discount:6.00},
+            {Item:"Chocolate Eclair",Quantity:14,Weight_per_piece:70,Calories_per_piece:262,CO2_footprint_per_piece:670,Expiry_time_left:24,Price_before_discount:4.50,Price_after_discount:2.25},
+            {Item:"Whole Wheat Bread",Quantity:10,Weight_per_piece:400,Calories_per_piece:960,CO2_footprint_per_piece:720,Expiry_time_left:72,Price_before_discount:6.50,Price_after_discount:3.25},
+            {Item:"Palmier",Quantity:18,Weight_per_piece:40,Calories_per_piece:210,CO2_footprint_per_piece:420,Expiry_time_left:48,Price_before_discount:2.25,Price_after_discount:1.13},
+            {Item:"Cheese Danish",Quantity:12,Weight_per_piece:75,Calories_per_piece:320,CO2_footprint_per_piece:590,Expiry_time_left:36,Price_before_discount:3.25,Price_after_discount:1.63},
+            {Item:"Almond Croissant",Quantity:9,Weight_per_piece:65,Calories_per_piece:340,CO2_footprint_per_piece:610,Expiry_time_left:48,Price_before_discount:4.25,Price_after_discount:2.13},
+            {Item:"Banana Bread",Quantity:8,Weight_per_piece:120,Calories_per_piece:420,CO2_footprint_per_piece:580,Expiry_time_left:96,Price_before_discount:7.00,Price_after_discount:3.50},
+            {Item:"Pretzel",Quantity:16,Weight_per_piece:80,Calories_per_piece:280,CO2_footprint_per_piece:410,Expiry_time_left:24,Price_before_discount:3.00,Price_after_discount:1.50},
+            {Item:"Raspberry Tart",Quantity:7,Weight_per_piece:110,Calories_per_piece:380,CO2_footprint_per_piece:720,Expiry_time_left:24,Price_before_discount:5.50,Price_after_discount:2.75},
+            {Item:"Sourdough Loaf",Quantity:5,Weight_per_piece:450,Calories_per_piece:1215,CO2_footprint_per_piece:780,Expiry_time_left:72,Price_before_discount:8.00,Price_after_discount:4.00},
+            {Item:"Lemon Bar",Quantity:15,Weight_per_piece:60,Calories_per_piece:250,CO2_footprint_per_piece:520,Expiry_time_left:48,Price_before_discount:3.25,Price_after_discount:1.63},
+            {Item:"Chocolate Brownie",Quantity:18,Weight_per_piece:70,Calories_per_piece:330,CO2_footprint_per_piece:680,Expiry_time_left:72,Price_before_discount:3.75,Price_after_discount:1.88},
+            {Item:"Pumpkin Scone",Quantity:11,Weight_per_piece:85,Calories_per_piece:350,CO2_footprint_per_piece:510,Expiry_time_left:36,Price_before_discount:4.50,Price_after_discount:2.25},
+            {Item:"Focaccia Bread",Quantity:7,Weight_per_piece:300,Calories_per_piece:870,CO2_footprint_per_piece:920,Expiry_time_left:48,Price_before_discount:7.50,Price_after_discount:3.75},
+            {Item:"Macaron",Quantity:24,Weight_per_piece:25,Calories_per_piece:95,CO2_footprint_per_piece:320,Expiry_time_left:48,Price_before_discount:2.00,Price_after_discount:1.00},
+            {Item:"Cream Puff",Quantity:13,Weight_per_piece:55,Calories_per_piece:180,CO2_footprint_per_piece:530,Expiry_time_left:24,Price_before_discount:3.50,Price_after_discount:1.75},
+            {Item:"Carrot Cake",Quantity:4,Weight_per_piece:150,Calories_per_piece:540,CO2_footprint_per_piece:890,Expiry_time_left:96,Price_before_discount:9.00,Price_after_discount:4.50},
+            {Item:"Bagel",Quantity:14,Weight_per_piece:90,Calories_per_piece:245,CO2_footprint_per_piece:380,Expiry_time_left:72,Price_before_discount:2.75,Price_after_discount:1.38},
+            {Item:"Tiramisu",Quantity:5,Weight_per_piece:120,Calories_per_piece:380,CO2_footprint_per_piece:950,Expiry_time_left:24,Price_before_discount:6.50,Price_after_discount:3.25},
+            {Item:"Strawberry Shortcake",Quantity:3,Weight_per_piece:180,Calories_per_piece:450,CO2_footprint_per_piece:1050,Expiry_time_left:12,Price_before_discount:8.50,Price_after_discount:4.25}
+        ];
+
+        const salesData = [
+            {Year:2024,Month:"January",Revenue_USD:12500,CO2_Tonnes_Saved:0.85,Water_Saved_Litres:12500,Food_Saved_Kg:85,Food_Waste_Kg:45},
+            {Year:2024,Month:"February",Revenue_USD:11800,CO2_Tonnes_Saved:0.80,Water_Saved_Litres:11800,Food_Saved_Kg:80,Food_Waste_Kg:42},
+            {Year:2024,Month:"March",Revenue_USD:13200,CO2_Tonnes_Saved:0.90,Water_Saved_Litres:13200,Food_Saved_Kg:90,Food_Waste_Kg:48},
+            {Year:2024,Month:"April",Revenue_USD:12800,CO2_Tonnes_Saved:0.87,Water_Saved_Litres:12800,Food_Saved_Kg:87,Food_Waste_Kg:46},
+            {Year:2024,Month:"May",Revenue_USD:13500,CO2_Tonnes_Saved:0.92,Water_Saved_Litres:13500,Food_Saved_Kg:92,Food_Waste_Kg:49},
+            {Year:2024,Month:"June",Revenue_USD:14200,CO2_Tonnes_Saved:0.96,Water_Saved_Litres:14200,Food_Saved_Kg:96,Food_Waste_Kg:52},
+            {Year:2024,Month:"July",Revenue_USD:13800,CO2_Tonnes_Saved:0.94,Water_Saved_Litres:13800,Food_Saved_Kg:94,Food_Waste_Kg:50},
+            {Year:2024,Month:"August",Revenue_USD:14500,CO2_Tonnes_Saved:0.98,Water_Saved_Litres:14500,Food_Saved_Kg:98,Food_Waste_Kg:54},
+            {Year:2024,Month:"September",Revenue_USD:15000,CO2_Tonnes_Saved:1.02,Water_Saved_Litres:15000,Food_Saved_Kg:102,Food_Waste_Kg:55},
+            {Year:2024,Month:"October",Revenue_USD:15800,CO2_Tonnes_Saved:1.07,Water_Saved_Litres:15800,Food_Saved_Kg:107,Food_Waste_Kg:58},
+            {Year:2024,Month:"November",Revenue_USD:16500,CO2_Tonnes_Saved:1.12,Water_Saved_Litres:16500,Food_Saved_Kg:112,Food_Waste_Kg:60},
+            {Year:2024,Month:"December",Revenue_USD:22000,CO2_Tonnes_Saved:1.50,Water_Saved_Litres:22000,Food_Saved_Kg:150,Food_Waste_Kg:75},
+            {Year:2025,Month:"January",Revenue_USD:14500,CO2_Tonnes_Saved:1.10,Water_Saved_Litres:14500,Food_Saved_Kg:110,Food_Waste_Kg:40},
+            {Year:2025,Month:"February",Revenue_USD:13800,CO2_Tonnes_Saved:1.05,Water_Saved_Litres:13800,Food_Saved_Kg:105,Food_Waste_Kg:38},
+            {Year:2025,Month:"March",Revenue_USD:15200,CO2_Tonnes_Saved:1.15,Water_Saved_Litres:15200,Food_Saved_Kg:115,Food_Waste_Kg:42},
+            {Year:2025,Month:"April",Revenue_USD:14800,CO2_Tonnes_Saved:1.12,Water_Saved_Litres:14800,Food_Saved_Kg:112,Food_Waste_Kg:41},
+            {Year:2025,Month:"May",Revenue_USD:15500,CO2_Tonnes_Saved:1.18,Water_Saved_Litres:15500,Food_Saved_Kg:118,Food_Waste_Kg:43},
+            {Year:2025,Month:"June",Revenue_USD:16200,CO2_Tonnes_Saved:1.23,Water_Saved_Litres:16200,Food_Saved_Kg:123,Food_Waste_Kg:45},
+            {Year:2025,Month:"July",Revenue_USD:15800,CO2_Tonnes_Saved:1.20,Water_Saved_Litres:15800,Food_Saved_Kg:120,Food_Waste_Kg:44},
+            {Year:2025,Month:"August",Revenue_USD:16500,CO2_Tonnes_Saved:1.25,Water_Saved_Litres:16500,Food_Saved_Kg:125,Food_Waste_Kg:46},
+            {Year:2025,Month:"September",Revenue_USD:17000,CO2_Tonnes_Saved:1.29,Water_Saved_Litres:17000,Food_Saved_Kg:129,Food_Waste_Kg:47},
+            {Year:2025,Month:"October",Revenue_USD:17800,CO2_Tonnes_Saved:1.35,Water_Saved_Litres:17800,Food_Saved_Kg:135,Food_Waste_Kg:49},
+            {Year:2025,Month:"November",Revenue_USD:18500,CO2_Tonnes_Saved:1.40,Water_Saved_Litres:18500,Food_Saved_Kg:140,Food_Waste_Kg:51},
+            {Year:2025,Month:"December",Revenue_USD:24500,CO2_Tonnes_Saved:1.85,Water_Saved_Litres:24500,Food_Saved_Kg:185,Food_Waste_Kg:65},
+            {Year:2026,Month:"January",Revenue_USD:16500,CO2_Tonnes_Saved:1.35,Water_Saved_Litres:16500,Food_Saved_Kg:135,Food_Waste_Kg:35},
+            {Year:2026,Month:"February",Revenue_USD:15800,CO2_Tonnes_Saved:1.30,Water_Saved_Litres:15800,Food_Saved_Kg:130,Food_Waste_Kg:33},
+            {Year:2026,Month:"March",Revenue_USD:17200,CO2_Tonnes_Saved:1.40,Water_Saved_Litres:17200,Food_Saved_Kg:140,Food_Waste_Kg:37},
+            {Year:2026,Month:"April",Revenue_USD:16800,CO2_Tonnes_Saved:1.37,Water_Saved_Litres:16800,Food_Saved_Kg:137,Food_Waste_Kg:36},
+            {Year:2026,Month:"May",Revenue_USD:17500,CO2_Tonnes_Saved:1.43,Water_Saved_Litres:17500,Food_Saved_Kg:143,Food_Waste_Kg:38},
+            {Year:2026,Month:"June",Revenue_USD:18200,CO2_Tonnes_Saved:1.48,Water_Saved_Litres:18200,Food_Saved_Kg:148,Food_Waste_Kg:40},
+            {Year:2026,Month:"July",Revenue_USD:17800,CO2_Tonnes_Saved:1.45,Water_Saved_Litres:17800,Food_Saved_Kg:145,Food_Waste_Kg:39},
+            {Year:2026,Month:"August",Revenue_USD:18500,CO2_Tonnes_Saved:1.51,Water_Saved_Litres:18500,Food_Saved_Kg:151,Food_Waste_Kg:41},
+            {Year:2026,Month:"September",Revenue_USD:19000,CO2_Tonnes_Saved:1.55,Water_Saved_Litres:19000,Food_Saved_Kg:155,Food_Waste_Kg:42},
+            {Year:2026,Month:"October",Revenue_USD:19800,CO2_Tonnes_Saved:1.62,Water_Saved_Litres:19800,Food_Saved_Kg:162,Food_Waste_Kg:44},
+            {Year:2026,Month:"November",Revenue_USD:20500,CO2_Tonnes_Saved:1.68,Water_Saved_Litres:20500,Food_Saved_Kg:168,Food_Waste_Kg:46},
+            {Year:2026,Month:"December",Revenue_USD:27000,CO2_Tonnes_Saved:2.20,Water_Saved_Litres:27000,Food_Saved_Kg:220,Food_Waste_Kg:55}
+        ];
+
+        // Predefined requests
+        const requestList = [
+            {
+                id: 1,
+                type: 'user',
+                status: 'pending',
+                user: 'Ahmed A.',
+                avatar: 'user',
+                item: 'Almond Croissant',
+                quantity: 3,
+                message: 'Would like to reserve 3 almond croissants for tomorrow morning. Perfect for breakfast!',
+                time: '2 hours ago'
+            },
+            {
+                id: 2,
+                type: 'company',
+                status: 'pending',
+                user: 'Community Food Bank',
+                avatar: 'building',
+                item: 'Whole Wheat Bread',
+                quantity: 10,
+                message: 'We have a shelter event this weekend and would appreciate 10 loaves of whole wheat bread for our guests.',
+                time: '4 hours ago'
+            },
+            {
+                id: 3,
+                type: 'user',
+                status: 'approved',
+                user: 'Fatima K.',
+                avatar: 'user',
+                item: 'Cinnamon Roll',
+                quantity: 2,
+                message: 'My kids love your cinnamon rolls! Can I reserve 2 for Friday afternoon?',
+                time: '1 day ago'
+            },
+            {
+                id: 4,
+                type: 'company',
+                status: 'approved',
+                user: 'Elderly Care Center',
+                avatar: 'building',
+                item: 'Soft Cookies',
+                quantity: 15,
+                message: 'We have a tea event for our seniors and would love to include some soft cookies. Can you spare 15?',
+                time: '2 days ago'
+            },
+            {
+                id: 5,
+                type: 'user',
+                status: 'rejected',
+                user: 'Omar S.',
+                avatar: 'user',
+                item: 'Tiramisu',
+                quantity: 4,
+                message: 'I have a small dinner party and would love to serve your tiramisu. Can I reserve 4 portions?',
+                time: '3 days ago'
+            },
+            {
+                id: 6,
+                type: 'company',
+                status: 'pending',
+                user: 'School Nutrition Program',
+                avatar: 'building',
+                item: 'Healthy Muffins',
+                quantity: 20,
+                message: 'We\'re running a weekend nutrition program for children and would appreciate 20 healthy muffins.',
+                time: '5 hours ago'
+            },
+            {
+                id: 7,
+                type: 'user',
+                status: 'pending',
+                user: 'Layla M.',
+                avatar: 'user',
+                item: 'Chocolate Eclair',
+                quantity: 5,
+                message: 'Celebrating my work anniversary and would love to treat my team with your delicious eclairs!',
+                time: '6 hours ago'
+            },
+            {
+                id: 8,
+                type: 'company',
+                status: 'approved',
+                user: 'Homeless Shelter Dubai',
+                avatar: 'building',
+                item: 'Assorted Pastries',
+                quantity: 30,
+                message: 'We have a special Friday dinner for our residents and would be honored to serve your pastries.',
+                time: '1 week ago'
+            }
+        ];
+
+        // Language translation data
+        const translations = {
+            en: {
+                // Header
+                'header-main-title': 'Dashboard',
+                'header-subtitle': 'Welcome to Artisan Bakes Cafe',
+                'welcome-title': 'Welcome, Artisan Bakes Cafe!',
+                
+                // Dashboard
+                'meals-label': 'Meals Sold (This Week)',
+                'revenue-label': 'Revenue (This Week)',
+                'co2-label': 'CO₂ Saved (Tonnes)',
+                'expiry-label': 'Items Near Expiry',
+                'item-header': 'Item',
+                'quantity-header': 'Quantity',
+                'weight-header': 'Weight (g)',
+                'calories-header': 'Calories',
+                'co2-header': 'CO₂ (g)',
+                'expiry-header': 'Expiry (hrs)',
+                'price-header': 'Price',
+                'status-header': 'Status',
+                'add-item-text': 'Add New Item',
+                
+                // Requests
+                'requests-title': 'Requests Management',
+                'issue-request-text': 'Issue a Request',
+                'filter-all': 'All Types',
+                'filter-user': 'User',
+                'filter-company': 'Company',
+                'status-all': 'All Status',
+                'status-pending': 'Pending',
+                'status-approved': 'Approved',
+                'status-rejected': 'Rejected',
+                'request-from': 'Request from',
+                'items': 'items',
+                'accept-btn': 'Accept',
+                'decline-btn': 'Decline',
+                
+                // Impact
+                'impact-title': 'Business Impact',
+                'revenue-chart-title': 'Revenue & Savings',
+                'environmental-chart-title': 'Environmental Impact',
+                'download-text': 'Download Data',
+                'certificate-text': 'Generate Impact Certificate',
+                
+                // Messages
+                'messages-title': 'Messages',
+                'ahmed-contact': 'Ahmed A.',
+                'supplier-contact': 'Bakery Supplies Co.',
+                'sara-contact': 'Sara M.',
+                
+                // Profile
+                'profile-title': 'Business Profile',
+                'store-settings': 'Store Settings',
+                'billing-payouts': 'Billing & Payouts',
+                'manage-staff': 'Manage Staff',
+                'compliance-docs': 'Compliance Documents',
+                'logout-text': 'Logout',
+                
+                // Navigation
+                'nav-dashboard': 'Dashboard',
+                'nav-requests': 'Requests',
+                'nav-impact': 'Impact',
+                'nav-messages': 'Messages',
+                'nav-profile': 'Profile'
+            },
+            ar: {
+                // Header
+                'header-main-title': 'لوحة التحكم',
+                'header-subtitle': 'مرحبًا في مقهى Artisan Bakes',
+                'welcome-title': 'مرحبًا، مقهى Artisan Bakes!',
+                
+                // Dashboard
+                'meals-label': 'الوجبات المباعة (هذا الأسبوع)',
+                'revenue-label': 'الإيرادات (هذا الأسبوع)',
+                'co2-label': 'تم توفير ثاني أكسيد الكربون (أطنان)',
+                'expiry-label': 'العناصر القريبة من انتهاء الصلاحية',
+                'item-header': 'العنصر',
+                'quantity-header': 'الكمية',
+                'weight-header': 'الوزن (جم)',
+                'calories-header': 'السعرات الحرارية',
+                'co2-header': 'ثاني أكسيد الكربون (جم)',
+                'expiry-header': 'انتهاء الصلاحية (ساعات)',
+                'price-header': 'السعر',
+                'status-header': 'الحالة',
+                'add-item-text': 'إضافة عنصر جديد',
+                
+                // Requests
+                'requests-title': 'إدارة الطلبات',
+                'issue-request-text': 'تقديم طلب',
+                'filter-all': 'جميع الأنواع',
+                'filter-user': 'مستخدم',
+                'filter-company': 'شركة',
+                'status-all': 'جميع الحالات',
+                'status-pending': 'معلق',
+                'status-approved': 'موافق عليه',
+                'status-rejected': 'مرفوض',
+                'request-from': 'طلب من',
+                'items': 'عناصر',
+                'accept-btn': 'قبول',
+                'decline-btn': 'رفض',
+                
+                // Impact
+                'impact-title': 'أثر العمل',
+                'revenue-chart-title': 'الإيرادات والمدخرات',
+                'environmental-chart-title': 'الأثر البيئي',
+                'download-text': 'تنزيل البيانات',
+                'certificate-text': 'إنشاء شهادة الأثر',
+                
+                // Messages
+                'messages-title': 'الرسائل',
+                'ahmed-contact': 'أحمد أ.',
+                'supplier-contact': 'شركة مستلزمات المخابز',
+                'sara-contact': 'سارة م.',
+                
+                // Profile
+                'profile-title': 'ملف العمل',
+                'store-settings': 'إعدادات المتجر',
+                'billing-payouts': 'الفواتير والمدفوعات',
+                'manage-staff': 'إدارة الموظفين',
+                'compliance-docs': 'وثائق الامتثال',
+                'logout-text': 'تسجيل الخروج',
+                
+                // Navigation
+                'nav-dashboard': 'لوحة التحكم',
+                'nav-requests': 'الطلبات',
+                'nav-impact': 'الأثر',
+                'nav-messages': 'الرسائل',
+                'nav-profile': 'الملف الشخصي'
+            }
+        };
+
+        // Initialize language from localStorage or default to English
+        const storedLanguage = localStorage.getItem('siteLanguage') || 'en';
+        let currentLanguage = storedLanguage;
+
+        // Apply translations based on current language
+        function applyTranslations() {
+            Object.keys(translations[currentLanguage]).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = translations[currentLanguage][key];
+                }
+            });
+
+            // Update filter options
+            document.querySelector('#request-type-filter option[value="all"]').textContent = translations[currentLanguage]['filter-all'];
+            document.querySelector('#request-type-filter option[value="user"]').textContent = translations[currentLanguage]['filter-user'];
+            document.querySelector('#request-type-filter option[value="company"]').textContent = translations[currentLanguage]['filter-company'];
+            document.querySelector('#request-status-filter option[value="all"]').textContent = translations[currentLanguage]['status-all'];
+            document.querySelector('#request-status-filter option[value="pending"]').textContent = translations[currentLanguage]['status-pending'];
+            document.querySelector('#request-status-filter option[value="approved"]').textContent = translations[currentLanguage]['status-approved'];
+            document.querySelector('#request-status-filter option[value="rejected"]').textContent = translations[currentLanguage]['status-rejected'];
+
+            const langButton = document.getElementById('language-toggle');
+            langButton.textContent = currentLanguage === 'en' ? 'EN' : 'AR';
+            
+            if (currentLanguage === 'ar') {
+                document.body.style.fontFamily = "'Amiri', serif";
+                document.querySelectorAll('.glass-card').forEach(el => {
+                    el.style.textAlign = 'right';
+                });
+            } else {
+                document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.querySelectorAll('.glass-card').forEach(el => {
+                    el.style.textAlign = 'left';
+                });
+            }
+        }
+
+        // Toggle language function
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+            localStorage.setItem('siteLanguage', currentLanguage);
+            applyTranslations();
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+        }
+
+        // Populate inventory table
+        function populateInventory(data) {
+            const tbody = document.getElementById('inventory-body');
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                const isLowStock = item.Quantity < 10;
+                const expiryClass = item.Expiry_time_left < 24 ? 'low-stock' : '';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.Item}</td>
+                    <td class="${isLowStock ? 'low-stock' : ''}">${item.Quantity}</td>
+                    <td>${item.Weight_per_piece}</td>
+                    <td>${item.Calories_per_piece}</td>
+                    <td>${item.CO2_footprint_per_piece}</td>
+                    <td class="${expiryClass}">${item.Expiry_time_left}</td>
+                    <td>${formatCurrency(item.Price_after_discount)}</td>
+                    <td><span class="status-tag status-available">Available</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Populate requests list
+        function populateRequests(requests) {
+            const container = document.getElementById('requests-list');
+            container.innerHTML = '';
+            
+            if (requests.length === 0) {
+                container.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-dark); opacity: 0.7;">No requests match your criteria</p>';
+                return;
+            }
+            
+            requests.forEach(request => {
+                const requestEl = document.createElement('div');
+                requestEl.className = 'request-item';
+                
+                const statusBadge = request.status === 'pending' ? 'badge-pending' :
+                                  request.status === 'approved' ? 'badge-approved' : 'badge-rejected';
+                
+                const typeBadge = request.type === 'user' ? 'badge-user' : 'badge-business';
+                
+                requestEl.innerHTML = `
+                    <div class="user-info">
+                        <i class="fas fa-${request.avatar}-circle"></i>
+                        <div class="user-details">
+                            <h3>${request.user} <span class="badge ${typeBadge}">${request.type === 'user' ? 'User' : 'Business'}</span></h3>
+                            <p>${translations[currentLanguage]['request-from']}: ${request.item} (${request.quantity} ${translations[currentLanguage]['items']})</p>
+                        </div>
+                    </div>
+                    <div class="request-details">
+                        <h4>${request.message}</h4>
+                        <p style="margin-top: 0.5rem; color: var(--text-dark); opacity: 0.6;">${request.time}</p>
+                    </div>
+                    <div class="actions">
+                        <button class="action-btn ${request.status === 'pending' ? '' : 'disabled'}" 
+                                onclick="handleRequest(${request.id}, 'accept')" 
+                                ${request.status !== 'pending' ? 'disabled' : ''}>
+                            ${translations[currentLanguage]['accept-btn']}
+                        </button>
+                        <button class="action-btn decline ${request.status === 'pending' ? '' : 'disabled'}" 
+                                onclick="handleRequest(${request.id}, 'decline')" 
+                                ${request.status !== 'pending' ? 'disabled' : ''}>
+                            ${translations[currentLanguage]['decline-btn']}
+                        </button>
+                    </div>
+                    <span class="badge ${statusBadge}" style="margin-left: 1rem;">${request.status.charAt(0).toUpperCase() + request.status.slice(1)}</span>
+                `;
+                
+                container.appendChild(requestEl);
+            });
+        }
+
+        // Handle request action
+        function handleRequest(id, action) {
+            alert(`${action === 'accept' ? 'Accepted' : 'Declined'} request #${id}`);
+            // In a real app, this would update the request status
+            filterRequests();
+        }
+
+        // Filter requests
+        function filterRequests() {
+            const searchValue = document.getElementById('requests-search').value.toLowerCase();
+            const typeFilter = document.getElementById('request-type-filter').value;
+            const statusFilter = document.getElementById('request-status-filter').value;
+            
+            const filtered = requestList.filter(request => {
+                const matchesSearch = request.user.toLowerCase().includes(searchValue) ||
+                                    request.item.toLowerCase().includes(searchValue) ||
+                                    request.message.toLowerCase().includes(searchValue);
+                
+                let matchesType = true;
+                if (typeFilter !== 'all') {
+                    matchesType = request.type === typeFilter;
+                }
+                
+                let matchesStatus = true;
+                if (statusFilter !== 'all') {
+                    matchesStatus = request.status === statusFilter;
+                }
+                
+                return matchesSearch && matchesType && matchesStatus;
+            });
+            
+            populateRequests(filtered);
+        }
+
+        // Filter inventory
+        function filterInventory() {
+            const searchValue = document.getElementById('inventory-search').value.toLowerCase();
+            const availabilityFilter = document.getElementById('availability-filter').value;
+            
+            const filtered = inventoryData.filter(item => {
+                const matchesSearch = item.Item.toLowerCase().includes(searchValue) ||
+                                    item.Quantity.toString().includes(searchValue);
+                
+                let matchesAvailability = true;
+                if (availabilityFilter === 'low') {
+                    matchesAvailability = item.Quantity < 10;
+                } else if (availabilityFilter === 'available') {
+                    matchesAvailability = item.Quantity >= 10;
+                }
+                
+                return matchesSearch && matchesAvailability;
+            });
+            
+            populateInventory(filtered);
+        }
+
+        // Initialize Charts
+        let revenueChart, impactDoughnut;
+        
+        function initCharts() {
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            const doughnutCtx = document.getElementById('impactDoughnut').getContext('2d');
+            
+            revenueChart = new Chart(revenueCtx, { 
+                type: 'bar', 
+                data: { 
+                    labels: [], 
+                    datasets: [{
+                        label: 'Revenue (USD)',
+                        data: [],
+                        backgroundColor: 'rgba(134, 167, 137, 0.7)',
+                        borderColor: 'rgba(134, 167, 137, 1)',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(74, 74, 74, 0.1)' },
+                            ticks: { color: '#4A4A4A' },
+                            title: { display: true, text: 'Revenue (USD)', color: '#4A4A4A' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#4A4A4A' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: true, labels: { color: '#4A4A4A' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Revenue: ${formatCurrency(context.parsed.y)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            impactDoughnut = new Chart(doughnutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Food Saved (kg)', 'CO₂ Saved (tonnes)', 'Water Saved (litres)'],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: ['#86A789', '#B0D9B1', '#F5A623'],
+                        borderColor: '#F8F4E3',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#4A4A4A' } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    return `${label}: ${value.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateImpactCharts();
+        }
+
+        // Update impact charts based on filters
+        function updateImpactCharts() {
+            const year = document.getElementById('impact-year-filter').value;
+            const month = document.getElementById('impact-month-filter').value;
+            const chartType = document.getElementById('chart-type-filter').value;
+            
+            const filteredData = salesData.filter(d => {
+                return d.Year == year && (month === 'all' || d.Month === month);
+            });
+            
+            if (chartType === 'raw') {
+                document.getElementById('revenueChart').style.display = 'none';
+                document.getElementById('impactDoughnut').style.display = 'none';
+            } else {
+                document.getElementById('revenueChart').style.display = 'block';
+                document.getElementById('impactDoughnut').style.display = 'block';
+            }
+            
+            if (chartType === 'bar' || chartType === 'line' || chartType === 'pie') {
+                const labels = filteredData.map(d => d.Month);
+                const revenueData = filteredData.map(d => d.Revenue_USD);
+                const foodSaved = filteredData.map(d => d.Food_Saved_Kg);
+                const co2Saved = filteredData.map(d => d.CO2_Tonnes_Saved);
+                const waterSaved = filteredData.map(d => d.Water_Saved_Litres);
+                
+                revenueChart.data.labels = labels;
+                revenueChart.data.datasets[0].data = revenueData;
+                revenueChart.data.datasets[0].type = chartType === 'line' ? 'line' : 'bar';
+                revenueChart.options.plugins.legend.display = chartType !== 'pie';
+                revenueChart.update();
+                
+                if (chartType !== 'pie') {
+                    impactDoughnut.data.datasets[0].data = [
+                        foodSaved.reduce((a, b) => a + b, 0),
+                        co2Saved.reduce((a, b) => a + b, 0),
+                        waterSaved.reduce((a, b) => a + b, 0)
+                    ];
+                    impactDoughnut.update();
+                } else {
+                    // For pie chart, show revenue distribution
+                    impactDoughnut.data.labels = labels;
+                    impactDoughnut.data.datasets[0].data = revenueData;
+                    impactDoughnut.data.datasets[0].backgroundColor = [
+                        '#86A789', '#B0D9B1', '#F5A623', '#8A8A8A', '#6C91C2', 
+                        '#D4A5A5', '#9A9976', '#B8CBB8', '#A3C4BC', '#D8BFD8',
+                        '#F4A261', '#E76F51'
+                    ];
+                    impactDoughnut.update();
+                }
+            }
+        }
+
+        // Simulate PDF download
+        function downloadData() {
+            alert('Data downloaded successfully!');
+        }
+        
+        function generateCertificate() {
+            alert('Impact certificate generated and downloaded!');
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', () => {
+            particlesJS("particles-js", { 
+                "particles": { 
+                    "number": { "value": 8, "density": { "enable": true, "value_area": 800 } }, 
+                    "color": { "value": ["#B0D9B1", "#86A789"] }, 
+                    "shape": { "type": "circle" }, 
+                    "opacity": { "value": 0.2, "random": true }, 
+                    "size": { "value": 150, "random": true, "anim": { "enable": true, "speed": 1.5, "size_min": 50, "sync": false } }, 
+                    "line_linked": { "enable": false }, 
+                    "move": { "enable": true, "speed": 1.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false } 
+                }, 
+                "interactivity": { 
+                    "detect_on": "canvas", 
+                    "events": { 
+                        "onhover": { "enable": false }, 
+                        "onclick": { "enable": false }, 
+                        "resize": true 
+                    } 
+                }, 
+                "retina_detect": true 
+            });
+
+            // Initialize inventory and requests
+            populateInventory(inventoryData);
+            populateRequests(requestList);
+            
+            // Set up event listeners
+            document.getElementById('inventory-search').addEventListener('input', filterInventory);
+            document.getElementById('availability-filter').addEventListener('change', filterInventory);
+            document.getElementById('add-item-btn').addEventListener('click', () => {
+                alert('Add new item functionality would open a form here.');
+            });
+            
+            document.getElementById('requests-search').addEventListener('input', filterRequests);
+            document.getElementById('request-type-filter').addEventListener('change', filterRequests);
+            document.getElementById('request-status-filter').addEventListener('change', filterRequests);
+            document.getElementById('issue-request-btn').addEventListener('click', () => {
+                alert('Issue request form would appear here.');
+            });
+            
+            document.getElementById('impact-year-filter').addEventListener('change', updateImpactCharts);
+            document.getElementById('impact-month-filter').addEventListener('change', updateImpactCharts);
+            document.getElementById('chart-type-filter').addEventListener('change', updateImpactCharts);
+            document.getElementById('download-data-btn').addEventListener('click', downloadData);
+            document.getElementById('certificate-btn').addEventListener('click', generateCertificate);
+            
+            // Initialize charts
+            initCharts();
+            
+            // Navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            const pageSections = document.querySelectorAll('.page-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = item.querySelector('a').dataset.target;
+                    
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    pageSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetId) {
+                            section.classList.add('active');
+                        }
+                    });
+                    
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            // Set up language toggle button
+            const langButton = document.getElementById('language-toggle');
+            langButton.addEventListener('click', toggleLanguage);
+            
+            // Apply initial translations
+            applyTranslations();
+        });
+    </script>
+</body>
+</html>

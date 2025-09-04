@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliances & Regulations</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #F4F7F4;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-bottom: 4rem;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .header {
+      background: #86A789;
+      color: white;
+      padding: 2rem 1rem;
+      border-radius: 0 0 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.75rem;
+    }
+
+    .header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .main-content {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .compliance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .compliance-item {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: flex-start;
+      border: 1px solid #E0E8E0;
+    }
+
+    .compliance-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .item-content {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .icon-wrapper {
+      background: #EEF6EE;
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-wrapper i {
+      width: 24px;
+      height: 24px;
+      color: #86A789;
+    }
+
+    .item-text {
+      flex: 1;
+    }
+
+    .item-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #2E2E2E;
+    }
+
+    .item-description {
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      background: #86A789;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: background 0.3s;
+      z-index: 100;
+    }
+
+    .back-button:hover {
+      background: #6e8e71;
+    }
+
+    .back-button i {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* Shared Page Content */
+    .content-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border: 1px solid #E0E8E0;
+    }
+
+    .content-card h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #86A789;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .content-card h3 {
+      font-size: 1.125rem;
+      font-weight: bold;
+      color: #4A4A4A;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .content-card p {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 0.9rem;
+      color: #4A4A4A;
+    }
+
+    /* Language Toggle Button */
+    .language-toggle {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 25px;
+      padding: 6px 12px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: white;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    
+    .language-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Language Toggle Button -->
+  <button id="language-toggle" class="language-toggle">EN</button>
+
+  <!-- Main Compliance Page -->
+  <div id="compliancePage" class="page active">
+    <div class="header">
+      <h1 id="header-title">Compliances & Regulations</h1>
+      <p id="header-subtitle">Stay compliant, stay sustainable</p>
+    </div>
+
+    <div class="main-content">
+      <div class="compliance-grid" id="complianceGrid"></div>
+    </div>
+
+    <button class="back-button" onclick="handleBackToProfile()">
+      <i data-lucide="arrow-left"></i>
+    </button>
+  </div>
+
+  <!-- Dynamic Pages -->
+  <div id="uae-policies" class="page">
+    <div class="header">
+      <h1 id="uae-policies-title">UAE Policies</h1>
+      <p id="uae-policies-subtitle">National framework for food safety</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="food-regulations-title">Food Regulations</h2>
+        <p id="food-regulations-text">The UAE enforces strict laws on food storage, handling, and distribution to protect consumers and ensure sustainability. Businesses must register products, comply with labelling, and follow proper storage guidelines.</p>
+        <p id="food-regulations-text2">These policies aim to reduce waste and safeguard public health.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="food-shelf-life" class="page">
+    <div class="header">
+      <h1 id="shelf-life-title">Food Shelf Life</h1>
+      <p id="shelf-life-subtitle">Expiry rules and storage standards</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="expiry-guidelines-title">Expiry Guidelines</h2>
+        <p id="expiry-guidelines-text">Food products must display clear expiry or best-before dates. Businesses are responsible for ensuring expired food is not sold or donated. Proper storage extends shelf life and minimizes waste.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="carbon-labels" class="page">
+    <div class="header">
+      <h1 id="carbon-labels-title">Carbon Labels</h1>
+      <p id="carbon-labels-subtitle">Making food's footprint visible</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="environmental-impact-title">Environmental Impact</h2>
+        <p id="environmental-impact-text">Carbon labels display the CO₂ emissions linked to a product's production and transportation. The goal is to help consumers make sustainable choices and encourage businesses to lower emissions.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="safe-delivery" class="page">
+    <div class="header">
+      <h1 id="safe-delivery-title">Safe Delivery</h1>
+      <p id="safe-delivery-subtitle">Food safety on the move</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="delivery-protocols-title">Delivery Protocols</h2>
+        <p id="delivery-protocols-text">Food delivery businesses must maintain safe temperatures, use hygienic packaging, and train drivers in handling practices. These rules protect food safety and consumer trust.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="composting-policies" class="page">
+    <div class="header">
+      <h1 id="composting-title">Composting Policies</h1>
+      <p id="composting-subtitle">Turning waste into resource</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="waste-management-title">Waste Management</h2>
+        <p id="waste-management-text">The UAE encourages composting of food scraps to reduce landfill pressure and generate natural fertilizers. Businesses can adopt composting systems or partner with municipal programs.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="registering-fees" class="page">
+    <div class="header">
+      <h1 id="registering-fees-title">Registering Fees</h1>
+      <p id="registering-fees-subtitle">Licensing and compliance costs</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="business-requirements-title">Business Requirements</h2>
+        <p id="business-requirements-text">Food businesses must pay registration and licensing fees, which vary by emirate and business size. These fees ensure compliance monitoring and food safety enforcement.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="advertising" class="page">
+    <div class="header">
+      <h1 id="advertising-title">Advertising</h1>
+      <p id="advertising-subtitle">Responsible food marketing</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="marketing-guidelines-title">Marketing Guidelines</h2>
+        <p id="marketing-guidelines-text">Food advertising must be truthful, not misleading, and must not promote unsafe or expired products. The UAE monitors food promotions to protect consumers and promote healthy lifestyles.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="sustainability-measures" class="page">
+    <div class="header">
+      <h1 id="sustainability-title">Sustainability Measures</h1>
+      <p id="sustainability-subtitle">Greener food systems</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="eco-practices-title">Eco Practices</h2>
+        <p id="eco-practices-text">Businesses are encouraged to adopt recycling, reduce plastic use, and manage energy efficiently. These measures align with the UAE's Net Zero 2050 goals.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div id="about-us" class="page">
+    <div class="header">
+      <h1 id="about-us-title">About Us</h1>
+      <p id="about-us-subtitle">Because every plate matters.</p>
+    </div>
+    <div class="main-content">
+      <div class="content-card">
+        <h2 id="nematek-title">Ne'matuk</h2>
+        <p id="about-text-1">At <strong>Ne'matuk</strong>, we believe food is a blessing (*ni'mah*) that should be valued, not wasted. Across the UAE, thousands of tons of food end up in landfills every year, harming the environment and wasting precious resources. We are here to change that.</p>
+        <h3 id="mission-title">Our Mission</h3>
+        <p id="mission-text">To fight food waste and turn surplus into impact — empowering households, businesses, and communities to share more and waste less.</p>
+        <h3 id="vision-title">Our Vision</h3>
+        <p id="vision-text">A UAE where no plate goes to waste, and every extra portion finds a purpose. A future where innovation and generosity work together for sustainability and social good.</p>
+        <h3 id="impact-title">Our Impact</h3>
+        <p id="impact-text">Through our platform, we aim to reduce waste, cut carbon emissions, support charities and families in need, and build a culture of sustainability across the Emirates.</p>
+        <p id="closing-text" style="text-align:center; font-weight:600; color:#86A789;">Together, we can make the UAE a role model for sustainable living.</p>
+      </div>
+    </div>
+    <button class="back-button" onclick="showCompliancePage()"><i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <script>
+    const complianceItems = [
+      {id: "uae-policies", label: "UAE Policies for Food Businesses", icon: "file-text", description: "Government regulations and policies for food business operations"},
+      {id: "food-shelf-life", label: "Food Shelf Life", icon: "clock", description: "Guidelines for food expiration and shelf life management"},
+      {id: "carbon-labels", label: "Carbon Labels", icon: "leaf", description: "Environmental impact labeling requirements"},
+      {id: "safe-delivery", label: "Safe Delivery", icon: "truck", description: "Food safety protocols for delivery services"},
+      {id: "composting-policies", label: "Composting Policies", icon: "recycle", description: "Waste management and composting regulations"},
+      {id: "registering-fees", label: "Registering Fees", icon: "dollar-sign", description: "Business registration and licensing fee structure"},
+      {id: "advertising", label: "Advertising", icon: "megaphone", description: "Marketing and advertising compliance guidelines"},
+      {id: "sustainability-measures", label: "Sustainability Measures", icon: "tree-pine", description: "Environmental sustainability requirements"},
+      {id: "about-us", label: "About Us", icon: "info", description: "Learn more about our mission and vision"},
+    ];
+
+    // Language translation data
+    const translations = {
+      en: {
+        // Main page
+        'header-title': 'Compliances & Regulations',
+        'header-subtitle': 'Stay compliant, stay sustainable',
+        
+        // Compliance items
+        'uae-policies-title': 'UAE Policies',
+        'uae-policies-subtitle': 'National framework for food safety',
+        'food-shelf-life-title': 'Food Shelf Life',
+        'food-shelf-life-subtitle': 'Expiry rules and storage standards',
+        'carbon-labels-title': 'Carbon Labels',
+        'carbon-labels-subtitle': 'Making food\'s footprint visible',
+        'safe-delivery-title': 'Safe Delivery',
+        'safe-delivery-subtitle': 'Food safety on the move',
+        'composting-title': 'Composting Policies',
+        'composting-subtitle': 'Turning waste into resource',
+        'registering-fees-title': 'Registering Fees',
+        'registering-fees-subtitle': 'Licensing and compliance costs',
+        'advertising-title': 'Advertising',
+        'advertising-subtitle': 'Responsible food marketing',
+        'sustainability-title': 'Sustainability Measures',
+        'sustainability-subtitle': 'Greener food systems',
+        'about-us-title': 'About Us',
+        'about-us-subtitle': 'Because every plate matters.',
+        
+        // Content
+        'food-regulations-title': 'Food Regulations',
+        'food-regulations-text': 'The UAE enforces strict laws on food storage, handling, and distribution to protect consumers and ensure sustainability. Businesses must register products, comply with labelling, and follow proper storage guidelines.',
+        'food-regulations-text2': 'These policies aim to reduce waste and safeguard public health.',
+        
+        'expiry-guidelines-title': 'Expiry Guidelines',
+        'expiry-guidelines-text': 'Food products must display clear expiry or best-before dates. Businesses are responsible for ensuring expired food is not sold or donated. Proper storage extends shelf life and minimizes waste.',
+        
+        'environmental-impact-title': 'Environmental Impact',
+        'environmental-impact-text': 'Carbon labels display the CO₂ emissions linked to a product\'s production and transportation. The goal is to help consumers make sustainable choices and encourage businesses to lower emissions.',
+        
+        'delivery-protocols-title': 'Delivery Protocols',
+        'delivery-protocols-text': 'Food delivery businesses must maintain safe temperatures, use hygienic packaging, and train drivers in handling practices. These rules protect food safety and consumer trust.',
+        
+        'waste-management-title': 'Waste Management',
+        'waste-management-text': 'The UAE encourages composting of food scraps to reduce landfill pressure and generate natural fertilizers. Businesses can adopt composting systems or partner with municipal programs.',
+        
+        'business-requirements-title': 'Business Requirements',
+        'business-requirements-text': 'Food businesses must pay registration and licensing fees, which vary by emirate and business size. These fees ensure compliance monitoring and food safety enforcement.',
+        
+        'marketing-guidelines-title': 'Marketing Guidelines',
+        'marketing-guidelines-text': 'Food advertising must be truthful, not misleading, and must not promote unsafe or expired products. The UAE monitors food promotions to protect consumers and promote healthy lifestyles.',
+        
+        'eco-practices-title': 'Eco Practices',
+        'eco-practices-text': 'Businesses are encouraged to adopt recycling, reduce plastic use, and manage energy efficiently. These measures align with the UAE\'s Net Zero 2050 goals.',
+        
+        'nematek-title': 'Ne\'matuk',
+        'about-text-1': 'At <strong>Ne\'matuk</strong>, we believe food is a blessing (*ni\'mah*) that should be valued, not wasted. Across the UAE, thousands of tons of food end up in landfills every year, harming the environment and wasting precious resources. We are here to change that.',
+        'mission-title': 'Our Mission',
+        'mission-text': 'To fight food waste and turn surplus into impact — empowering households, businesses, and communities to share more and waste less.',
+        'vision-title': 'Our Vision',
+        'vision-text': 'A UAE where no plate goes to waste, and every extra portion finds a purpose. A future where innovation and generosity work together for sustainability and social good.',
+        'impact-title': 'Our Impact',
+        'impact-text': 'Through our platform, we aim to reduce waste, cut carbon emissions, support charities and families in need, and build a culture of sustainability across the Emirates.',
+        'closing-text': 'Together, we can make the UAE a role model for sustainable living.'
+      },
+      ar: {
+        // Main page
+        'header-title': 'الامتثال واللوائح',
+        'header-subtitle': 'ابقَ متوافقًا، ابقَ مستدامًا',
+        
+        // Compliance items
+        'uae-policies-title': 'سياسات الإمارات',
+        'uae-policies-subtitle': 'الإطار الوطني لسلامة الغذاء',
+        'food-shelf-life-title': 'مدة صلاحية الغذاء',
+        'food-shelf-life-subtitle': 'قواعد انتهاء الصلاحية ومعايير التخزين',
+        'carbon-labels-title': 'ملصقات الكربون',
+        'carbon-labels-subtitle': 'جعل بصمة الغذاء مرئية',
+        'safe-delivery-title': 'توصيل آمن',
+        'safe-delivery-subtitle': 'سلامة الغذاء أثناء التنقل',
+        'composting-title': 'سياسات التسميد',
+        'composting-subtitle': 'تحويل النفايات إلى مورد',
+        'registering-fees-title': 'رسوم التسجيل',
+        'registering-fees-subtitle': 'تكاليف التراخيص والامتثال',
+        'advertising-title': 'الإعلان',
+        'advertising-subtitle': 'تسويق غذائي مسؤول',
+        'sustainability-title': 'إجراءات الاستدامة',
+        'sustainability-subtitle': 'نظم غذائية أكثر اخضرارًا',
+        'about-us-title': 'معلومات عنا',
+        'about-us-subtitle': 'لأن كل طبق مهم.',
+        
+        // Content
+        'food-regulations-title': 'اللوائح الغذائية',
+        'food-regulations-text': 'تطبق الإمارات قوانين صارمة على تخزين الغذاء وتداوله وتوزيعه لحماية المستهلكين وضمان الاستدامة. يجب على الشركات تسجيل المنتجات والامتثال لملصقات البيان واتباع إرشادات التخزين المناسبة.',
+        'food-regulations-text2': 'تهدف هذه السياسات إلى تقليل الهدر وحماية الصحة العامة.',
+        
+        'expiry-guidelines-title': 'إرشادات انتهاء الصلاحية',
+        'expiry-guidelines-text': 'يجب أن تعرض المنتجات الغذائية تواريخ انتهاء صلاحية أو "يفضل استخدامه قبل" واضحة. تتحمل الشركات مسؤولية ضمان عدم بيع أو التبرع بالغذاء المنتهي الصلاحية. يطيل التخزين السليم من العمر الافتراضي ويقلل من الهدر.',
+        
+        'environmental-impact-title': 'الأثر البيئي',
+        'environmental-impact-text': 'تعرض ملصقات الكربون انبعاثات ثاني أكسيد الكربون المرتبطة بإنتاج المنتج ونقله. الهدف هو مساعدة المستهلكين على اتخاذ خيارات مستدامة وتشجيع الشركات على خفض الانبعاثات.',
+        
+        'delivery-protocols-title': 'بروتوكولات التوصيل',
+        'delivery-protocols-text': 'يجب على شركات توصيل الطعام الحفاظ على درجات حرارة آمنة، واستخدام عبوات صحية، وتدريب السائقين على ممارسات التداول. تحمي هذه القواعد سلامة الغذاء وثقة المستهلك.',
+        
+        'waste-management-title': 'إدارة النفايات',
+        'waste-management-text': 'تشجع الإمارات على تحويل فضلات الطعام إلى سماد لتقليل الضغط على مدافن النفايات وتوليد أسمدة طبيعية. يمكن للشركات اعتماد أنظمة التسميد أو الشراكة مع البرامج البلدية.',
+        
+        'business-requirements-title': 'متطلبات العمل',
+        'business-requirements-text': 'يجب على شركات الأغذية دفع رسوم التسجيل والترخيص، والتي تختلف حسب الإمارة وحجم العمل. تضمن هذه الرسوم مراقبة الامتثال وإنفاذ سلامة الغذاء.',
+        
+        'marketing-guidelines-title': 'إرشادات التسويق',
+        'marketing-guidelines-text': 'يجب أن يكون الإعلان عن الطعام صادقًا، وغير مضلل، ولا يروج لمنتجات غير آمنة أو منتهية الصلاحية. تراقب الإمارات العروض الترويجية للغذاء لحماية المستهلكين وتعزيز أنماط الحياة الصحية.',
+        
+        'eco-practices-title': 'الممارسات البيئية',
+        'eco-practices-text': 'يتم تشجيع الشركات على اعتماد إعادة التدوير، وتقليل استخدام البلاستيك، وإدارة الطاقة بكفاءة. تتماشى هذه الإجراءات مع أهداف الإمارات للحياد المناخي 2050.',
+        
+        'nematek-title': 'نعمتك',
+        'about-text-1': 'في <strong>نعمتك</strong>، نؤمن أن الطعام نعمة (*نعمة*) يجب تقديرها، لا إهدارها. في جميع أنحاء الإمارات، ينتهي آلاف الأطنان من الطعام في مكبات النفايات كل عام، مما يضر بالبيئة ويهدر الموارد الثمينة. نحن هنا لتغيير ذلك.',
+        'mission-title': 'مهمتنا',
+        'mission-text': 'محاربة هدر الطعام وتحويل الفائض إلى تأثير - تمكين الأسر والشركات والمجتمعات للمشاركة أكثر وإهدار أقل.',
+        'vision-title': 'رؤيتنا',
+        'vision-text': 'إمارات خالية من هدر الطعام، حيث يجد كل جزء إضافي هدفًا. مستقبل يعمل فيه الابتكار والكرم معًا من أجل الاستدامة والخير الاجتماعي.',
+        'impact-title': 'تأثيرنا',
+        'impact-text': 'نسعى من خلال منصتنا إلى تقليل النفايات، وخفض انبعاثات الكربون، ودعم الجمعيات الخيرية والأسر المحتاجة، وبناء ثقافة الاستدامة في جميع أنحاء الإمارات.',
+        'closing-text': 'معًا، يمكننا جعل الإمارات نموذجًا يحتذى به للعيش المستدام.'
+      }
+    };
+
+    // Initialize language from localStorage or default to English
+    const storedLanguage = localStorage.getItem('siteLanguage') || 'en';
+    let currentLanguage = storedLanguage;
+
+    // Apply translations based on current language
+    function applyTranslations() {
+      // Update all translatable elements
+      Object.keys(translations[currentLanguage]).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+          element.innerHTML = translations[currentLanguage][key];
+        }
+      });
+
+      // Update button text
+      const langButton = document.getElementById('language-toggle');
+      langButton.textContent = currentLanguage === 'en' ? 'EN' : 'AE';
+      
+      // Update font for Arabic
+      if (currentLanguage === 'ar') {
+        document.body.style.fontFamily = "'Amiri', serif";
+        document.body.style.direction = 'rtl';
+      } else {
+        document.body.style.fontFamily = "Arial, sans-serif";
+        document.body.style.direction = 'ltr';
+      }
+    }
+
+    // Toggle language function
+    function toggleLanguage() {
+      currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+      localStorage.setItem('siteLanguage', currentLanguage);
+      applyTranslations();
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      setTimeout(() => lucide.createIcons(), 50);
+    }
+
+    function showCompliancePage() { showPage('compliancePage'); }
+    function handleComplianceClick(id) { showPage(id); }
+    function handleBackToProfile() { window.history.back(); }
+
+    function renderComplianceItems() {
+      const grid = document.getElementById('complianceGrid');
+      complianceItems.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'compliance-item';
+        el.onclick = () => handleComplianceClick(item.id);
+        el.innerHTML = `
+          <div class="item-content">
+            <div class="icon-wrapper"><i data-lucide="${item.icon}"></i></div>
+            <div class="item-text"><h3 class="item-title">${item.label}</h3><p class="item-description">${item.description}</p></div>
+          </div>`;
+        grid.appendChild(el);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderComplianceItems();
+      lucide.createIcons();
+      
+      // Set up language toggle button
+      const langButton = document.getElementById('language-toggle');
+      langButton.addEventListener('click', toggleLanguage);
+      
+      // Apply initial translations based on stored language
+      applyTranslations();
+    });
+  </script>
+</body>
+</html>
