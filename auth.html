@@ -301,25 +301,27 @@
                         </div>
     
                         <!-- User Login Form -->
-                        <form id="user-login-form" action="user.html">
+                        <div id="user-login-form">
                             <div class="login-method-toggle">
                                 <button type="button" class="method-btn active" data-method="uaepass">UAE Pass</button>
                                 <button type="button" class="method-btn" data-method="passport">Passport</button>
                             </div>
                             
                             <div id="uaepass-login-method">
-                                <button type="button" class="submit-btn uae-pass-btn">
+                                <button type="button" class="submit-btn uae-pass-btn" onclick="window.location.href='user.html'">
                                     <i class="fas fa-shield-alt"></i>
                                     <span>Login with UAE Pass</span>
                                 </button>
                             </div>
                             
                             <div id="passport-login-method" class="hidden">
-                                <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
-                                <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
-                                <button type="submit" class="submit-btn" id="user-login-btn">Login</button>
+                                <form action="user.html">
+                                    <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
+                                    <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
+                                    <button type="submit" class="submit-btn" id="user-login-btn">Login</button>
+                                </form>
                             </div>
-                        </form>
+                        </div>
 
                         <!-- Business Login Form -->
                         <form id="business-login-form" class="hidden" action="business.html">
@@ -351,8 +353,8 @@
                         </div>
     
                         <!-- User Signup Form -->
-                        <form id="user-signup-form" action="user.html">
-                            <button type="button" class="submit-btn uae-pass-btn">
+                        <div id="user-signup-form">
+                            <button type="button" class="submit-btn uae-pass-btn" onclick="window.location.href='user.html'">
                                 <i class="fas fa-shield-alt"></i>
                                 <span>Sign up with UAE Pass</span>
                             </button>
@@ -361,10 +363,12 @@
                                 <span>or</span>
                             </div>
                             
-                            <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
-                            <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
-                            <button type="submit" class="submit-btn" id="user-signup-btn">Create Account</button>
-                        </form>
+                            <form action="user.html">
+                                <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
+                                <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
+                                <button type="submit" class="submit-btn" id="user-signup-btn">Create Account</button>
+                            </form>
+                        </div>
 
                         <!-- Business Signup Form -->
                         <form id="business-signup-form" class="hidden" action="business.html">
@@ -568,6 +572,8 @@
                 }, 
                 "retina_detect": true 
             });
+
+            
         
             const authSwiper = new Swiper('.auth-swiper', {
                 effect: 'fade',
@@ -606,6 +612,7 @@
                     }
                 });
             });
+            
 
             // --- Login Form Logic ---
             const loginOptionBtns = document.querySelectorAll('.login-options .option-btn');
@@ -685,6 +692,8 @@
             
             // Apply initial translations based on stored language
             applyTranslations();
+
+            
         });
 
         // File upload handler
