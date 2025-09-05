@@ -7,15 +7,15 @@
     <title>Login / Sign Up | Ne'matuk</title>
 
     <!-- Swiper.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css  " />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 
     <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com  ">
-    <link rel="preconnect" href="https://fonts.gstatic  " crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome for Social Icons -->
-    <link rel="stylesheet" href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css  ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <style>
     /* --- "Sage & Earth Tones" Color Scheme --- */
@@ -27,6 +27,7 @@
         --glass-bg: rgba(255, 254, 252, 0.7); /* very light off-white */
         --glass-border: rgba(176, 217, 177, 0.8); /* Lighter sage border */
         --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+        --uae-green: #1b5e20;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -109,11 +110,80 @@
     .input-group { display: flex; align-items: center; background: rgba(255,255,255,0.6); border: 1px solid var(--glass-border); border-radius: 12px; margin-bottom: 1rem; padding: 0 1rem; transition: all 0.3s ease; }
     .input-group:focus-within { box-shadow: 0 0 15px var(--secondary-accent); border-color: var(--secondary-accent); }
     .input-group i { color: var(--secondary-accent); opacity: 0.8; margin-right: 0.75rem; }
-    .input-group input { width: 100%; background: none; border: none; outline: none; padding: 1rem 0; color: var(--text-dark); font-size: 1rem; font-family: 'Poppins', sans-serif; }
+    .input-group input, .input-group select { width: 100%; background: none; border: none; outline: none; padding: 1rem 0; color: var(--text-dark); font-size: 1rem; font-family: 'Poppins', sans-serif; }
     .input-group input::placeholder { color: var(--text-dark); opacity: 0.5; }
+    .input-group select { cursor: pointer; }
+    .input-group select option { background: var(--bg-light); color: var(--text-dark); }
     
     .submit-btn { display: flex; width: 100%; align-items: center; justify-content: center; padding: 1rem; margin-top: 1.5rem; border-radius: 12px; background: var(--accent-gradient); border: none; color: var(--text-dark); font-weight: 600; font-size: 1.1rem; font-family: 'Poppins', sans-serif; transition: all 0.4s ease; cursor: pointer; }
     .submit-btn:hover { box-shadow: 0 0 20px var(--primary-accent), 0 0 30px var(--secondary-accent); transform: translateY(-3px) scale(1.02); }
+    
+    /* UAE Pass Button */
+    .uae-pass-btn {
+        background: var(--uae-green);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    .uae-pass-btn:hover {
+        background: #2e7d32;
+        box-shadow: 0 0 20px var(--uae-green);
+    }
+    .uae-pass-btn i {
+        font-size: 1.2rem;
+    }
+
+    /* Login Method Toggle */
+    .login-method-toggle {
+        display: flex;
+        justify-content: center;
+        background: rgba(0,0,0,0.05);
+        border-radius: 50px;
+        padding: 0.25rem;
+        margin-bottom: 1.5rem;
+    }
+    .method-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-dark);
+        opacity: 0.7;
+        padding: 0.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+    .method-btn.active {
+        background: var(--primary-accent);
+        opacity: 1;
+        box-shadow: 0 0 10px var(--primary-accent);
+        color: #fff;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        margin: 1.5rem 0;
+        color: var(--text-dark);
+        opacity: 0.6;
+    }
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(0,0,0,0.1);
+    }
+    .divider span {
+        padding: 0 1rem;
+        font-size: 0.9rem;
+    }
+
     .hidden { display: none; }
 
     /* Language Toggle Button */
@@ -142,13 +212,64 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
 
+    /* File Upload Styling */
+    .file-upload-group {
+        margin-bottom: 1rem;
+    }
+    .file-upload-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        opacity: 0.8;
+    }
+    .file-upload-container {
+        display: flex;
+        align-items: center;
+        background: rgba(255,255,255,0.6);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 0 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .file-upload-container:hover {
+        box-shadow: 0 0 15px var(--secondary-accent);
+        border-color: var(--secondary-accent);
+    }
+    .file-upload-container i {
+        color: var(--secondary-accent);
+        opacity: 0.8;
+        margin-right: 0.75rem;
+    }
+    .file-upload-input {
+        display: none;
+    }
+    .file-upload-text {
+        flex: 1;
+        padding: 1rem 0;
+        color: var(--text-dark);
+        opacity: 0.7;
+        font-family: 'Poppins', sans-serif;
+    }
+    .file-upload-text.has-file {
+        opacity: 1;
+        color: var(--secondary-accent);
+        font-weight: 500;
+    }
+    .upload-status {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+        color: var(--secondary-accent);
+    }
+
     @media (max-width: 540px) { 
         .auth-container { padding: 2rem 1.5rem; } 
         .form-title { font-size: 1.8rem; } 
         .form-content { padding-right: 8px; margin-right: -8px; } 
+        .method-btn { font-size: 0.75rem; padding: 0.4rem; }
     }
 </style>
-
 
 </head>
 
@@ -179,18 +300,36 @@
                             <button class="option-btn" data-form="employee" id="employee-option">Government Employee</button>
                         </div>
     
+                        <!-- User Login Form -->
                         <form id="user-login-form" action="user.html">
-                            <div class="input-group"><i class="fas fa-phone"></i><input type="tel" placeholder="Phone Number" value="+971 50 123 4567"></div>
-                            <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Password" value="demopassword"></div>
-                            <button type="submit" class="submit-btn" id="user-login-btn">Login</button>
+                            <div class="login-method-toggle">
+                                <button type="button" class="method-btn active" data-method="uaepass">UAE Pass</button>
+                                <button type="button" class="method-btn" data-method="passport">Passport</button>
+                            </div>
+                            
+                            <div id="uaepass-login-method">
+                                <button type="button" class="submit-btn uae-pass-btn">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <span>Login with UAE Pass</span>
+                                </button>
+                            </div>
+                            
+                            <div id="passport-login-method" class="hidden">
+                                <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
+                                <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
+                                <button type="submit" class="submit-btn" id="user-login-btn">Login</button>
+                            </div>
                         </form>
 
+                        <!-- Business Login Form -->
                         <form id="business-login-form" class="hidden" action="business.html">
+                            <div class="input-group"><i class="fas fa-file-alt"></i><input type="text" placeholder="Trade License #" value="CN-1234567"></div>
                             <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Business Email" value="demo.cafe@example.com"></div>
                             <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Password" value="businesspassword"></div>
                             <button type="submit" class="submit-btn" id="business-login-btn">Login as Business</button>
                         </form>
     
+                        <!-- Employee Login Form -->
                         <form id="employee-login-form" class="hidden" action="admin.html">
                             <div class="input-group"><i class="fas fa-user-tie"></i><input type="text" placeholder="Employee ID" value="EMP-2024-007"></div>
                             <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Password" value="adminpassword"></div>
@@ -211,23 +350,73 @@
                             <button class="option-btn" data-form="employee-signup" id="employee-signup-option">Government Employee</button>
                         </div>
     
+                        <!-- User Signup Form -->
                         <form id="user-signup-form" action="user.html">
+                            <button type="button" class="submit-btn uae-pass-btn">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Sign up with UAE Pass</span>
+                            </button>
+                            
+                            <div class="divider">
+                                <span>or</span>
+                            </div>
+                            
                             <div class="input-group"><i class="fas fa-user"></i><input type="text" placeholder="Full Name" value="Muneera Kamil"></div>
-                            <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Email Address" value="demo.user@example.com"></div>
-                            <div class="input-group"><i class="fas fa-phone"></i><input type="tel" placeholder="Phone Number" value="+971 55 987 6543"></div>
-                            <div class="input-group"><i class="fas fa-id-card"></i><input type="text" placeholder="Emirates ID" value="784-1990-1234567-1"></div>
-                            <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Create Password" value="newuser123"></div>
-                            <button type="submit" class="submit-btn" id="user-signup-btn">Create User Account</button>
+                            <div class="input-group"><i class="fas fa-passport"></i><input type="text" placeholder="Passport Number" value="A1234567"></div>
+                            <button type="submit" class="submit-btn" id="user-signup-btn">Create Account</button>
                         </form>
 
+                        <!-- Business Signup Form -->
                         <form id="business-signup-form" class="hidden" action="business.html">
                             <div class="input-group"><i class="fas fa-store"></i><input type="text" placeholder="Business Name" value="Artisan Bakes Cafe"></div>
-                            <div class="input-group"><i class="fas fa-file-alt"></i><input type="text" placeholder="Trade License #" value="CN-1234567"></div>
-                            <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Business Email" value="contact@artisanbakes.ae"></div>
+                            <div class="input-group"><i class="fas fa-file-alt"></i><input type="text" placeholder="Trade License Number" value="CN-1234567"></div>
+                            <div class="input-group"><i class="fas fa-phone"></i><input type="tel" placeholder="Contact Number" value="+971 XX XXX XXXX"></div>
+                            <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Business Email" value="business@example.com"></div>
+                            <div class="input-group">
+                                <i class="fas fa-tags"></i>
+                                <select>
+                                    <option value="">Select category</option>
+                                    <option value="restaurant">Restaurant</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="services">Services</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="education">Education</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Document Upload Section -->
+                            <div class="file-upload-group">
+                                <label class="file-upload-label">Upload Required Documents</label>
+                                <div class="file-upload-container" onclick="document.getElementById('trade-license-file').click()">
+                                    <i class="fas fa-file-upload"></i>
+                                    <span class="file-upload-text" id="trade-license-text">Upload Trade License Copy</span>
+                                    <input type="file" id="trade-license-file" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName(this, 'trade-license-text')">
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-group">
+                                <div class="file-upload-container" onclick="document.getElementById('business-registration-file').click()">
+                                    <i class="fas fa-file-upload"></i>
+                                    <span class="file-upload-text" id="business-registration-text">Upload Business Registration Certificate</span>
+                                    <input type="file" id="business-registration-file" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName(this, 'business-registration-text')">
+                                </div>
+                            </div>
+                            
+                            <div class="file-upload-group">
+                                <div class="file-upload-container" onclick="document.getElementById('owner-id-file').click()">
+                                    <i class="fas fa-file-upload"></i>
+                                    <span class="file-upload-text" id="owner-id-text">Upload Owner ID/Passport Copy</span>
+                                    <input type="file" id="owner-id-file" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileName(this, 'owner-id-text')">
+                                </div>
+                            </div>
+                            
                             <div class="input-group"><i class="fas fa-lock"></i><input type="password" placeholder="Create Password" value="business123"></div>
-                            <button type="submit" class="submit-btn" id="business-signup-btn">Register Business</button>
+                            <button type="submit" class="submit-btn" id="business-signup-btn">Register & Continue</button>
                         </form>
                         
+                        <!-- Employee Signup Form -->
                         <form id="employee-signup-form" class="hidden" action="admin.html">
                             <div class="input-group"><i class="fas fa-user-tie"></i><input type="text" placeholder="Full Name" value="Doaa Alalimi"></div>
                             <div class="input-group"><i class="fas fa-envelope"></i><input type="email" placeholder="Email Address" value="d.alalimi@example.com"></div>
@@ -242,8 +431,8 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js  "></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js  "></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // Language translation data
         const translations = {
@@ -261,8 +450,8 @@
                 'user-signup-option': 'User',
                 'business-signup-option': 'Business',
                 'employee-signup-option': 'Government Employee',
-                'user-signup-btn': 'Create User Account',
-                'business-signup-btn': 'Register Business',
+                'user-signup-btn': 'Create Account',
+                'business-signup-btn': 'Register & Continue',
                 'employee-signup-btn': 'Register as Employee',
                 'login-tab': 'Login',
                 'signup-tab': 'Sign Up'
@@ -281,8 +470,8 @@
                 'user-signup-option': 'مستخدم',
                 'business-signup-option': 'محل تجاري',
                 'employee-signup-option': 'موظف حكومي',
-                'user-signup-btn': 'إنشاء حساب مستخدم',
-                'business-signup-btn': 'تسجيل محل تجاري',
+                'user-signup-btn': 'إنشاء حساب',
+                'business-signup-btn': 'التسجيل والمتابعة',
                 'employee-signup-btn': 'التسجيل كموظف حكومي',
                 'login-tab': 'تسجيل الدخول',
                 'signup-tab': 'إنشاء حساب'
@@ -300,12 +489,6 @@
                 const element = document.getElementById(key);
                 if (element) {
                     element.textContent = translations[currentLanguage][key];
-                    
-                    // Special handling for form placeholders
-                    if (key === 'user-option' && element.textContent === 'User') {
-                        const phoneInput = document.querySelector('#user-login-form .input-group input');
-                        if (phoneInput) phoneInput.placeholder = currentLanguage === 'ar' ? 'رقم الهاتف' : 'Phone Number';
-                    }
                 }
             });
 
@@ -404,6 +587,26 @@
                 });
             });
 
+            // --- User Login Method Toggle ---
+            const methodBtns = document.querySelectorAll('.method-btn');
+            const uaepassLoginMethod = document.getElementById('uaepass-login-method');
+            const passportLoginMethod = document.getElementById('passport-login-method');
+
+            methodBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    methodBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    if (btn.dataset.method === 'uaepass') {
+                        uaepassLoginMethod.classList.remove('hidden');
+                        passportLoginMethod.classList.add('hidden');
+                    } else {
+                        uaepassLoginMethod.classList.add('hidden');
+                        passportLoginMethod.classList.remove('hidden');
+                    }
+                });
+            });
+
             // --- Login Form Logic ---
             const loginOptionBtns = document.querySelectorAll('.login-options .option-btn');
             const userLoginForm = document.getElementById('user-login-form');
@@ -459,6 +662,12 @@
                     userLoginForm.classList.remove('hidden');
                     businessLoginForm.classList.add('hidden');
                     employeeLoginForm.classList.add('hidden');
+                    
+                    // Reset user login method to UAE Pass
+                    methodBtns.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.method-btn[data-method="uaepass"]').classList.add('active');
+                    uaepassLoginMethod.classList.remove('hidden');
+                    passportLoginMethod.classList.add('hidden');
                 }
                 // Reset Sign Up form to default state
                 if (authSwiper.activeIndex === 1) {
@@ -477,6 +686,44 @@
             // Apply initial translations based on stored language
             applyTranslations();
         });
+
+        // File upload handler
+        function updateFileName(input, textElementId) {
+            const textElement = document.getElementById(textElementId);
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                textElement.textContent = fileName;
+                textElement.classList.add('has-file');
+            } else {
+                // Reset to original text based on the element ID
+                const originalTexts = {
+                    'trade-license-text': 'Upload Trade License Copy',
+                    'business-registration-text': 'Upload Business Registration Certificate',
+                    'owner-id-text': 'Upload Owner ID/Passport Copy'
+                };
+                textElement.textContent = originalTexts[textElementId] || 'Choose file...';
+                textElement.classList.remove('has-file');
+            }
+        }
+
+        // File upload handler
+        function updateFileName(input, textElementId) {
+            const textElement = document.getElementById(textElementId);
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                textElement.textContent = fileName;
+                textElement.classList.add('has-file');
+            } else {
+                // Reset to original text based on the element ID
+                const originalTexts = {
+                    'trade-license-text': 'Upload Trade License Copy',
+                    'business-registration-text': 'Upload Business Registration Certificate',
+                    'owner-id-text': 'Upload Owner ID/Passport Copy'
+                };
+                textElement.textContent = originalTexts[textElementId] || 'Choose file...';
+                textElement.classList.remove('has-file');
+            }
+        }
     </script>
 </body>
 </html>
