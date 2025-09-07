@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Dashboard | Ne'matuk</title>
     <link rel="shortcut icon" href="./img/logo_transparent.png" type="image/x-icon">
-
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri&display=swap" rel="stylesheet">
-
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-
     <style>
         /* --- "Sage & Earth Tones" Color Scheme --- */
         :root {
@@ -28,7 +24,6 @@
             --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
         #particles-js { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; }
@@ -36,12 +31,10 @@
         body::-webkit-scrollbar { width: 8px; }
         body::-webkit-scrollbar-track { background: var(--bg-light); }
         body::-webkit-scrollbar-thumb { background: var(--accent-gradient); border-radius: 4px; }
-
         header { display: flex; align-items: center; margin-bottom: 2rem; }
         .header-icon { font-size: 2.5rem; margin-right: 1.5rem; color: var(--secondary-accent); }
         .header-title h1 { font-size: 2.5rem; font-weight: 600; color: var(--text-dark); }
         .header-title p { font-size: 1.1rem; opacity: 0.8; color: var(--text-dark); }
-
         .section-title { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; opacity: 0.9; text-align: left; color: var(--text-dark); }
         .glass-card { 
             background: var(--glass-bg); 
@@ -54,11 +47,9 @@
             box-shadow: var(--card-shadow);
         }
         .glass-card:hover { transform: translateY(-3px); }
-
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .action-bar { 
             display: inline-flex; 
             align-items: center; 
@@ -75,7 +66,6 @@
         }
         .action-bar:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-3px); }
         .action-bar i { margin-right: 0.75rem; }
-
         .carousel { 
             display: flex; 
             overflow-x: auto; 
@@ -94,7 +84,6 @@
         .stat-card i { font-size: 2rem; margin-bottom: 0.8rem; color: var(--secondary-accent); }
         .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary-accent); }
         .stat-card .label { font-size: 0.9rem; opacity: 0.8; color: var(--text-dark); }
-
         .search-filter-container {
             display: flex;
             gap: 1rem;
@@ -120,7 +109,6 @@
             color: var(--text-dark);
             font-family: inherit;
         }
-
         .inventory-table {
             width: 100%;
             border-collapse: collapse;
@@ -138,7 +126,6 @@
         }
         .inventory-table tr:last-child td { border-bottom: none; }
         .low-stock { color: #d9534f; font-weight: 600; }
-
         .status-tag {
             display: inline-block;
             padding: 0.3rem 0.8rem;
@@ -150,7 +137,6 @@
         .status-reserved { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
         .status-collected { background-color: rgba(74, 74, 74, 0.2); color: #aab8c5; }
         .time-left { font-size: 0.9rem; opacity: 0.8; }
-
         .request-item { 
             display: flex; 
             justify-content: space-between; 
@@ -182,7 +168,6 @@
         .action-btn.decline { background: rgba(220, 53, 69, 0.3); }
         .action-btn:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-2px); }
         .action-btn.decline:hover { box-shadow: 0 0 15px #dc3545; }
-
         .badge {
             display: inline-block;
             padding: 0.2rem 0.5rem;
@@ -196,7 +181,6 @@
         .badge-pending { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
         .badge-approved { background-color: rgba(176, 217, 177, 0.3); color: #B0D9B1; }
         .badge-rejected { background-color: rgba(220, 53, 69, 0.3); color: #dc3545; }
-
         .impact-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -204,20 +188,69 @@
             margin-bottom: 3rem; 
         }
         .chart-container { height: 350px; }
-
-        .telegram-layout {
+        
+        /* Modified Messages Section with Split View */
+        .split-view-container {
             display: flex;
             height: 600px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
+            position: relative;
         }
+        
+        .split-panel {
+            height: 100%;
+            overflow: auto;
+            transition: width 0.3s ease;
+        }
+        
+        .split-divider {
+            width: 8px;
+            background: var(--primary-accent);
+            cursor: col-resize;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .split-divider::before {
+            content: "⋮";
+            color: white;
+            font-size: 24px;
+            transform: rotate(90deg);
+        }
+        
+        .split-divider:hover {
+            background: var(--secondary-accent);
+        }
+        
+        .requests-panel {
+            background: white;
+            padding: 1.5rem;
+        }
+        
+        .messages-panel {
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-layout {
+            display: flex;
+            height: 100%;
+            border-radius: 0;
+        }
+        
         .chat-sidebar {
             width: 30%;
             background: var(--primary-accent);
             color: white;
             overflow-y: auto;
         }
+        
         .chat-contact {
             padding: 1rem;
             cursor: pointer;
@@ -226,37 +259,45 @@
             align-items: center;
             gap: 0.8rem;
         }
+        
         .chat-contact:hover, .chat-contact.active {
             background: rgba(255,255,255,0.2);
         }
+        
         .chat-contact i { font-size: 1.5rem; }
+        
         .chat-main {
             width: 70%;
             background: white;
             display: flex;
             flex-direction: column;
         }
+        
         .chat-header {
             padding: 1rem;
             background: var(--primary-accent);
             color: white;
             font-weight: 600;
         }
+        
         .chat-messages {
             flex-grow: 1;
             padding: 1rem;
             overflow-y: auto;
             background: #f9f9f9;
         }
+        
         .message-row {
             display: flex;
             margin-bottom: 1rem;
         }
+        
         .message-row.received .message-bubble {
             background: white;
             border-radius: 12px 12px 12px 0;
             align-self: flex-start;
         }
+        
         .message-row.sent .message-bubble {
             background: var(--primary-accent);
             color: white;
@@ -264,29 +305,34 @@
             border-radius: 12px 12px 0 12px;
             align-self: flex-end;
         }
+        
         .message-bubble {
             padding: 0.8rem 1rem;
             max-width: 70%;
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
+        
         .message-time {
             font-size: 0.75rem;
             opacity: 0.7;
             margin-top: 0.3rem;
             text-align: right;
         }
+        
         .chat-input {
             display: flex;
             padding: 1rem;
             border-top: 1px solid #eee;
             gap: 0.5rem;
         }
+        
         .chat-input input {
             flex-grow: 1;
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+        
         .chat-input button {
             padding: 0 1.2rem;
             background: var(--accent-gradient);
@@ -295,7 +341,7 @@
             border-radius: 8px;
             cursor: pointer;
         }
-
+        
         .profile-options { display: flex; flex-direction: column; gap: 1rem; }
         .profile-option { 
             display: flex; 
@@ -309,7 +355,6 @@
         .profile-option:hover { background: rgba(74, 74, 74, 0.1); transform: translateX(5px); }
         .profile-option i { font-size: 1.2rem; width: 40px; opacity: 0.8; }
         .profile-option span { flex: 1; font-weight: 500; }
-
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
@@ -344,7 +389,6 @@
         .nav-item a span { font-size: 0.7rem; }
         .nav-item.active a { opacity: 1; color: var(--secondary-accent); transform: translateY(-5px); }
         .nav-item.active a i { text-shadow: 0 0 10px var(--secondary-accent); }
-
         /* Language Toggle Button */
         .language-toggle {
             position: fixed;
@@ -369,14 +413,14 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
-
         @media (max-width: 768px) {
             .impact-grid { grid-template-columns: 1fr; }
             .search-filter-container { flex-direction: column; }
             .carousel { flex-direction: column; }
             .stat-card { min-width: auto; }
-            .telegram-layout { flex-direction: column; }
-            .chat-sidebar, .chat-main { width: 100%; }
+            .split-view-container { flex-direction: column; height: auto; }
+            .split-divider { width: 100%; height: 8px; cursor: row-resize; }
+            .split-divider::before { transform: rotate(0deg); }
             .request-item { flex-direction: column; align-items: flex-start; }
             .actions { margin-top: 1rem; align-self: flex-end; }
         }
@@ -384,10 +428,8 @@
 </head>
 <body>
     <div id="particles-js"></div>
-    
     <!-- Language Toggle Button -->
     <button id="language-toggle" class="language-toggle">EN</button>
-
     <div class="dashboard-container">
         <header>
             <div class="header-icon"><i class="fas fa-store"></i></div>
@@ -396,12 +438,10 @@
                 <p id="header-subtitle">Welcome to Artisan Bakes Cafe</p>
             </div>
         </header>
-
         <main>
             <!-- DASHBOARD SECTION -->
             <section id="surplus-section" class="page-section active">
                 <h2 class="section-title" id="welcome-title">Welcome, Artisan Bakes Cafe!</h2>
-                
                 <div class="carousel">
                     <div class="glass-card stat-card">
                         <i class="fas fa-utensils"></i>
@@ -424,7 +464,6 @@
                         <div class="label" id="expiry-label">Items Near Expiry</div>
                     </div>
                 </div>
-
                 <div class="search-filter-container">
                     <input type="text" class="search-bar" id="inventory-search" placeholder="Search inventory..." />
                     <select class="filter-select" id="availability-filter">
@@ -436,7 +475,6 @@
                         <i class="fas fa-plus"></i> <span id="add-item-text">Add New Item</span>
                     </button>
                 </div>
-
                 <div class="glass-card">
                     <table class="inventory-table">
                         <thead>
@@ -457,39 +495,13 @@
                     </table>
                 </div>
             </section>
-
-            <!-- BridgePoint SECTION -->
+            <!-- BridgePoint SECTION (Hidden as its content is now in Messages section) -->
             <section id="BridgePoint-section" class="page-section">
-                <h2 class="section-title" id="BridgePoint-title">Requests Management</h2>
-                
-                <div class="search-filter-container">
-                    <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
-                    <select class="filter-select" id="request-type-filter">
-                        <option value="all">All Types</option>
-                        <option value="user">User</option>
-                        <option value="company">Company</option>
-                    </select>
-                    <select class="filter-select" id="request-status-filter">
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
-                </div>
-
-                <button class="action-bar" id="issue-request-btn">
-                    <i class="fas fa-file-alt"></i> <span id="issue-request-text">Issue a Request</span>
-                </button>
-
-                <div class="glass-card" id="requests-list" style="margin-top: 1.5rem;">
-                    <!-- Requests will be populated by JS -->
-                </div>
+                <!-- This section is kept for navigation but will be hidden since its content is moved -->
             </section>
-
             <!-- IMPACT SECTION -->
             <section id="impact-section" class="page-section">
                 <h2 class="section-title" id="impact-title">Business Impact</h2>
-                
                 <div class="search-filter-container">
                     <select class="filter-select" id="impact-year-filter">
                         <option value="2026">2026</option>
@@ -521,7 +533,6 @@
                         <i class="fas fa-download"></i> <span id="download-text">Download Data</span>
                     </button>
                 </div>
-
                 <div class="impact-grid">
                     <div class="glass-card">
                         <h3 style="margin-bottom: 1.5rem; font-weight: 600;" id="revenue-chart-title">Revenue & Savings</h3>
@@ -536,76 +547,100 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="action-bar" style="margin-top: 2rem;" id="certificate-btn">
                     <i class="fas fa-certificate"></i> <span id="certificate-text">Generate Impact Certificate</span>
                 </button>
             </section>
-
-            <!-- MESSAGES SECTION -->
+            <!-- MESSAGES SECTION (Now contains both Messages and BridgePoint content side by side) -->
             <section id="messages-section" class="page-section">
-                <h2 class="section-title" id="messages-title">Messages</h2>
-                
-                <div class="telegram-layout">
-                    <div class="chat-sidebar">
-                        <div class="chat-contact active">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <div id="Muneera-contact">Muneera K.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Hi, about the croissants...</div>
-                            </div>
+                <h2 class="section-title" id="messages-title">Messages & Requests</h2>
+                <div class="split-view-container">
+                    <div class="split-panel requests-panel" id="requests-panel">
+                        <h2 class="section-title" id="BridgePoint-title">Requests Management</h2>
+                        <div class="search-filter-container">
+                            <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
+                            <select class="filter-select" id="request-type-filter">
+                                <option value="all">All Types</option>
+                                <option value="user">User</option>
+                                <option value="company">Company</option>
+                            </select>
+                            <select class="filter-select" id="request-status-filter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
                         </div>
-                        <div class="chat-contact">
-                            <i class="fas fa-building"></i>
-                            <div>
-                                <div id="supplier-contact">Bakery Supplies Co.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Delivery scheduled for tomorrow</div>
-                            </div>
-                        </div>
-                        <div class="chat-contact">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <div id="sara-contact">Sara M.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Thank you for the pastries!</div>
-                            </div>
+                        <button class="action-bar" id="issue-request-btn">
+                            <i class="fas fa-file-alt"></i> <span id="issue-request-text">Issue a Request</span>
+                        </button>
+                        <div class="glass-card" id="requests-list" style="margin-top: 1.5rem; margin-bottom: 0;">
+                            <!-- Requests will be populated by JS -->
                         </div>
                     </div>
-                    <div class="chat-main">
-                        <div class="chat-header">Muneera K.</div>
-                        <div class="chat-messages">
-                            <div class="message-row received">
-                                <div class="message-bubble">
-                                    Hi, I just reserved the croissants for tomorrow morning. Is that okay?
-                                    <div class="message-time">10:30 AM</div>
+                    <div class="split-divider" id="split-divider"></div>
+                    <div class="split-panel messages-panel" id="messages-panel">
+                        <div class="chat-layout">
+                            <div class="chat-sidebar">
+                                <div class="chat-contact active">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div>
+                                        <div id="Muneera-contact">Muneera K.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Hi, about the croissants...</div>
+                                    </div>
+                                </div>
+                                <div class="chat-contact">
+                                    <i class="fas fa-building"></i>
+                                    <div>
+                                        <div id="supplier-contact">Bakery Supplies Co.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Delivery scheduled for tomorrow</div>
+                                    </div>
+                                </div>
+                                <div class="chat-contact">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div>
+                                        <div id="sara-contact">Sara M.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Thank you for the pastries!</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="message-row sent">
-                                <div class="message-bubble">
-                                    Yes, that works perfectly! We'll have them ready for you.
-                                    <div class="message-time">10:32 AM</div>
+                            <div class="chat-main">
+                                <div class="chat-header">Muneera K.</div>
+                                <div class="chat-messages">
+                                    <div class="message-row received">
+                                        <div class="message-bubble">
+                                            Hi, I just reserved the croissants for tomorrow morning. Is that okay?
+                                            <div class="message-time">10:30 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row sent">
+                                        <div class="message-bubble">
+                                            Yes, that works perfectly! We'll have them ready for you.
+                                            <div class="message-time">10:32 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row received">
+                                        <div class="message-bubble">
+                                            Great! Also, do you have any almond croissants available this week?
+                                            <div class="message-time">10:35 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row sent">
+                                        <div class="message-bubble">
+                                            Yes, we have 9 almond croissants available. Would you like to reserve some?
+                                            <div class="message-time">10:36 AM</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-input">
+                                    <input type="text" placeholder="Type a message..." />
+                                    <button><i class="fas fa-paper-plane"></i></button>
                                 </div>
                             </div>
-                            <div class="message-row received">
-                                <div class="message-bubble">
-                                    Great! Also, do you have any almond croissants available this week?
-                                    <div class="message-time">10:35 AM</div>
-                                </div>
-                            </div>
-                            <div class="message-row sent">
-                                <div class="message-bubble">
-                                    Yes, we have 9 almond croissants available. Would you like to reserve some?
-                                    <div class="message-time">10:36 AM</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-input">
-                            <input type="text" placeholder="Type a message..." />
-                            <button><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
             </section>
-
             <!-- PROFILE SECTION -->
             <section id="profile-section" class="page-section">
                 <h2 class="section-title" id="profile-title">Business Profile</h2>
@@ -638,7 +673,6 @@
             </section>
         </main>
     </div>
-
     <nav class="bottom-nav">
         <ul class="nav-items">
             <li class="nav-item active">
@@ -673,7 +707,6 @@
             </li>
         </ul>
     </nav>
-    
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -705,7 +738,6 @@
             {Item:"Tiramisu",Quantity:5,Weight_per_piece:120,Calories_per_piece:380,CO2_footprint_per_piece:950,Expiry_time_left:24,Price_before_discount:6.50,Price_after_discount:3.25},
             {Item:"Strawberry Shortcake",Quantity:3,Weight_per_piece:180,Calories_per_piece:450,CO2_footprint_per_piece:1050,Expiry_time_left:12,Price_before_discount:8.50,Price_after_discount:4.25}
         ];
-
         const salesData = [
             {Year:2024,Month:"January",Revenue_USD:12500,CO2_Tonnes_Saved:0.85,Water_Saved_Litres:12500,Food_Saved_Kg:85,Food_Waste_Kg:45},
             {Year:2024,Month:"February",Revenue_USD:11800,CO2_Tonnes_Saved:0.80,Water_Saved_Litres:11800,Food_Saved_Kg:80,Food_Waste_Kg:42},
@@ -744,7 +776,6 @@
             {Year:2026,Month:"November",Revenue_USD:20500,CO2_Tonnes_Saved:1.68,Water_Saved_Litres:20500,Food_Saved_Kg:168,Food_Waste_Kg:46},
             {Year:2026,Month:"December",Revenue_USD:27000,CO2_Tonnes_Saved:2.20,Water_Saved_Litres:27000,Food_Saved_Kg:220,Food_Waste_Kg:55}
         ];
-
         // Predefined requests
         const requestList = [
             {
@@ -836,7 +867,6 @@
                 time: '1 week ago'
             }
         ];
-
         // Language translation data
         const translations = {
             en: {
@@ -844,7 +874,6 @@
                 'header-main-title': 'Dashboard',
                 'header-subtitle': 'Welcome to Artisan Bakes Cafe',
                 'welcome-title': 'Welcome, Artisan Bakes Cafe!',
-                
                 // Dashboard
                 'meals-label': 'Meals Sold (This Week)',
                 'revenue-label': 'Revenue (This Week)',
@@ -859,9 +888,9 @@
                 'price-header': 'Price',
                 'status-header': 'Status',
                 'add-item-text': 'Add New Item',
-                
                 // Requests
                 'requests-title': 'Requests Management',
+                'BridgePoint-title': 'Requests Management',
                 'issue-request-text': 'Issue a Request',
                 'filter-all': 'All Types',
                 'filter-user': 'User',
@@ -874,20 +903,17 @@
                 'items': 'items',
                 'accept-btn': 'Accept',
                 'decline-btn': 'Decline',
-                
                 // Impact
                 'impact-title': 'Business Impact',
                 'revenue-chart-title': 'Revenue & Savings',
                 'environmental-chart-title': 'Environmental Impact',
                 'download-text': 'Download Data',
                 'certificate-text': 'Generate Impact Certificate',
-                
                 // Messages
-                'messages-title': 'Messages',
+                'messages-title': 'Messages & Requests',
                 'Muneera-contact': 'Muneera K.',
                 'supplier-contact': 'Bakery Supplies Co.',
                 'sara-contact': 'Sara M.',
-                
                 // Profile
                 'profile-title': 'Business Profile',
                 'store-settings': 'Store Settings',
@@ -895,10 +921,9 @@
                 'manage-staff': 'Manage Staff',
                 'compliance-docs': 'Compliance Documents',
                 'logout-text': 'Logout',
-                
                 // Navigation
                 'nav-dashboard': 'Dashboard',
-                'nav-requests': 'BridgePoint',
+                'nav-BridgePoint': 'BridgePoint',
                 'nav-impact': 'Impact',
                 'nav-messages': 'Messages',
                 'nav-profile': 'Profile'
@@ -908,7 +933,6 @@
                 'header-main-title': 'لوحة التحكم',
                 'header-subtitle': 'مرحبًا في مقهى Artisan Bakes',
                 'welcome-title': 'مرحبًا، مقهى Artisan Bakes!',
-                
                 // Dashboard
                 'meals-label': 'الوجبات المباعة (هذا الأسبوع)',
                 'revenue-label': 'الإيرادات (هذا الأسبوع)',
@@ -923,9 +947,9 @@
                 'price-header': 'السعر',
                 'status-header': 'الحالة',
                 'add-item-text': 'إضافة عنصر جديد',
-                
                 // Requests
                 'requests-title': 'إدارة الوثائق',
+                'BridgePoint-title': 'إدارة الوثائق',
                 'issue-request-text': 'تقديم طلب',
                 'filter-all': 'جميع الأنواع',
                 'filter-user': 'مستخدم',
@@ -938,20 +962,17 @@
                 'items': 'عناصر',
                 'accept-btn': 'قبول',
                 'decline-btn': 'رفض',
-                
                 // Impact
                 'impact-title': 'أثر العمل',
                 'revenue-chart-title': 'الإيرادات والمدخرات',
                 'environmental-chart-title': 'الأثر البيئي',
                 'download-text': 'تنزيل البيانات',
                 'certificate-text': 'إنشاء شهادة الأثر',
-                
                 // Messages
-                'messages-title': 'الرسائل',
+                'messages-title': 'الرسائل والطلبات',
                 'Muneera-contact': 'منيرة ك.',
                 'supplier-contact': 'شركة مستلزمات المخابز',
                 'sara-contact': 'سارة م.',
-                
                 // Profile
                 'profile-title': 'ملف العمل',
                 'store-settings': 'إعدادات المتجر',
@@ -959,20 +980,17 @@
                 'manage-staff': 'إدارة الموظفين',
                 'compliance-docs': 'وثائق الامتثال',
                 'logout-text': 'تسجيل الخروج',
-                
                 // Navigation
                 'nav-dashboard': 'لوحة التحكم',
-                'nav-requests': 'الطلبات',
+                'nav-BridgePoint': 'بوابة الامتثال',
                 'nav-impact': 'الأثر',
                 'nav-messages': 'الرسائل',
                 'nav-profile': 'الملف الشخصي'
             }
         };
-
         // Initialize language from localStorage or default to English
         const storedLanguage = localStorage.getItem('siteLanguage') || 'en';
         let currentLanguage = storedLanguage;
-
         // Apply translations based on current language
         function applyTranslations() {
             Object.keys(translations[currentLanguage]).forEach(key => {
@@ -981,7 +999,6 @@
                     element.textContent = translations[currentLanguage][key];
                 }
             });
-
             // Update filter options
             document.querySelector('#request-type-filter option[value="all"]').textContent = translations[currentLanguage]['filter-all'];
             document.querySelector('#request-type-filter option[value="user"]').textContent = translations[currentLanguage]['filter-user'];
@@ -990,10 +1007,8 @@
             document.querySelector('#request-status-filter option[value="pending"]').textContent = translations[currentLanguage]['status-pending'];
             document.querySelector('#request-status-filter option[value="approved"]').textContent = translations[currentLanguage]['status-approved'];
             document.querySelector('#request-status-filter option[value="rejected"]').textContent = translations[currentLanguage]['status-rejected'];
-
             const langButton = document.getElementById('language-toggle');
             langButton.textContent = currentLanguage === 'en' ? 'EN' : 'AR';
-            
             if (currentLanguage === 'ar') {
                 document.body.style.fontFamily = "'Amiri', serif";
                 document.querySelectorAll('.glass-card').forEach(el => {
@@ -1006,28 +1021,23 @@
                 });
             }
         }
-
         // Toggle language function
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
             localStorage.setItem('siteLanguage', currentLanguage);
             applyTranslations();
         }
-
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
         }
-
         // Populate inventory table
         function populateInventory(data) {
             const tbody = document.getElementById('inventory-body');
             tbody.innerHTML = '';
-            
             data.forEach(item => {
                 const isLowStock = item.Quantity < 10;
                 const expiryClass = item.Expiry_time_left < 24 ? 'low-stock' : '';
-                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.Item}</td>
@@ -1042,26 +1052,20 @@
                 tbody.appendChild(row);
             });
         }
-
         // Populate requests list
         function populateRequests(requests) {
             const container = document.getElementById('requests-list');
             container.innerHTML = '';
-            
             if (requests.length === 0) {
                 container.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-dark); opacity: 0.7;">No requests match your criteria</p>';
                 return;
             }
-            
             requests.forEach(request => {
                 const requestEl = document.createElement('div');
                 requestEl.className = 'request-item';
-                
                 const statusBadge = request.status === 'pending' ? 'badge-pending' :
                                   request.status === 'approved' ? 'badge-approved' : 'badge-rejected';
-                
                 const typeBadge = request.type === 'user' ? 'badge-user' : 'badge-business';
-                
                 requestEl.innerHTML = `
                     <div class="user-info">
                         <i class="fas fa-${request.avatar}-circle"></i>
@@ -1088,74 +1092,58 @@
                     </div>
                     <span class="badge ${statusBadge}" style="margin-left: 1rem;">${request.status.charAt(0).toUpperCase() + request.status.slice(1)}</span>
                 `;
-                
                 container.appendChild(requestEl);
             });
         }
-
         // Handle request action
         function handleRequest(id, action) {
             alert(`${action === 'accept' ? 'Accepted' : 'Declined'} request #${id}`);
             // In a real app, this would update the request status
             filterRequests();
         }
-
         // Filter requests
         function filterRequests() {
             const searchValue = document.getElementById('requests-search').value.toLowerCase();
             const typeFilter = document.getElementById('request-type-filter').value;
             const statusFilter = document.getElementById('request-status-filter').value;
-            
             const filtered = requestList.filter(request => {
                 const matchesSearch = request.user.toLowerCase().includes(searchValue) ||
                                     request.item.toLowerCase().includes(searchValue) ||
                                     request.message.toLowerCase().includes(searchValue);
-                
                 let matchesType = true;
                 if (typeFilter !== 'all') {
                     matchesType = request.type === typeFilter;
                 }
-                
                 let matchesStatus = true;
                 if (statusFilter !== 'all') {
                     matchesStatus = request.status === statusFilter;
                 }
-                
                 return matchesSearch && matchesType && matchesStatus;
             });
-            
             populateRequests(filtered);
         }
-
         // Filter inventory
         function filterInventory() {
             const searchValue = document.getElementById('inventory-search').value.toLowerCase();
             const availabilityFilter = document.getElementById('availability-filter').value;
-            
             const filtered = inventoryData.filter(item => {
                 const matchesSearch = item.Item.toLowerCase().includes(searchValue) ||
                                     item.Quantity.toString().includes(searchValue);
-                
                 let matchesAvailability = true;
                 if (availabilityFilter === 'low') {
                     matchesAvailability = item.Quantity < 10;
                 } else if (availabilityFilter === 'available') {
                     matchesAvailability = item.Quantity >= 10;
                 }
-                
                 return matchesSearch && matchesAvailability;
             });
-            
             populateInventory(filtered);
         }
-
         // Initialize Charts
         let revenueChart, impactDoughnut;
-        
         function initCharts() {
             const revenueCtx = document.getElementById('revenueChart').getContext('2d');
             const doughnutCtx = document.getElementById('impactDoughnut').getContext('2d');
-            
             revenueChart = new Chart(revenueCtx, { 
                 type: 'bar', 
                 data: { 
@@ -1196,7 +1184,6 @@
                     }
                 }
             });
-            
             impactDoughnut = new Chart(doughnutCtx, {
                 type: 'doughnut',
                 data: {
@@ -1225,20 +1212,16 @@
                     }
                 }
             });
-            
             updateImpactCharts();
         }
-
         // Update impact charts based on filters
         function updateImpactCharts() {
             const year = document.getElementById('impact-year-filter').value;
             const month = document.getElementById('impact-month-filter').value;
             const chartType = document.getElementById('chart-type-filter').value;
-            
             const filteredData = salesData.filter(d => {
                 return d.Year == year && (month === 'all' || d.Month === month);
             });
-            
             if (chartType === 'raw') {
                 document.getElementById('revenueChart').style.display = 'none';
                 document.getElementById('impactDoughnut').style.display = 'none';
@@ -1246,20 +1229,17 @@
                 document.getElementById('revenueChart').style.display = 'block';
                 document.getElementById('impactDoughnut').style.display = 'block';
             }
-            
             if (chartType === 'bar' || chartType === 'line' || chartType === 'pie') {
                 const labels = filteredData.map(d => d.Month);
                 const revenueData = filteredData.map(d => d.Revenue_USD);
                 const foodSaved = filteredData.map(d => d.Food_Saved_Kg);
                 const co2Saved = filteredData.map(d => d.CO2_Tonnes_Saved);
                 const waterSaved = filteredData.map(d => d.Water_Saved_Litres);
-                
                 revenueChart.data.labels = labels;
                 revenueChart.data.datasets[0].data = revenueData;
                 revenueChart.data.datasets[0].type = chartType === 'line' ? 'line' : 'bar';
                 revenueChart.options.plugins.legend.display = chartType !== 'pie';
                 revenueChart.update();
-                
                 if (chartType !== 'pie') {
                     impactDoughnut.data.datasets[0].data = [
                         foodSaved.reduce((a, b) => a + b, 0),
@@ -1280,16 +1260,13 @@
                 }
             }
         }
-
         // Simulate PDF download
         function downloadData() {
             alert('Data downloaded successfully!');
         }
-        
         function generateCertificate() {
             alert('Impact certificate generated and downloaded!');
         }
-
         // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
             particlesJS("particles-js", { 
@@ -1312,63 +1289,112 @@
                 }, 
                 "retina_detect": true 
             });
-
             // Initialize inventory and requests
             populateInventory(inventoryData);
             populateRequests(requestList);
-            
-            // Set up event listeners
+            // Set up event listeners for inventory
             document.getElementById('inventory-search').addEventListener('input', filterInventory);
             document.getElementById('availability-filter').addEventListener('change', filterInventory);
             document.getElementById('add-item-btn').addEventListener('click', () => {
                 alert('Add new item functionality would open a form here.');
             });
-            
+            // Set up event listeners for requests
             document.getElementById('requests-search').addEventListener('input', filterRequests);
             document.getElementById('request-type-filter').addEventListener('change', filterRequests);
             document.getElementById('request-status-filter').addEventListener('change', filterRequests);
             document.getElementById('issue-request-btn').addEventListener('click', () => {
                 alert('Issue request form would appear here.');
             });
-            
+            // Set up event listeners for impact
             document.getElementById('impact-year-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('impact-month-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('chart-type-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('download-data-btn').addEventListener('click', downloadData);
             document.getElementById('certificate-btn').addEventListener('click', generateCertificate);
-            
             // Initialize charts
             initCharts();
-            
             // Navigation
             const navItems = document.querySelectorAll('.nav-item');
             const pageSections = document.querySelectorAll('.page-section');
-            
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = item.querySelector('a').dataset.target;
-                    
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
-                    
                     pageSections.forEach(section => {
                         section.classList.remove('active');
                         if (section.id === targetId) {
                             section.classList.add('active');
                         }
                     });
-                    
                     window.scrollTo(0, 0);
                 });
             });
-            
             // Set up language toggle button
             const langButton = document.getElementById('language-toggle');
             langButton.addEventListener('click', toggleLanguage);
-            
             // Apply initial translations
             applyTranslations();
+            
+            // Initialize split view functionality
+            const splitDivider = document.getElementById('split-divider');
+            const requestsPanel = document.getElementById('requests-panel');
+            const messagesPanel = document.getElementById('messages-panel');
+            const splitContainer = document.querySelector('.split-view-container');
+            
+            // Set initial width (50% each)
+            requestsPanel.style.width = '50%';
+            messagesPanel.style.width = '50%';
+            
+            let isDragging = false;
+            
+            splitDivider.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                document.body.style.cursor = 'col-resize';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const containerRect = splitContainer.getBoundingClientRect();
+                let percentage = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+                
+                // Limit to reasonable values (20%-80%)
+                percentage = Math.max(20, Math.min(80, percentage));
+                
+                requestsPanel.style.width = percentage + '%';
+                messagesPanel.style.width = (100 - percentage) + '%';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                document.body.style.cursor = 'default';
+            });
+            
+            // Handle touch events for mobile
+            splitDivider.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                const containerRect = splitContainer.getBoundingClientRect();
+                let percentage = ((e.touches[0].clientX - containerRect.left) / containerRect.width) * 100;
+                
+                // Limit to reasonable values (20%-80%)
+                percentage = Math.max(20, Math.min(80, percentage));
+                
+                requestsPanel.style.width = percentage + '%';
+                messagesPanel.style.width = (100 - percentage) + '%';
+            });
+            
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
         });
     </script>
 </body>
