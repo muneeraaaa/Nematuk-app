@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Dashboard | Ne'matuk</title>
     <link rel="shortcut icon" href="./img/logo_transparent.png" type="image/x-icon">
-    <!-- Google Fonts: Poppins -->
+    <!-- Google Fonts: Poppins and Amiri for Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri&display=swap" rel="stylesheet">
@@ -23,6 +24,8 @@
             --light-overlay-bg: rgba(248, 244, 227, 0.8);
             --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --tab-active: #86A789;
+            --tab-inactive: #D3D3D3;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
@@ -188,7 +191,6 @@
             margin-bottom: 3rem; 
         }
         .chart-container { height: 350px; }
-        
         /* Modified Messages Section with Split View */
         .split-view-container {
             display: flex;
@@ -198,13 +200,11 @@
             box-shadow: var(--card-shadow);
             position: relative;
         }
-        
         .split-panel {
             height: 100%;
             overflow: auto;
             transition: width 0.3s ease;
         }
-        
         .split-divider {
             width: 8px;
             background: var(--primary-accent);
@@ -215,42 +215,35 @@
             align-items: center;
             justify-content: center;
         }
-        
         .split-divider::before {
             content: "⋮";
             color: white;
             font-size: 24px;
             transform: rotate(90deg);
         }
-        
         .split-divider:hover {
             background: var(--secondary-accent);
         }
-        
         .requests-panel {
             background: white;
             padding: 1.5rem;
         }
-        
         .messages-panel {
             background: white;
             display: flex;
             flex-direction: column;
         }
-        
         .chat-layout {
             display: flex;
             height: 100%;
             border-radius: 0;
         }
-        
         .chat-sidebar {
             width: 30%;
             background: var(--primary-accent);
             color: white;
             overflow-y: auto;
         }
-        
         .chat-contact {
             padding: 1rem;
             cursor: pointer;
@@ -259,45 +252,37 @@
             align-items: center;
             gap: 0.8rem;
         }
-        
         .chat-contact:hover, .chat-contact.active {
             background: rgba(255,255,255,0.2);
         }
-        
         .chat-contact i { font-size: 1.5rem; }
-        
         .chat-main {
             width: 70%;
             background: white;
             display: flex;
             flex-direction: column;
         }
-        
         .chat-header {
             padding: 1rem;
             background: var(--primary-accent);
             color: white;
             font-weight: 600;
         }
-        
         .chat-messages {
             flex-grow: 1;
             padding: 1rem;
             overflow-y: auto;
             background: #f9f9f9;
         }
-        
         .message-row {
             display: flex;
             margin-bottom: 1rem;
         }
-        
         .message-row.received .message-bubble {
             background: white;
             border-radius: 12px 12px 12px 0;
             align-self: flex-start;
         }
-        
         .message-row.sent .message-bubble {
             background: var(--primary-accent);
             color: white;
@@ -305,34 +290,29 @@
             border-radius: 12px 12px 0 12px;
             align-self: flex-end;
         }
-        
         .message-bubble {
             padding: 0.8rem 1rem;
             max-width: 70%;
             box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
-        
         .message-time {
             font-size: 0.75rem;
             opacity: 0.7;
             margin-top: 0.3rem;
             text-align: right;
         }
-        
         .chat-input {
             display: flex;
             padding: 1rem;
             border-top: 1px solid #eee;
             gap: 0.5rem;
         }
-        
         .chat-input input {
             flex-grow: 1;
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: 8px;
         }
-        
         .chat-input button {
             padding: 0 1.2rem;
             background: var(--accent-gradient);
@@ -341,7 +321,6 @@
             border-radius: 8px;
             cursor: pointer;
         }
-        
         .profile-options { display: flex; flex-direction: column; gap: 1rem; }
         .profile-option { 
             display: flex; 
@@ -413,6 +392,317 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
+        
+        /* BridgePoint Compliance Section Styles */
+        .bridgepoint-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding: 0;
+            list-style: none;
+            border-bottom: 2px solid var(--glass-border);
+        }
+        .bridgepoint-tab {
+            padding: 12px 24px;
+            background: var(--tab-inactive);
+            border: none;
+            border-radius: 12px 12px 0 0;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+        .bridgepoint-tab.active {
+            background: var(--tab-active);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .bridgepoint-tab:hover:not(.active) {
+            background: var(--glass-bg);
+            transform: translateY(-2px);
+        }
+        .bridgepoint-content {
+            display: none;
+            padding: 2rem 0;
+        }
+        .bridgepoint-content.active {
+            display: block;
+        }
+        .compliance-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .compliance-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .compliance-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .compliance-card p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            opacity: 0.9;
+        }
+        .compliance-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            width: fit-content;
+        }
+        .status-compliant {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .status-violation {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        .document-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .document-item:last-child {
+            border-bottom: none;
+        }
+        .document-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .document-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+        }
+        .status-uploaded {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-required {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 1rem 1.5rem;
+            background: var(--glass-bg);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: white;
+        }
+        .faq-item.active .faq-answer {
+            padding: 1rem 1.5rem;
+            max-height: 500px;
+        }
+        .contact-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .contact-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .contact-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .contact-card p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+        .upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: var(--secondary-accent);
+            background: rgba(176, 217, 177, 0.1);
+        }
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+        .upload-area p {
+            margin: 0;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .notification-item {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .notification-icon {
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+        .notification-content {
+            flex: 1;
+        }
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-dark);
+        }
+        .notification-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+        .notification-new {
+            border-left: 4px solid var(--secondary-accent);
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        .checklist-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        .checklist-complete {
+            background: #28a745;
+            color: white;
+        }
+        .checklist-pending {
+            background: #ffc107;
+            color: white;
+        }
+        .checklist-incomplete {
+            background: #dc3545;
+            color: white;
+        }
+        .report-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .report-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .report-date {
+            color: var(--text-dark);
+            opacity: 0.7;
+        }
+        .report-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .report-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-submitted {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-reviewed {
+            background: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+        }
+        .status-action-required {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
         @media (max-width: 768px) {
             .impact-grid { grid-template-columns: 1fr; }
             .search-filter-container { flex-direction: column; }
@@ -423,6 +713,21 @@
             .split-divider::before { transform: rotate(0deg); }
             .request-item { flex-direction: column; align-items: flex-start; }
             .actions { margin-top: 1rem; align-self: flex-end; }
+            .bridgepoint-tabs { flex-direction: column; border-bottom: none; }
+            .bridgepoint-tab { border-radius: 12px; margin-bottom: 0.5rem; }
+            .contact-options { grid-template-columns: 1fr; }
+        }
+        
+        /* Arabic Language Styles */
+        body.ar {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+        body.ar .bridgepoint-tabs {
+            flex-direction: row;
+        }
+        body.ar .split-divider::before {
+            transform: rotate(270deg);
         }
     </style>
 </head>
@@ -495,10 +800,474 @@
                     </table>
                 </div>
             </section>
-            <!-- BridgePoint SECTION (Hidden as its content is now in Messages section) -->
+            <!-- BridgePoint SECTION -->
             <section id="BridgePoint-section" class="page-section">
-                <!-- This section is kept for navigation but will be hidden since its content is moved -->
+                <h2 class="section-title" id="BridgePoint-title">BridgePoint Compliance Portal</h2>
+                
+                <!-- Tabs Navigation -->
+                <ul class="bridgepoint-tabs">
+                    <li><button class="bridgepoint-tab active" data-tab="licensing">Licensing & Registration</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="permits">Permits & Certifications</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="compliance">Compliance & Regulations</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="requests">Requests & Approvals</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="reports">Reports & Audits</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="support">Support & Guidance</button></li>
+                </ul>
+                
+                <!-- Licensing & Registration Tab -->
+                <div id="licensing" class="bridgepoint-content active">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-file-contract"></i> <span id="apply-license-title">Apply for New Business License</span></h3>
+                        <p id="apply-license-desc">Submit your application for a new business license. Our team will review your documents and contact you within 3-5 business days.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-plus"></i> <span id="apply-license-btn">Apply Now</span>
+                        </button>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-sync-alt"></i> <span id="renew-license-title">Renew Existing License</span></h3>
+                        <p id="renew-license-desc">Check the status of your current license and renew before expiration to avoid any interruptions to your business operations.</p>
+                        <div class="compliance-status status-compliant">
+                            <i class="fas fa-check-circle"></i> <span id="license-status">License Active - Expires: Dec 15, 2024</span>
+                        </div>
+                        <button class="action-bar">
+                            <i class="fas fa-sync"></i> <span id="renew-license-btn">Renew License</span>
+                        </button>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-upload"></i> <span id="upload-docs-title">Upload Required Documents</span></h3>
+                        <p id="upload-docs-desc">Upload necessary documents for your license application or renewal. Accepted formats: PDF, JPG, PNG (max 10MB).</p>
+                        <div class="upload-area" id="document-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p id="upload-prompt">Click to upload or drag and drop files here</p>
+                        </div>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Business Registration Certificate</span>
+                                <span class="document-status status-uploaded">Uploaded</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Owner ID Copy</span>
+                                <span class="document-status status-uploaded">Uploaded</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Floor Plan</span>
+                                <span class="document-status status-required">Required</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Permits & Certifications Tab -->
+                <div id="permits" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-utensils"></i> <span id="food-permit-title">Food Safety / Health Permits</span></h3>
+                        <p id="food-permit-desc">Apply for food safety and health permits required for your business operations. Ensure your establishment meets all health and safety standards.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-file-medical"></i> <span id="apply-food-permit-btn">Apply for Permit</span>
+                        </button>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-tree"></i> <span id="env-cert-title">Environmental Compliance Certificates</span></h3>
+                        <p id="env-cert-desc">Obtain environmental compliance certificates to demonstrate your commitment to sustainable business practices and environmental regulations.</p>
+                        <div class="compliance-status status-pending">
+                            <i class="fas fa-clock"></i> <span id="env-status">Application Pending - Review in Progress</span>
+                        </div>
+                        <button class="action-bar">
+                            <i class="fas fa-leaf"></i> <span id="apply-env-cert-btn">Apply for Certificate</span>
+                        </button>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-city"></i> <span id="municipal-title">Municipality Approvals</span></h3>
+                        <p id="municipal-desc">Apply for necessary municipality approvals for distribution, logistics, waste management, and other operational aspects of your business.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Distribution License</span>
+                                <span class="document-status status-uploaded">Approved</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Plan</span>
+                                <span class="document-status status-uploaded">Approved</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Parking & Loading Zone</span>
+                                <span class="document-status status-required">Application Needed</span>
+                            </li>
+                        </ul>
+                        <button class="action-bar">
+                            <i class="fas fa-building"></i> <span id="apply-municipal-btn">Apply for Approval</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Compliance & Regulations Tab -->
+                <div id="compliance" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-clipboard-check"></i> <span id="checklist-title">Compliance Checklist</span></h3>
+                        <p id="checklist-desc">Review the mandatory compliance requirements for your business type. Ensure all items are completed to maintain good standing.</p>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item1">Valid business license displayed at premises</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item2">Food handler certificates for all staff</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-pending">!</div>
+                            <div><span id="checklist-item3">Quarterly pest control inspection (Due: Nov 30, 2024)</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-incomplete">✗</div>
+                            <div><span id="checklist-item4">Employee health and safety training records</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item5">Proper waste segregation and disposal system</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-bell"></i> <span id="notifications-title">Regulation Notifications</span></h3>
+                        <p id="notifications-desc">Stay updated with the latest regulatory changes and requirements that may affect your business operations.</p>
+                        <div class="notification-item notification-new">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-circle" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title1">New Food Safety Regulations Effective Jan 2025</div>
+                                <p id="notif-desc1">Updated guidelines for food storage temperatures and handling procedures. Compliance required by January 15, 2025.</p>
+                                <div class="notification-date">Posted: Oct 15, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-info-circle" style="color: #17a2b8;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title2">Waste Management Policy Update</div>
+                                <p id="notif-desc2">Revised requirements for commercial waste disposal. New documentation needed for quarterly reporting.</p>
+                                <div class="notification-date">Posted: Sep 28, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title3">Health Inspection Passed</div>
+                                <p id="notif-desc3">Your establishment has passed the quarterly health inspection with no violations noted.</p>
+                                <div class="notification-date">Posted: Aug 12, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-book"></i> <span id="guidance-title">Guidance Documents & Official Policies</span></h3>
+                        <p id="guidance-desc">Access official guidance documents, policy manuals, and regulatory frameworks to ensure your business remains compliant.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Food Safety Standards Manual</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Guidelines</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Employee Health & Safety Policy</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Environmental Compliance Framework</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Requests & Approvals Tab -->
+                <div id="requests" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-file-alt"></i> <span id="submit-request-title">Submit Official Requests</span></h3>
+                        <p id="submit-request-desc">Submit requests for business expansion, additional storage space, waste handling modifications, or other operational changes.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-plus"></i> <span id="new-request-btn">Submit New Request</span>
+                        </button>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-tasks"></i> <span id="track-requests-title">Track Approval Process</span></h3>
+                        <p id="track-requests-desc">Monitor the status of your submitted requests with real-time updates on their progress through the approval workflow.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clock" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title1">Expansion Request - Additional Seating</div>
+                                <p id="request-desc1">Request for 20 additional indoor seating capacity. Currently under review by Planning Department.</p>
+                                <div class="notification-date">Submitted: Oct 5, 2024 | Status: Under Review</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title2">Waste Handling Modification</div>
+                                <p id="request-desc2">Request to modify waste collection schedule from daily to twice daily. Approved and implemented.</p>
+                                <div class="notification-date">Submitted: Sep 15, 2024 | Status: Approved</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title3">Outdoor Seating Expansion</div>
+                                <p id="request-desc3">Request for outdoor seating area expansion. Additional documentation required regarding pedestrian access.</p>
+                                <div class="notification-date">Submitted: Aug 20, 2024 | Status: Action Required</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-comments"></i> <span id="messaging-title">Direct Messaging with Authority</span></h3>
+                        <p id="messaging-desc">Communicate directly with regulatory authorities regarding your requests, compliance questions, or clarification needs.</p>
+                        <div class="upload-area" style="margin: 1rem 0;">
+                            <i class="fas fa-comment-dots"></i>
+                            <p id="message-prompt">Click here to start a conversation with the Business Compliance Office</p>
+                        </div>
+                        <div class="notification-item" style="margin-top: 1rem;">
+                            <div class="notification-icon">
+                                <i class="fas fa-reply" style="color: #17a2b8;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="message-title1">Response from Compliance Officer</div>
+                                <p id="message-desc1">Regarding your waste handling modification request: Approved with the condition that additional bins must be clearly labeled.</p>
+                                <div class="notification-date">Responded: Sep 18, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reports & Audits Tab -->
+                <div id="reports" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-clipboard-list"></i> <span id="submit-reports-title">Submit Mandatory Reports</span></h3>
+                        <p id="submit-reports-desc">Submit required reports including food waste logs, distribution reports, and other regulatory documentation on a scheduled basis.</p>
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title" id="report-title1">Monthly Food Waste Log</div>
+                                <div class="report-date">Due: 5th of each month</div>
+                            </div>
+                            <p id="report-desc1">Record all food waste generated, including type, quantity, and disposal method.</p>
+                            <div class="report-status status-submitted">Submitted</div>
+                            <div class="report-actions">
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-edit"></i> Edit Report
+                                </button>
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-file-pdf"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title" id="report-title2">Quarterly Distribution Report</div>
+                                <div class="report-date">Due: Jan 10, Apr 10, Jul 10, Oct 10</div>
+                            </div>
+                            <p id="report-desc2">Report on all distributed food items, recipients, and quantities for the quarter.</p>
+                            <div class="report-status status-action-required">Action Required</div>
+                            <div class="report-actions">
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-upload"></i> Submit Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-search"></i> <span id="inspection-results-title">Inspection Results</span></h3>
+                        <p id="inspection-results-desc">View results from recent inspections conducted by regulatory authorities at your establishment.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title1">Health & Safety Inspection - Oct 2024</div>
+                                <p id="inspection-desc1">Score: 98/100. Excellent hygiene practices observed. Minor suggestion: Consider additional hand sanitizer stations.</p>
+                                <div class="notification-date">Inspected: Oct 12, 2024 | Inspector: Ahmed Al Mansoori</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title2">Waste Management Audit - Jul 2024</div>
+                                <p id="inspection-desc2">Score: 95/100. Proper waste segregation observed. Suggestion: Increase recycling of cardboard packaging.</p>
+                                <div class="notification-date">Inspected: Jul 8, 2024 | Inspector: Fatima Al Hashimi</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title3">Food Safety Inspection - Apr 2024</div>
+                                <p id="inspection-desc3">Score: 87/100. Temperature logs incomplete for 2 days. Corrective action required: Implement daily temperature recording.</p>
+                                <div class="notification-date">Inspected: Apr 15, 2024 | Inspector: Mohammed Al Ketbi</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> <span id="feedback-title">Feedback & Corrective Actions</span></h3>
+                        <p id="feedback-desc">Review feedback from inspectors and implement required corrective actions to maintain compliance.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="feedback-title1">Corrective Action Completed</div>
+                                <p id="feedback-desc1">Temperature logging system upgraded with digital monitoring. Verification completed on May 10, 2024.</p>
+                                <div class="notification-date">Closed: May 10, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clock" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="feedback-title2">Staff Training Requirement</div>
+                                <p id="feedback-desc2">All food handling staff must complete updated food safety training by December 1, 2024.</p>
+                                <div class="notification-date">Due: Dec 1, 2024 | Status: In Progress</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Support & Guidance Tab -->
+                <div id="support" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-question-circle"></i> <span id="faq-title">FAQ for Business Owners</span></h3>
+                        <p id="faq-desc">Find answers to frequently asked questions about compliance, licensing, permits, and regulatory requirements.</p>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q1">How long does it take to process a new business license?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a1">New business license applications are typically processed within 5-7 business days after all required documents have been submitted and verified. Processing times may vary depending on the complexity of the business and completeness of the application.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q2">What documents do I need for a food safety permit?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a2">For a food safety permit, you will need: 1) Business license, 2) Floor plan of your establishment, 3) Menu and food handling procedures, 4) Certificates of food handler training for all staff, 5) Pest control contract, and 6) Waste management plan. All documents must be current and valid.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q3">How do I renew my environmental compliance certificate?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a3">Environmental compliance certificates can be renewed through the BridgePoint portal 60 days before expiration. You will need to submit updated documentation showing continued compliance with environmental regulations, including waste disposal records, energy consumption reports, and any required environmental impact assessments.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q4">What happens if I miss a mandatory report deadline?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a4">Missing a mandatory report deadline may result in a warning for first-time offenses. Repeated failures to submit reports on time may lead to fines or suspension of certain business privileges. We recommend setting calendar reminders for all report deadlines and submitting reports at least 2-3 days before the due date to avoid any issues.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-headset"></i> <span id="contact-desk-title">Contact Desk for Regulatory Help</span></h3>
+                        <p id="contact-desk-desc">Get personalized assistance from our regulatory compliance specialists for any questions or issues you may encounter.</p>
+                        <div class="contact-options">
+                            <div class="contact-card">
+                                <i class="fas fa-phone"></i>
+                                <h3 id="phone-support">Phone Support</h3>
+                                <p id="phone-desc">Call our compliance hotline for immediate assistance</p>
+                                <div class="action-btn" style="width: 100%;">+971 4 123 4567</div>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fas fa-envelope"></i>
+                                <h3 id="email-support">Email Support</h3>
+                                <p id="email-desc">Send detailed inquiries and receive written responses</p>
+                                <div class="action-btn" style="width: 100%;">compliance@ne-matuk.ae</div>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fas fa-calendar-check"></i>
+                                <h3 id="appointment">Schedule Appointment</h3>
+                                <p id="appointment-desc">Book a virtual or in-person consultation</p>
+                                <button class="action-btn" style="width: 100%;">
+                                    <i class="fas fa-calendar"></i> Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-graduation-cap"></i> <span id="tutorials-title">Tutorials & Compliance Guidelines</span></h3>
+                        <p id="tutorials-desc">Access step-by-step tutorials and comprehensive guidelines to help you navigate compliance requirements successfully.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Step-by-Step: Applying for Business Licenses</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Food Safety Compliance Checklist</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Best Practices</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Environmental Compliance Guide</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Employee Training Requirements</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </section>
+            
             <!-- IMPACT SECTION -->
             <section id="impact-section" class="page-section">
                 <h2 class="section-title" id="impact-title">Business Impact</h2>
@@ -551,12 +1320,13 @@
                     <i class="fas fa-certificate"></i> <span id="certificate-text">Generate Impact Certificate</span>
                 </button>
             </section>
+            
             <!-- MESSAGES SECTION (Now contains both Messages and BridgePoint content side by side) -->
             <section id="messages-section" class="page-section">
                 <h2 class="section-title" id="messages-title">Messages & Requests</h2>
                 <div class="split-view-container">
                     <div class="split-panel requests-panel" id="requests-panel">
-                        <h2 class="section-title" id="BridgePoint-title">Requests Management</h2>
+                        <h2 class="section-title" id="requests-management-title">Requests Management</h2>
                         <div class="search-filter-container">
                             <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
                             <select class="filter-select" id="request-type-filter">
@@ -641,6 +1411,7 @@
                     </div>
                 </div>
             </section>
+            
             <!-- PROFILE SECTION -->
             <section id="profile-section" class="page-section">
                 <h2 class="section-title" id="profile-title">Business Profile</h2>
@@ -675,13 +1446,13 @@
     </div>
     <nav class="bottom-nav">
         <ul class="nav-items">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a href="#" data-target="surplus-section">
                     <i class="fas fa-box-open"></i>
                     <span id="nav-dashboard">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a href="#" data-target="BridgePoint-section">
                     <i class="fas fa-receipt"></i>
                     <span id="nav-BridgePoint">BridgePoint</span>
@@ -888,9 +1659,111 @@
                 'price-header': 'Price',
                 'status-header': 'Status',
                 'add-item-text': 'Add New Item',
+                // BridgePoint Tabs
+                'nav-BridgePoint': 'BridgePoint',
+                'BridgePoint-title': 'BridgePoint Compliance Portal',
+                // Licensing & Registration
+                'apply-license-title': 'Apply for New Business License',
+                'apply-license-desc': 'Submit your application for a new business license. Our team will review your documents and contact you within 3-5 business days.',
+                'apply-license-btn': 'Apply Now',
+                'renew-license-title': 'Renew Existing License',
+                'renew-license-desc': 'Check the status of your current license and renew before expiration to avoid any interruptions to your business operations.',
+                'license-status': 'License Active - Expires: Dec 15, 2024',
+                'renew-license-btn': 'Renew License',
+                'upload-docs-title': 'Upload Required Documents',
+                'upload-docs-desc': 'Upload necessary documents for your license application or renewal. Accepted formats: PDF, JPG, PNG (max 10MB).',
+                'upload-prompt': 'Click to upload or drag and drop files here',
+                // Permits & Certifications
+                'food-permit-title': 'Food Safety / Health Permits',
+                'food-permit-desc': 'Apply for food safety and health permits required for your business operations. Ensure your establishment meets all health and safety standards.',
+                'apply-food-permit-btn': 'Apply for Permit',
+                'env-cert-title': 'Environmental Compliance Certificates',
+                'env-cert-desc': 'Obtain environmental compliance certificates to demonstrate your commitment to sustainable business practices and environmental regulations.',
+                'env-status': 'Application Pending - Review in Progress',
+                'apply-env-cert-btn': 'Apply for Certificate',
+                'municipal-title': 'Municipality Approvals',
+                'municipal-desc': 'Apply for necessary municipality approvals for distribution, logistics, waste management, and other operational aspects of your business.',
+                'apply-municipal-btn': 'Apply for Approval',
+                // Compliance & Regulations
+                'checklist-title': 'Compliance Checklist',
+                'checklist-desc': 'Review the mandatory compliance requirements for your business type. Ensure all items are completed to maintain good standing.',
+                'checklist-item1': 'Valid business license displayed at premises',
+                'checklist-item2': 'Food handler certificates for all staff',
+                'checklist-item3': 'Quarterly pest control inspection (Due: Nov 30, 2024)',
+                'checklist-item4': 'Employee health and safety training records',
+                'checklist-item5': 'Proper waste segregation and disposal system',
+                'notifications-title': 'Regulation Notifications',
+                'notifications-desc': 'Stay updated with the latest regulatory changes and requirements that may affect your business operations.',
+                'notif-title1': 'New Food Safety Regulations Effective Jan 2025',
+                'notif-desc1': 'Updated guidelines for food storage temperatures and handling procedures. Compliance required by January 15, 2025.',
+                'notif-title2': 'Waste Management Policy Update',
+                'notif-desc2': 'Revised requirements for commercial waste disposal. New documentation needed for quarterly reporting.',
+                'notif-title3': 'Health Inspection Passed',
+                'notif-desc3': 'Your establishment has passed the quarterly health inspection with no violations noted.',
+                'guidance-title': 'Guidance Documents & Official Policies',
+                'guidance-desc': 'Access official guidance documents, policy manuals, and regulatory frameworks to ensure your business remains compliant.',
+                // Requests & Approvals
+                'submit-request-title': 'Submit Official Requests',
+                'submit-request-desc': 'Submit requests for business expansion, additional storage space, waste handling modifications, or other operational changes.',
+                'new-request-btn': 'Submit New Request',
+                'track-requests-title': 'Track Approval Process',
+                'track-requests-desc': 'Monitor the status of your submitted requests with real-time updates on their progress through the approval workflow.',
+                'request-title1': 'Expansion Request - Additional Seating',
+                'request-desc1': 'Request for 20 additional indoor seating capacity. Currently under review by Planning Department.',
+                'request-title2': 'Waste Handling Modification',
+                'request-desc2': 'Request to modify waste collection schedule from daily to twice daily. Approved and implemented.',
+                'request-title3': 'Outdoor Seating Expansion',
+                'request-desc3': 'Request for outdoor seating area expansion. Additional documentation required regarding pedestrian access.',
+                'messaging-title': 'Direct Messaging with Authority',
+                'messaging-desc': 'Communicate directly with regulatory authorities regarding your requests, compliance questions, or clarification needs.',
+                'message-prompt': 'Click here to start a conversation with the Business Compliance Office',
+                'message-title1': 'Response from Compliance Officer',
+                'message-desc1': 'Regarding your waste handling modification request: Approved with the condition that additional bins must be clearly labeled.',
+                // Reports & Audits
+                'submit-reports-title': 'Submit Mandatory Reports',
+                'submit-reports-desc': 'Submit required reports including food waste logs, distribution reports, and other regulatory documentation on a scheduled basis.',
+                'report-title1': 'Monthly Food Waste Log',
+                'report-desc1': 'Record all food waste generated, including type, quantity, and disposal method.',
+                'report-title2': 'Quarterly Distribution Report',
+                'report-desc2': 'Report on all distributed food items, recipients, and quantities for the quarter.',
+                'inspection-results-title': 'Inspection Results',
+                'inspection-results-desc': 'View results from recent inspections conducted by regulatory authorities at your establishment.',
+                'inspection-title1': 'Health & Safety Inspection - Oct 2024',
+                'inspection-desc1': 'Score: 98/100. Excellent hygiene practices observed. Minor suggestion: Consider additional hand sanitizer stations.',
+                'inspection-title2': 'Waste Management Audit - Jul 2024',
+                'inspection-desc2': 'Score: 95/100. Proper waste segregation observed. Suggestion: Increase recycling of cardboard packaging.',
+                'inspection-title3': 'Food Safety Inspection - Apr 2024',
+                'inspection-desc3': 'Score: 87/100. Temperature logs incomplete for 2 days. Corrective action required: Implement daily temperature recording.',
+                'feedback-title': 'Feedback & Corrective Actions',
+                'feedback-desc': 'Review feedback from inspectors and implement required corrective actions to maintain compliance.',
+                'feedback-title1': 'Corrective Action Completed',
+                'feedback-desc1': 'Temperature logging system upgraded with digital monitoring. Verification completed on May 10, 2024.',
+                'feedback-title2': 'Staff Training Requirement',
+                'feedback-desc2': 'All food handling staff must complete updated food safety training by December 1, 2024.',
+                // Support & Guidance
+                'faq-title': 'FAQ for Business Owners',
+                'faq-desc': 'Find answers to frequently asked questions about compliance, licensing, permits, and regulatory requirements.',
+                'faq-q1': 'How long does it take to process a new business license?',
+                'faq-a1': 'New business license applications are typically processed within 5-7 business days after all required documents have been submitted and verified. Processing times may vary depending on the complexity of the business and completeness of the application.',
+                'faq-q2': 'What documents do I need for a food safety permit?',
+                'faq-a2': 'For a food safety permit, you will need: 1) Business license, 2) Floor plan of your establishment, 3) Menu and food handling procedures, 4) Certificates of food handler training for all staff, 5) Pest control contract, and 6) Waste management plan. All documents must be current and valid.',
+                'faq-q3': 'How do I renew my environmental compliance certificate?',
+                'faq-a3': 'Environmental compliance certificates can be renewed through the BridgePoint portal 60 days before expiration. You will need to submit updated documentation showing continued compliance with environmental regulations, including waste disposal records, energy consumption reports, and any required environmental impact assessments.',
+                'faq-q4': 'What happens if I miss a mandatory report deadline?',
+                'faq-a4': 'Missing a mandatory report deadline may result in a warning for first-time offenses. Repeated failures to submit reports on time may lead to fines or suspension of certain business privileges. We recommend setting calendar reminders for all report deadlines and submitting reports at least 2-3 days before the due date to avoid any issues.',
+                'contact-desk-title': 'Contact Desk for Regulatory Help',
+                'contact-desk-desc': 'Get personalized assistance from our regulatory compliance specialists for any questions or issues you may encounter.',
+                'phone-support': 'Phone Support',
+                'phone-desc': 'Call our compliance hotline for immediate assistance',
+                'email-support': 'Email Support',
+                'email-desc': 'Send detailed inquiries and receive written responses',
+                'appointment': 'Schedule Appointment',
+                'appointment-desc': 'Book a virtual or in-person consultation',
+                'tutorials-title': 'Tutorials & Compliance Guidelines',
+                'tutorials-desc': 'Access step-by-step tutorials and comprehensive guidelines to help you navigate compliance requirements successfully.',
                 // Requests
                 'requests-title': 'Requests Management',
-                'BridgePoint-title': 'Requests Management',
+                'requests-management-title': 'Requests Management',
                 'issue-request-text': 'Issue a Request',
                 'filter-all': 'All Types',
                 'filter-user': 'User',
@@ -923,7 +1796,6 @@
                 'logout-text': 'Logout',
                 // Navigation
                 'nav-dashboard': 'Dashboard',
-                'nav-BridgePoint': 'BridgePoint',
                 'nav-impact': 'Impact',
                 'nav-messages': 'Messages',
                 'nav-profile': 'Profile'
@@ -947,9 +1819,111 @@
                 'price-header': 'السعر',
                 'status-header': 'الحالة',
                 'add-item-text': 'إضافة عنصر جديد',
+                // BridgePoint Tabs
+                'nav-BridgePoint': 'بوابة الامتثال',
+                'BridgePoint-title': 'بوابة الامتثال BridgePoint',
+                // Licensing & Registration
+                'apply-license-title': 'التقدم بطلب للحصول على رخصة عمل جديدة',
+                'apply-license-desc': 'قدم طلبك للحصول على رخصة عمل جديدة. سيقوم فريقنا بمراجعة مستنداتك والاتصال بك خلال 3-5 أيام عمل.',
+                'apply-license-btn': 'تقدم الآن',
+                'renew-license-title': 'تجديد الرخصة الحالية',
+                'renew-license-desc': 'تحقق من حالة رخصتك الحالية وجددها قبل انتهاء الصلاحية لتجنب أي انقطاع في عمليات عملك.',
+                'license-status': 'الرخصة نشطة - تنتهي في: 15 ديسمبر 2024',
+                'renew-license-btn': 'تجديد الرخصة',
+                'upload-docs-title': 'تحميل المستندات المطلوبة',
+                'upload-docs-desc': 'قم بتحميل المستندات اللازمة لطلب أو تجديد رخصتك. الصيغ المقبولة: PDF، JPG، PNG (بحد أقصى 10 ميجابايت).',
+                'upload-prompt': 'انقر للتحميل أو اسحب وأفلت الملفات هنا',
+                // Permits & Certifications
+                'food-permit-title': 'تصاريح السلامة الغذائية / الصحية',
+                'food-permit-desc': 'تقدم بطلب للحصول على تصاريح السلامة والصحة الغذائية المطلوبة لعمليات عملك. تأكد من أن مؤسستك تلبي جميع معايير الصحة والسلامة.',
+                'apply-food-permit-btn': 'تقدم بطلب للحصول على تصريح',
+                'env-cert-title': 'شهادات الامتثال البيئي',
+                'env-cert-desc': 'احصل على شهادات الامتثال البيئي لإظهار التزامك بممارسات العمل المستدامة واللوائح البيئية.',
+                'env-status': 'قيد الانتظار - المراجعة جارية',
+                'apply-env-cert-btn': 'تقدم بطلب للحصول على الشهادة',
+                'municipal-title': 'موافقات البلدية',
+                'municipal-desc': 'تقدم بطلب للحصول على الموافقات البلدية اللازمة للتوزيع، والخدمات اللوجستية، وإدارة النفايات، والجوانب التشغيلية الأخرى لعملك.',
+                'apply-municipal-btn': 'تقدم بطلب للحصول على الموافقة',
+                // Compliance & Regulations
+                'checklist-title': 'قائمة مراجعة الامتثال',
+                'checklist-desc': 'راجع متطلبات الامتثال الإلزامية لنوع عملك. تأكد من إكمال جميع العناصر للحفاظ على وضع جيد.',
+                'checklist-item1': 'عرض رخصة العمل الصالحة في المنشأة',
+                'checklist-item2': 'شهادات معالجة الطعام لجميع الموظفين',
+                'checklist-item3': 'فحص مكافحة الآفات ربع السنوي (مستحق في: 30 نوفمبر 2024)',
+                'checklist-item4': 'سجلات تدريب صحة وسلامة الموظفين',
+                'checklist-item5': 'نظام مناسب لفصل النفايات والتخلص منها',
+                'notifications-title': 'إشعارات اللوائح',
+                'notifications-desc': 'ابق على اطلاع بأحدث التغييرات والمتطلبات التنظيمية التي قد تؤثر على عمليات عملك.',
+                'notif-title1': 'لوائح سلامة غذائية جديدة سارية المفعول يناير 2025',
+                'notif-desc1': 'إرشادات محدثة لدرجات حرارة تخزين الطعام وإجراءات التعامل. الامتثال مطلوب بحلول 15 يناير 2025.',
+                'notif-title2': 'تحديث سياسة إدارة النفايات',
+                'notif-desc2': 'متطلبات محدثة للتخلص من النفايات التجارية. مطلوب توثيق جديد للإبلاغ ربع السنوي.',
+                'notif-title3': 'اجتياز التفتيش الصحي',
+                'notif-desc3': 'لقد اجتازت مؤسستك التفتيش الصحي ربع السنوي دون تسجيل أي مخالفات.',
+                'guidance-title': 'وثائق الإرشادات والسياسات الرسمية',
+                'guidance-desc': 'وصول إلى وثائق الإرشادات الرسمية، وكتيبات السياسات، والأطر التنظيمية لضمان استمرار امتثال عملك.',
+                // Requests & Approvals
+                'submit-request-title': 'تقديم طلبات رسمية',
+                'submit-request-desc': 'قدم طلبات لتوسيع العمل، أو مساحة تخزين إضافية، أو تعديلات في معالجة النفايات، أو تغييرات تشغيلية أخرى.',
+                'new-request-btn': 'تقديم طلب جديد',
+                'track-requests-title': 'تتبع عملية الموافقة',
+                'track-requests-desc': 'راقب حالة طلباتك المقدمة مع تحديثات فورية حول تقدمها خلال سير عمل الموافقة.',
+                'request-title1': 'طلب التوسع - مقاعد إضافية',
+                'request-desc1': 'طلب 20 مقعدًا إضافيًا داخليًا. قيد المراجعة حاليًا من قبل إدارة التخطيط.',
+                'request-title2': 'تعديل معالجة النفايات',
+                'request-desc2': 'طلب تعديل جدول جمع النفايات من يومي إلى مرتين يوميًا. تمت الموافقة عليه وتنفيذه.',
+                'request-title3': 'توسيع المقاعد الخارجية',
+                'request-desc3': 'طلب توسيع منطقة المقاعد الخارجية. مطلوب توثيق إضافي فيما يتعلق بوصول المشاة.',
+                'messaging-title': 'المراسلة المباشرة مع السلطة',
+                'messaging-desc': 'تواصل مباشرة مع السلطات التنظيمية بشأن طلباتك، أو أسئلة الامتثال، أو احتياجات التوضيح.',
+                'message-prompt': 'انقر هنا لبدء محادثة مع مكتب الامتثال التجاري',
+                'message-title1': 'رد من مسؤول الامتثال',
+                'message-desc1': 'بخصوص طلبك لتعديل معالجة النفايات: تمت الموافقة عليه بشرط أن تكون الحاويات الإضافية مُعلمة بوضوح.',
+                // Reports & Audits
+                'submit-reports-title': 'تقديم التقارير الإلزامية',
+                'submit-reports-desc': 'قدم التقارير المطلوبة بما في ذلك سجلات نفايات الطعام، وتقارير التوزيع، والتوثيق التنظيمي الآخر على أساس مجدول.',
+                'report-title1': 'سجل نفايات الطعام الشهري',
+                'report-desc1': 'سجل جميع نفايات الطعام المولدة، بما في ذلك النوع، والكمية، وطريقة التخلص.',
+                'report-title2': 'تقرير التوزيع ربع السنوي',
+                'report-desc2': 'أبلغ عن جميع المواد الغذائية الموزعة، والمستفيدين، والكميات لربع السنة.',
+                'inspection-results-title': 'نتائج التفتيش',
+                'inspection-results-desc': 'عرض نتائج التفتيشات الحديثة التي أجرتها السلطات التنظيمية في مؤسستك.',
+                'inspection-title1': 'تفتيش الصحة والسلامة - أكتوبر 2024',
+                'inspection-desc1': 'الدرجة: 98/100. لوحظت ممارسات نظافة ممتازة. اقتراح طفيف: النظر في محطات إضافية لمطهر اليدين.',
+                'inspection-title2': 'مراجعة إدارة النفايات - يوليو 2024',
+                'inspection-desc2': 'الدرجة: 95/100. لوحظ الفصل المناسب للنفايات. اقتراح: زيادة إعادة تدوير عبوات الكرتون.',
+                'inspection-title3': 'تفتيش سلامة الغذاء - أبريل 2024',
+                'inspection-desc3': 'الدرجة: 87/100. سجلات درجات الحرارة غير مكتملة ليومين. مطلوب إجراء تصحيحي: تنفيذ تسجيل يومي لدرجات الحرارة.',
+                'feedback-title': 'الملاحظات والإجراءات التصحيحية',
+                'feedback-desc': 'راجع الملاحظات من المفتشين ونفذ الإجراءات التصحيحية المطلوبة للحفاظ على الامتثال.',
+                'feedback-title1': 'اكتمال الإجراء التصحيحي',
+                'feedback-desc1': 'تم ترقية نظام تسجيل درجات الحرارة مع المراقبة الرقمية. اكتملت عملية التحقق في 10 مايو 2024.',
+                'feedback-title2': 'متطلب تدريب الموظفين',
+                'feedback-desc2': 'يجب على جميع موظفي معالجة الطعام إكمال تدريب السلامة الغذائية المحدث بحلول 1 ديسمبر 2024.',
+                // Support & Guidance
+                'faq-title': 'الأسئلة الشائعة لأصحاب الأعمال',
+                'faq-desc': 'اعثر على إجابات للأسئلة الشائعة حول الامتثال، والتراخيص، والتصاريح، والمتطلبات التنظيمية.',
+                'faq-q1': 'كم من الوقت يستغرق معالجة رخصة عمل جديدة؟',
+                'faq-a1': 'عادةً ما تتم معالجة طلبات رخص العمل الجديدة خلال 5-7 أيام عمل بعد تقديم جميع المستندات المطلوبة والتحقق منها. قد تختلف أوقات المعالجة حسب تعقيد العمل واكتمال الطلب.',
+                'faq-q2': 'ما هي المستندات التي أحتاجها للحصول على تصريح سلامة غذائية؟',
+                'faq-a2': 'للحصول على تصريح سلامة غذائية، ستحتاج إلى: 1) رخصة العمل، 2) مخطط أرضي لمؤسستك، 3) قائمة الطعام وإجراءات التعامل مع الطعام، 4) شهادات تدريب معالجة الطعام لجميع الموظفين، 5) عقد مكافحة الآفات، و6) خطة إدارة النفايات. يجب أن تكون جميع المستندات حالية وصالحة.',
+                'faq-q3': 'كيف يمكنني تجديد شهادة الامتثال البيئي الخاصة بي؟',
+                'faq-a3': 'يمكن تجديد شهادات الامتثال البيئي من خلال بوابة BridgePoint قبل 60 يومًا من انتهاء الصلاحية. ستحتاج إلى تقديم توثيق محدث يوضح استمرار الامتثال للوائح البيئية، بما في ذلك سجلات التخلص من النفايات، وتقارير استهلاك الطاقة، وأي تقييمات بيئية مطلوبة.',
+                'faq-q4': 'ماذا يحدث إذا فاتني موعد نهائي لتقرير إلزامي؟',
+                'faq-a4': 'قد يؤدي تفويت الموعد النهائي للتقرير الإلزامي إلى تحذير للجرائم الأولى. قد تؤدي حالات الفشل المتكررة في تقديم التقارير في الوقت المحدد إلى غرامات أو تعليق لبعض امتيازات العمل. نوصي بتعيين تذكيرات في التقويم لجميع مواعيد التقارير وتقديم التقارير قبل يومين إلى ثلاثة أيام على الأقل من الموعد المستحق لتجنب أي مشاكل.',
+                'contact-desk-title': 'مكتب الاتصال للمساعدة التنظيمية',
+                'contact-desk-desc': 'احصل على مساعدة شخصية من متخصصينا في الامتثال التنظيمي لأي أسئلة أو مشكلات قد تواجهها.',
+                'phone-support': 'الدعم الهاتفي',
+                'phone-desc': 'اتصل بخط المساعدة الخاص بالامتثال للحصول على مساعدة فورية',
+                'email-support': 'دعم البريد الإلكتروني',
+                'email-desc': 'أرسل استفسارات مفصلة واحصل على ردود مكتوبة',
+                'appointment': 'حجز موعد',
+                'appointment-desc': 'احجز استشارة افتراضية أو شخصية',
+                'tutorials-title': 'الدروس التعليمية وإرشادات الامتثال',
+                'tutorials-desc': 'وصول إلى دروس تعليمية خطوة بخطوة وإرشادات شاملة لمساعدتك على التنقل في متطلبات الامتثال بنجاح.',
                 // Requests
-                'requests-title': 'إدارة الوثائق',
-                'BridgePoint-title': 'إدارة الوثائق',
+                'requests-title': 'إدارة الطلبات',
+                'requests-management-title': 'إدارة الطلبات',
                 'issue-request-text': 'تقديم طلب',
                 'filter-all': 'جميع الأنواع',
                 'filter-user': 'مستخدم',
@@ -982,7 +1956,6 @@
                 'logout-text': 'تسجيل الخروج',
                 // Navigation
                 'nav-dashboard': 'لوحة التحكم',
-                'nav-BridgePoint': 'بوابة الامتثال',
                 'nav-impact': 'الأثر',
                 'nav-messages': 'الرسائل',
                 'nav-profile': 'الملف الشخصي'
@@ -1011,11 +1984,13 @@
             langButton.textContent = currentLanguage === 'en' ? 'EN' : 'AR';
             if (currentLanguage === 'ar') {
                 document.body.style.fontFamily = "'Amiri', serif";
+                document.body.setAttribute('dir', 'rtl');
                 document.querySelectorAll('.glass-card').forEach(el => {
                     el.style.textAlign = 'right';
                 });
             } else {
                 document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.body.setAttribute('dir', 'ltr');
                 document.querySelectorAll('.glass-card').forEach(el => {
                     el.style.textAlign = 'left';
                 });
@@ -1336,64 +2311,94 @@
             langButton.addEventListener('click', toggleLanguage);
             // Apply initial translations
             applyTranslations();
-            
             // Initialize split view functionality
             const splitDivider = document.getElementById('split-divider');
             const requestsPanel = document.getElementById('requests-panel');
             const messagesPanel = document.getElementById('messages-panel');
             const splitContainer = document.querySelector('.split-view-container');
-            
             // Set initial width (50% each)
             requestsPanel.style.width = '50%';
             messagesPanel.style.width = '50%';
-            
             let isDragging = false;
-            
             splitDivider.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 document.body.style.cursor = 'col-resize';
                 e.preventDefault();
             });
-            
             document.addEventListener('mousemove', (e) => {
                 if (!isDragging) return;
-                
                 const containerRect = splitContainer.getBoundingClientRect();
                 let percentage = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-                
                 // Limit to reasonable values (20%-80%)
                 percentage = Math.max(20, Math.min(80, percentage));
-                
                 requestsPanel.style.width = percentage + '%';
                 messagesPanel.style.width = (100 - percentage) + '%';
             });
-            
             document.addEventListener('mouseup', () => {
                 isDragging = false;
                 document.body.style.cursor = 'default';
             });
-            
             // Handle touch events for mobile
             splitDivider.addEventListener('touchstart', (e) => {
                 isDragging = true;
                 e.preventDefault();
             });
-            
             document.addEventListener('touchmove', (e) => {
                 if (!isDragging) return;
-                
                 const containerRect = splitContainer.getBoundingClientRect();
                 let percentage = ((e.touches[0].clientX - containerRect.left) / containerRect.width) * 100;
-                
                 // Limit to reasonable values (20%-80%)
                 percentage = Math.max(20, Math.min(80, percentage));
-                
                 requestsPanel.style.width = percentage + '%';
                 messagesPanel.style.width = (100 - percentage) + '%';
             });
-            
             document.addEventListener('touchend', () => {
                 isDragging = false;
+            });
+            
+            // BridgePoint Tab Functionality
+            const bridgepointTabs = document.querySelectorAll('.bridgepoint-tab');
+            const bridgepointContents = document.querySelectorAll('.bridgepoint-content');
+            
+            bridgepointTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    bridgepointTabs.forEach(t => t.classList.remove('active'));
+                    bridgepointContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // FAQ Toggle Functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    const icon = question.querySelector('i');
+                    if (item.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+            
+            // Document Upload Area
+            const uploadAreas = document.querySelectorAll('.upload-area');
+            uploadAreas.forEach(area => {
+                area.addEventListener('click', () => {
+                    // In a real app, this would trigger a file input
+                    alert('File upload dialog would appear here.');
+                });
             });
         });
     </script>
