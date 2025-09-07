@@ -976,12 +976,19 @@
                     </div>
                 </div>
                 <div class="glass-card large-card">
-                    <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Notifications</h2>
-                    <table class="data-table"><tbody>
-                        <tr><td>High surplus volume detected at 'Fresh Produce Mart'</td><td><span class="status-tag priority-high">High</span></td></tr>
-                        <tr><td>Low activity in Al Ain region for the past 24 hours</td><td><span class="status-tag priority-medium">Medium</span></td></tr>
-                    </tbody></table>
-                </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="section-title"><i class="fas fa-triangle-exclamation"></i> Notifications</h2>
+        <button class="action-btn" id="create-notification-btn">
+            <i class="fas fa-plus"></i> Create
+        </button>
+    </div>
+    <table class="data-table">
+        <tbody>
+            <tr><td>High surplus volume detected at 'Fresh Produce Mart'</td><td><span class="status-tag priority-high">High</span></td></tr>
+            <tr><td>Low activity in Al Ain region for the past 24 hours</td><td><span class="status-tag priority-medium">Medium</span></td></tr>
+        </tbody>
+    </table>
+</div>
             </section>
             <!-- CAMPAIGNS SECTION -->
             <section id="Campains-section" class="page-section hidden">
@@ -1514,6 +1521,32 @@
             </div>
         </div>
     </div>
+    <div class="request-detail-modal" id="create-notification-modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-plus"></i> Create Notification</h2>
+            <button class="modal-close" id="close-create-notification">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="create-notification-form">
+                <div class="form-group">
+                    <label for="notification-message">Message</label>
+                    <textarea id="notification-message" required placeholder="Enter notification message..." style="min-height:80px;"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="notification-priority">Priority</label>
+                    <select id="notification-priority" required>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Notification</button>
+            </form>
+        </div>
+    </div>
+</div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -2629,6 +2662,31 @@
             header.style.display = 'none';
         }
     });
+    document.getElementById('create-notification-btn').addEventListener('click', () => {
+    document.getElementById('create-notification-modal').classList.add('active');
+});
+document.getElementById('close-create-notification').addEventListener('click', () => {
+    document.getElementById('create-notification-modal').classList.remove('active');
+});
+document.getElementById('create-notification-modal').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        e.currentTarget.classList.remove('active');
+    }
+});
+document.getElementById('create-notification-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const message = document.getElementById('notification-message').value.trim();
+    const priority = document.getElementById('notification-priority').value;
+    if (message) {
+        // Add notification to table (demo only)
+        const table = document.querySelector('.large-card .data-table tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${message}</td><td><span class="status-tag priority-${priority}">${priority.charAt(0).toUpperCase() + priority.slice(1)}</span></td>`;
+        table.insertBefore(row, table.firstChild);
+        document.getElementById('create-notification-modal').classList.remove('active');
+        this.reset();
+    }
+});
     </script>
 </body>
 </html>
