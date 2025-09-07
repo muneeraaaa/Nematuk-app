@@ -392,7 +392,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
-        
         /* BridgePoint Compliance Section Styles */
         .bridgepoint-tabs {
             display: flex;
@@ -702,7 +701,259 @@
             background: rgba(255, 193, 7, 0.2);
             color: #ffc107;
         }
-        
+        /* Food Carbon Footprint Calculator Styles */
+        .calculator-container {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            background: white;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+        }
+        .calculator-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--glass-border);
+        }
+        .calculator-tab {
+            padding: 12px 24px;
+            background: var(--tab-inactive);
+            border: none;
+            border-radius: 12px 12px 0 0;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+        .calculator-tab.active {
+            background: var(--tab-active);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .calculator-tab:hover:not(.active) {
+            background: var(--glass-bg);
+            transform: translateY(-2px);
+        }
+        .calculator-content {
+            display: none;
+        }
+        .calculator-content.active {
+            display: block;
+        }
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .form-control {
+            padding: 0.8rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+        .ingredient-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .ingredient-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+        .remove-ingredient {
+            background: rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-ingredient {
+            background: var(--accent-gradient);
+            color: var(--text-dark);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .calculate-btn {
+            background: var(--accent-gradient);
+            color: var(--text-dark);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--secondary-accent);
+        }
+        .result-card {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            display: none;
+        }
+        .result-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .carbon-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+        }
+        .carbon-unit {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        .rating {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .rating-a { background: #4CAF50; color: white; }
+        .rating-b { background: #8BC34A; color: white; }
+        .rating-c { background: #FFC107; color: white; }
+        .rating-d { background: #FF9800; color: white; }
+        .rating-e { background: #F44336; color: white; }
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .detail-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+            margin: 0.5rem 0;
+        }
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: var(--text-dark);
+        }
+        .comparison-chart {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        .chart-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .comparison-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .item-label {
+            width: 150px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .bar-container {
+            flex: 1;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1s ease-in-out;
+        }
+        .bar-user {
+            background: var(--secondary-accent);
+        }
+        .bar-average {
+            background: #FFC107;
+        }
+        .bar-benchmark {
+            background: #4CAF50;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .loading.active {
+            display: block;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(134, 167, 137, 0.3);
+            border-top: 4px solid var(--secondary-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         @media (max-width: 768px) {
             .impact-grid { grid-template-columns: 1fr; }
             .search-filter-container { flex-direction: column; }
@@ -716,8 +967,10 @@
             .bridgepoint-tabs { flex-direction: column; border-bottom: none; }
             .bridgepoint-tab { border-radius: 12px; margin-bottom: 0.5rem; }
             .contact-options { grid-template-columns: 1fr; }
+            .calculator-form { gap: 1rem; }
+            .ingredient-row { flex-direction: column; align-items: stretch; }
+            .result-details { grid-template-columns: 1fr; }
         }
-        
         /* Arabic Language Styles */
         body.ar {
             font-family: 'Amiri', serif;
@@ -803,7 +1056,6 @@
             <!-- BridgePoint SECTION -->
             <section id="BridgePoint-section" class="page-section">
                 <h2 class="section-title" id="BridgePoint-title">BridgePoint Compliance Portal</h2>
-                
                 <!-- Tabs Navigation -->
                 <ul class="bridgepoint-tabs">
                     <li><button class="bridgepoint-tab active" data-tab="licensing">Licensing & Registration</button></li>
@@ -813,7 +1065,6 @@
                     <li><button class="bridgepoint-tab" data-tab="reports">Reports & Audits</button></li>
                     <li><button class="bridgepoint-tab" data-tab="support">Support & Guidance</button></li>
                 </ul>
-                
                 <!-- Licensing & Registration Tab -->
                 <div id="licensing" class="bridgepoint-content active">
                     <div class="compliance-card">
@@ -823,7 +1074,6 @@
                             <i class="fas fa-plus"></i> <span id="apply-license-btn">Apply Now</span>
                         </button>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-sync-alt"></i> <span id="renew-license-title">Renew Existing License</span></h3>
                         <p id="renew-license-desc">Check the status of your current license and renew before expiration to avoid any interruptions to your business operations.</p>
@@ -834,7 +1084,6 @@
                             <i class="fas fa-sync"></i> <span id="renew-license-btn">Renew License</span>
                         </button>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-upload"></i> <span id="upload-docs-title">Upload Required Documents</span></h3>
                         <p id="upload-docs-desc">Upload necessary documents for your license application or renewal. Accepted formats: PDF, JPG, PNG (max 10MB).</p>
@@ -858,7 +1107,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <!-- Permits & Certifications Tab -->
                 <div id="permits" class="bridgepoint-content">
                     <div class="compliance-card">
@@ -868,7 +1116,6 @@
                             <i class="fas fa-file-medical"></i> <span id="apply-food-permit-btn">Apply for Permit</span>
                         </button>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-tree"></i> <span id="env-cert-title">Environmental Compliance Certificates</span></h3>
                         <p id="env-cert-desc">Obtain environmental compliance certificates to demonstrate your commitment to sustainable business practices and environmental regulations.</p>
@@ -879,7 +1126,6 @@
                             <i class="fas fa-leaf"></i> <span id="apply-env-cert-btn">Apply for Certificate</span>
                         </button>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-city"></i> <span id="municipal-title">Municipality Approvals</span></h3>
                         <p id="municipal-desc">Apply for necessary municipality approvals for distribution, logistics, waste management, and other operational aspects of your business.</p>
@@ -902,7 +1148,6 @@
                         </button>
                     </div>
                 </div>
-                
                 <!-- Compliance & Regulations Tab -->
                 <div id="compliance" class="bridgepoint-content">
                     <div class="compliance-card">
@@ -929,7 +1174,6 @@
                             <div><span id="checklist-item5">Proper waste segregation and disposal system</span></div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-bell"></i> <span id="notifications-title">Regulation Notifications</span></h3>
                         <p id="notifications-desc">Stay updated with the latest regulatory changes and requirements that may affect your business operations.</p>
@@ -964,7 +1208,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-book"></i> <span id="guidance-title">Guidance Documents & Official Policies</span></h3>
                         <p id="guidance-desc">Access official guidance documents, policy manuals, and regulatory frameworks to ensure your business remains compliant.</p>
@@ -996,7 +1239,6 @@
                         </ul>
                     </div>
                 </div>
-                
                 <!-- Requests & Approvals Tab -->
                 <div id="requests" class="bridgepoint-content">
                     <div class="compliance-card">
@@ -1006,7 +1248,6 @@
                             <i class="fas fa-plus"></i> <span id="new-request-btn">Submit New Request</span>
                         </button>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-tasks"></i> <span id="track-requests-title">Track Approval Process</span></h3>
                         <p id="track-requests-desc">Monitor the status of your submitted requests with real-time updates on their progress through the approval workflow.</p>
@@ -1041,7 +1282,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-comments"></i> <span id="messaging-title">Direct Messaging with Authority</span></h3>
                         <p id="messaging-desc">Communicate directly with regulatory authorities regarding your requests, compliance questions, or clarification needs.</p>
@@ -1061,7 +1301,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <!-- Reports & Audits Tab -->
                 <div id="reports" class="bridgepoint-content">
                     <div class="compliance-card">
@@ -1097,7 +1336,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-search"></i> <span id="inspection-results-title">Inspection Results</span></h3>
                         <p id="inspection-results-desc">View results from recent inspections conducted by regulatory authorities at your establishment.</p>
@@ -1132,7 +1370,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-exclamation-triangle"></i> <span id="feedback-title">Feedback & Corrective Actions</span></h3>
                         <p id="feedback-desc">Review feedback from inspectors and implement required corrective actions to maintain compliance.</p>
@@ -1158,7 +1395,6 @@
                         </div>
                     </div>
                 </div>
-                
                 <!-- Support & Guidance Tab -->
                 <div id="support" class="bridgepoint-content">
                     <div class="compliance-card">
@@ -1201,7 +1437,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-headset"></i> <span id="contact-desk-title">Contact Desk for Regulatory Help</span></h3>
                         <p id="contact-desk-desc">Get personalized assistance from our regulatory compliance specialists for any questions or issues you may encounter.</p>
@@ -1228,7 +1463,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="compliance-card">
                         <h3><i class="fas fa-graduation-cap"></i> <span id="tutorials-title">Tutorials & Compliance Guidelines</span></h3>
                         <p id="tutorials-desc">Access step-by-step tutorials and comprehensive guidelines to help you navigate compliance requirements successfully.</p>
@@ -1267,10 +1501,200 @@
                     </div>
                 </div>
             </section>
-            
             <!-- IMPACT SECTION -->
             <section id="impact-section" class="page-section">
                 <h2 class="section-title" id="impact-title">Business Impact</h2>
+                <!-- Food Carbon Footprint Calculator -->
+                <div class="calculator-container">
+                    <h2 class="section-title">Food Carbon Footprint Calculator</h2>
+                    <p style="margin-bottom: 1.5rem; opacity: 0.8;">Calculate the carbon footprint of your food items or recipes to understand their environmental impact.</p>
+                    <div class="calculator-tabs">
+                        <button class="calculator-tab active" data-calculator="single">Single Item</button>
+                        <button class="calculator-tab" data-calculator="recipe">Recipe</button>
+                    </div>
+                    <div id="single-calculator" class="calculator-content active">
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="food-item">Select Food Item</label>
+                                <select id="food-item" class="form-control">
+                                    <option value="">-- Select a food item --</option>
+                                    <option value="Beef">Beef</option>
+                                    <option value="Lamb">Lamb</option>
+                                    <option value="Cheese">Cheese</option>
+                                    <option value="Pork">Pork</option>
+                                    <option value="Chicken">Chicken</option>
+                                    <option value="Eggs">Eggs</option>
+                                    <option value="Rice">Rice</option>
+                                    <option value="Fish">Fish</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Bread">Bread</option>
+                                    <option value="Pasta">Pasta</option>
+                                    <option value="Potatoes">Potatoes</option>
+                                    <option value="Tofu">Tofu</option>
+                                    <option value="Nuts">Nuts</option>
+                                    <option value="Coffee">Coffee</option>
+                                    <option value="Chocolate">Chocolate</option>
+                                    <option value="Croissant">Croissant</option>
+                                    <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                                    <option value="Blueberry Muffin">Blueberry Muffin</option>
+                                    <option value="Baguette">Baguette</option>
+                                    <option value="Cinnamon Roll">Cinnamon Roll</option>
+                                    <option value="Apple Pie">Apple Pie</option>
+                                    <option value="Chocolate Eclair">Chocolate Eclair</option>
+                                    <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                                    <option value="Palmier">Palmier</option>
+                                    <option value="Cheese Danish">Cheese Danish</option>
+                                    <option value="Almond Croissant">Almond Croissant</option>
+                                    <option value="Banana Bread">Banana Bread</option>
+                                    <option value="Pretzel">Pretzel</option>
+                                    <option value="Raspberry Tart">Raspberry Tart</option>
+                                    <option value="Sourdough Loaf">Sourdough Loaf</option>
+                                    <option value="Lemon Bar">Lemon Bar</option>
+                                    <option value="Chocolate Brownie">Chocolate Brownie</option>
+                                    <option value="Pumpkin Scone">Pumpkin Scone</option>
+                                    <option value="Focaccia Bread">Focaccia Bread</option>
+                                    <option value="Macaron">Macaron</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-quantity">Quantity (grams)</label>
+                                <input type="number" id="food-quantity" class="form-control" min="1" value="100" placeholder="Enter quantity in grams">
+                            </div>
+                            <button id="calculate-single" class="calculate-btn">
+                                <i class="fas fa-calculator"></i> Calculate Carbon Footprint
+                            </button>
+                        </div>
+                    </div>
+                    <div id="recipe-calculator" class="calculator-content">
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="recipe-name">Recipe Name</label>
+                                <input type="text" id="recipe-name" class="form-control" placeholder="Enter recipe name">
+                            </div>
+                            <div class="form-group">
+                                <label>Ingredients</label>
+                                <div id="ingredients-container">
+                                    <div class="ingredient-row">
+                                        <select class="ingredient-input ingredient-select">
+                                            <option value="">-- Select ingredient --</option>
+                                            <option value="Beef">Beef</option>
+                                            <option value="Lamb">Lamb</option>
+                                            <option value="Cheese">Cheese</option>
+                                            <option value="Pork">Pork</option>
+                                            <option value="Chicken">Chicken</option>
+                                            <option value="Eggs">Eggs</option>
+                                            <option value="Rice">Rice</option>
+                                            <option value="Fish">Fish</option>
+                                            <option value="Milk">Milk</option>
+                                            <option value="Vegetables">Vegetables</option>
+                                            <option value="Fruits">Fruits</option>
+                                            <option value="Bread">Bread</option>
+                                            <option value="Pasta">Pasta</option>
+                                            <option value="Potatoes">Potatoes</option>
+                                            <option value="Tofu">Tofu</option>
+                                            <option value="Nuts">Nuts</option>
+                                            <option value="Coffee">Coffee</option>
+                                            <option value="Chocolate">Chocolate</option>
+                                            <option value="Croissant">Croissant</option>
+                                            <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                                            <option value="Blueberry Muffin">Blueberry Muffin</option>
+                                            <option value="Baguette">Baguette</option>
+                                            <option value="Cinnamon Roll">Cinnamon Roll</option>
+                                            <option value="Apple Pie">Apple Pie</option>
+                                            <option value="Chocolate Eclair">Chocolate Eclair</option>
+                                            <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                                            <option value="Palmier">Palmier</option>
+                                            <option value="Cheese Danish">Cheese Danish</option>
+                                            <option value="Almond Croissant">Almond Croissant</option>
+                                            <option value="Banana Bread">Banana Bread</option>
+                                            <option value="Pretzel">Pretzel</option>
+                                            <option value="Raspberry Tart">Raspberry Tart</option>
+                                            <option value="Sourdough Loaf">Sourdough Loaf</option>
+                                            <option value="Lemon Bar">Lemon Bar</option>
+                                            <option value="Chocolate Brownie">Chocolate Brownie</option>
+                                            <option value="Pumpkin Scone">Pumpkin Scone</option>
+                                            <option value="Focaccia Bread">Focaccia Bread</option>
+                                            <option value="Macaron">Macaron</option>
+                                        </select>
+                                        <input type="number" class="ingredient-input ingredient-quantity" min="1" value="100" placeholder="Quantity (g)">
+                                        <button class="remove-ingredient" style="display: none;">×</button>
+                                    </div>
+                                </div>
+                                <button id="add-ingredient" class="add-ingredient">
+                                    <i class="fas fa-plus"></i> Add Ingredient
+                                </button>
+                            </div>
+                            <button id="calculate-recipe" class="calculate-btn">
+                                <i class="fas fa-calculator"></i> Calculate Recipe Carbon Footprint
+                            </button>
+                        </div>
+                    </div>
+                    <div id="calculator-loading" class="loading">
+                        <div class="spinner"></div>
+                        <p>Calculating your carbon footprint...</p>
+                    </div>
+                    <div id="calculator-result" class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <h3 id="result-title">Carbon Footprint Result</h3>
+                                <p id="result-description">Environmental impact of your food selection</p>
+                            </div>
+                            <div>
+                                <div class="carbon-score" id="carbon-score">0.00<span class="carbon-unit"> kg CO₂e</span></div>
+                                <div class="rating" id="carbon-rating">C</div>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Carbon Footprint</div>
+                                <div class="detail-value" id="detail-carbon">0.00 kg CO₂e</div>
+                                <div>Greenhouse gas emissions</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Water Usage</div>
+                                <div class="detail-value" id="detail-water">0 L</div>
+                                <div>Water consumed in production</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Land Use</div>
+                                <div class="detail-value" id="detail-land">0 m²</div>
+                                <div>Land required for production</div>
+                            </div>
+                        </div>
+                        <div class="comparison-chart">
+                            <h3 class="chart-title">Comparison with Averages</h3>
+                            <div class="comparison-bars">
+                                <div class="comparison-item">
+                                    <div class="item-label">Your Selection</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-user" id="bar-user" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="comparison-item">
+                                    <div class="item-label">Average Meal</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-average" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="comparison-item">
+                                    <div class="item-label">Low Carbon Benchmark</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-benchmark" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result-recommendations" style="margin-top: 1.5rem;">
+                            <h3 style="font-weight: 600; margin-bottom: 1rem;">Recommendations</h3>
+                            <div id="recommendations-content" style="background: white; padding: 1rem; border-radius: 12px; border: 1px solid var(--glass-border);">
+                                <!-- Recommendations will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Original Impact Section Content -->
                 <div class="search-filter-container">
                     <select class="filter-select" id="impact-year-filter">
                         <option value="2026">2026</option>
@@ -1320,7 +1744,6 @@
                     <i class="fas fa-certificate"></i> <span id="certificate-text">Generate Impact Certificate</span>
                 </button>
             </section>
-            
             <!-- MESSAGES SECTION (Now contains both Messages and BridgePoint content side by side) -->
             <section id="messages-section" class="page-section">
                 <h2 class="section-title" id="messages-title">Messages & Requests</h2>
@@ -1411,7 +1834,6 @@
                     </div>
                 </div>
             </section>
-            
             <!-- PROFILE SECTION -->
             <section id="profile-section" class="page-section">
                 <h2 class="section-title" id="profile-title">Business Profile</h2>
@@ -1961,6 +2383,129 @@
                 'nav-profile': 'الملف الشخصي'
             }
         };
+        // Food carbon footprint data (kg CO2e per kg of food)
+        const foodCarbonData = {
+            'Beef': 27.0,
+            'Lamb': 22.0,
+            'Cheese': 13.5,
+            'Pork': 6.0,
+            'Chicken': 4.5,
+            'Eggs': 3.5,
+            'Rice': 2.7,
+            'Fish': 3.5,
+            'Milk': 1.9,
+            'Vegetables': 0.4,
+            'Fruits': 0.5,
+            'Bread': 0.8,
+            'Pasta': 1.0,
+            'Potatoes': 0.3,
+            'Tofu': 1.0,
+            'Nuts': 0.3,
+            'Coffee': 10.0,
+            'Chocolate': 12.0,
+            'Croissant': 2.5,
+            'Chocolate Chip Cookie': 1.8,
+            'Blueberry Muffin': 1.2,
+            'Baguette': 0.9,
+            'Cinnamon Roll': 2.0,
+            'Apple Pie': 1.5,
+            'Chocolate Eclair': 2.2,
+            'Whole Wheat Bread': 0.7,
+            'Palmier': 1.6,
+            'Cheese Danish': 2.3,
+            'Almond Croissant': 2.8,
+            'Banana Bread': 1.1,
+            'Pretzel': 0.8,
+            'Raspberry Tart': 1.7,
+            'Sourdough Loaf': 0.7,
+            'Lemon Bar': 1.9,
+            'Chocolate Brownie': 2.1,
+            'Pumpkin Scone': 1.3,
+            'Focaccia Bread': 0.8,
+            'Macaron': 1.5
+        };
+        // Water usage data (liters per kg of food)
+        const foodWaterData = {
+            'Beef': 15415,
+            'Lamb': 8763,
+            'Cheese': 5060,
+            'Pork': 4809,
+            'Chicken': 4325,
+            'Eggs': 3300,
+            'Rice': 2497,
+            'Fish': 2000,
+            'Milk': 1020,
+            'Vegetables': 322,
+            'Fruits': 962,
+            'Bread': 1608,
+            'Pasta': 1849,
+            'Potatoes': 287,
+            'Tofu': 318,
+            'Nuts': 9063,
+            'Coffee': 18900,
+            'Chocolate': 17196,
+            'Croissant': 1200,
+            'Chocolate Chip Cookie': 800,
+            'Blueberry Muffin': 600,
+            'Baguette': 1100,
+            'Cinnamon Roll': 900,
+            'Apple Pie': 700,
+            'Chocolate Eclair': 1000,
+            'Whole Wheat Bread': 900,
+            'Palmier': 750,
+            'Cheese Danish': 1100,
+            'Almond Croissant': 1300,
+            'Banana Bread': 550,
+            'Pretzel': 650,
+            'Raspberry Tart': 850,
+            'Sourdough Loaf': 600,
+            'Lemon Bar': 750,
+            'Chocolate Brownie': 950,
+            'Pumpkin Scone': 600,
+            'Focaccia Bread': 700,
+            'Macaron': 800
+        };
+        // Land use data (m² per kg of food)
+        const foodLandData = {
+            'Beef': 164.0,
+            'Lamb': 185.0,
+            'Cheese': 88.0,
+            'Pork': 11.0,
+            'Chicken': 7.1,
+            'Eggs': 5.7,
+            'Rice': 3.0,
+            'Fish': 2.5,
+            'Milk': 8.9,
+            'Vegetables': 0.3,
+            'Fruits': 0.5,
+            'Bread': 1.5,
+            'Pasta': 1.8,
+            'Potatoes': 0.2,
+            'Tofu': 0.8,
+            'Nuts': 2.5,
+            'Coffee': 1.1,
+            'Chocolate': 1.5,
+            'Croissant': 0.9,
+            'Chocolate Chip Cookie': 0.7,
+            'Blueberry Muffin': 0.5,
+            'Baguette': 0.6,
+            'Cinnamon Roll': 0.8,
+            'Apple Pie': 0.6,
+            'Chocolate Eclair': 0.9,
+            'Whole Wheat Bread': 0.5,
+            'Palmier': 0.6,
+            'Cheese Danish': 0.8,
+            'Almond Croissant': 1.0,
+            'Banana Bread': 0.4,
+            'Pretzel': 0.5,
+            'Raspberry Tart': 0.7,
+            'Sourdough Loaf': 0.4,
+            'Lemon Bar': 0.7,
+            'Chocolate Brownie': 0.8,
+            'Pumpkin Scone': 0.5,
+            'Focaccia Bread': 0.5,
+            'Macaron': 0.7
+        };
         // Initialize language from localStorage or default to English
         const storedLanguage = localStorage.getItem('siteLanguage') || 'en';
         let currentLanguage = storedLanguage;
@@ -2242,6 +2787,411 @@
         function generateCertificate() {
             alert('Impact certificate generated and downloaded!');
         }
+        
+        // Food Carbon Footprint Calculator Functions
+        function initializeCalculator() {
+            // Calculator Tab Switching
+            const calculatorTabs = document.querySelectorAll('.calculator-tab');
+            const calculatorContents = document.querySelectorAll('.calculator-content');
+            
+            calculatorTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    calculatorTabs.forEach(t => t.classList.remove('active'));
+                    calculatorContents.forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    const calculatorType = tab.getAttribute('data-calculator');
+                    document.getElementById(`${calculatorType}-calculator`).classList.add('active');
+                });
+            });
+            
+            // Add ingredient functionality
+            document.getElementById('add-ingredient').addEventListener('click', () => {
+                const container = document.getElementById('ingredients-container');
+                const newRow = document.createElement('div');
+                newRow.className = 'ingredient-row';
+                newRow.innerHTML = `
+                    <select class="ingredient-input ingredient-select">
+                        <option value="">-- Select ingredient --</option>
+                        <option value="Beef">Beef</option>
+                        <option value="Lamb">Lamb</option>
+                        <option value="Cheese">Cheese</option>
+                        <option value="Pork">Pork</option>
+                        <option value="Chicken">Chicken</option>
+                        <option value="Eggs">Eggs</option>
+                        <option value="Rice">Rice</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Bread">Bread</option>
+                        <option value="Pasta">Pasta</option>
+                        <option value="Potatoes">Potatoes</option>
+                        <option value="Tofu">Tofu</option>
+                        <option value="Nuts">Nuts</option>
+                        <option value="Coffee">Coffee</option>
+                        <option value="Chocolate">Chocolate</option>
+                        <option value="Croissant">Croissant</option>
+                        <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                        <option value="Blueberry Muffin">Blueberry Muffin</option>
+                        <option value="Baguette">Baguette</option>
+                        <option value="Cinnamon Roll">Cinnamon Roll</option>
+                        <option value="Apple Pie">Apple Pie</option>
+                        <option value="Chocolate Eclair">Chocolate Eclair</option>
+                        <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                        <option value="Palmier">Palmier</option>
+                        <option value="Cheese Danish">Cheese Danish</option>
+                        <option value="Almond Croissant">Almond Croissant</option>
+                        <option value="Banana Bread">Banana Bread</option>
+                        <option value="Pretzel">Pretzel</option>
+                        <option value="Raspberry Tart">Raspberry Tart</option>
+                        <option value="Sourdough Loaf">Sourdough Loaf</option>
+                        <option value="Lemon Bar">Lemon Bar</option>
+                        <option value="Chocolate Brownie">Chocolate Brownie</option>
+                        <option value="Pumpkin Scone">Pumpkin Scone</option>
+                        <option value="Focaccia Bread">Focaccia Bread</option>
+                        <option value="Macaron">Macaron</option>
+                    </select>
+                    <input type="number" class="ingredient-input ingredient-quantity" min="1" value="100" placeholder="Quantity (g)">
+                    <button class="remove-ingredient">×</button>
+                `;
+                container.appendChild(newRow);
+                
+                // Add event listener to the new remove button
+                const removeBtn = newRow.querySelector('.remove-ingredient');
+                removeBtn.addEventListener('click', () => {
+                    newRow.remove();
+                });
+                removeBtn.style.display = 'flex';
+            });
+            
+            // Single item calculation
+            document.getElementById('calculate-single').addEventListener('click', () => {
+                const foodItem = document.getElementById('food-item').value;
+                const quantity = parseFloat(document.getElementById('food-quantity').value) || 0;
+                
+                if (!foodItem) {
+                    alert('Please select a food item');
+                    return;
+                }
+                
+                if (quantity <= 0) {
+                    alert('Please enter a valid quantity');
+                    return;
+                }
+                
+                calculateCarbonFootprint(foodItem, quantity, 'single');
+            });
+            
+            // Recipe calculation
+            document.getElementById('calculate-recipe').addEventListener('click', () => {
+                const recipeName = document.getElementById('recipe-name').value;
+                const ingredients = [];
+                const ingredientRows = document.querySelectorAll('.ingredient-row');
+                
+                let hasError = false;
+                ingredientRows.forEach(row => {
+                    const select = row.querySelector('.ingredient-select');
+                    const quantityInput = row.querySelector('.ingredient-quantity');
+                    const ingredient = select.value;
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    
+                    if (ingredient && quantity > 0) {
+                        ingredients.push({ name: ingredient, quantity: quantity });
+                    } else if (ingredient || quantity > 0) {
+                        // Only show error if one field is filled but not the other
+                        hasError = true;
+                    }
+                });
+                
+                if (hasError) {
+                    alert('Please complete all ingredient fields or remove incomplete rows');
+                    return;
+                }
+                
+                if (ingredients.length === 0) {
+                    alert('Please add at least one ingredient');
+                    return;
+                }
+                
+                calculateRecipeCarbonFootprint(recipeName, ingredients);
+            });
+            
+            // Event delegation for dynamically added remove buttons
+            document.getElementById('ingredients-container').addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-ingredient')) {
+                    const row = e.target.closest('.ingredient-row');
+                    if (document.querySelectorAll('.ingredient-row').length > 1) {
+                        row.remove();
+                    } else {
+                        // Clear the fields instead of removing the last row
+                        const select = row.querySelector('.ingredient-select');
+                        const quantity = row.querySelector('.ingredient-quantity');
+                        select.value = '';
+                        quantity.value = '100';
+                    }
+                }
+            });
+        }
+        
+        // Calculate carbon footprint for single item
+        function calculateCarbonFootprint(foodItem, quantityInGrams, mode) {
+            // Show loading spinner
+            const loadingEl = document.getElementById('calculator-loading');
+            const resultEl = document.getElementById('calculator-result');
+            loadingEl.classList.add('active');
+            resultEl.classList.remove('active');
+            
+            // Simulate calculation delay
+            setTimeout(() => {
+                // Convert grams to kilograms for calculation
+                const quantityInKg = quantityInGrams / 1000;
+                
+                // Get carbon footprint (kg CO2e per kg of food)
+                const carbonFootprintPerKg = foodCarbonData[foodItem] || 0;
+                const waterUsagePerKg = foodWaterData[foodItem] || 0;
+                const landUsePerKg = foodLandData[foodItem] || 0;
+                
+                // Calculate total impact
+                const totalCarbon = carbonFootprintPerKg * quantityInKg;
+                const totalWater = waterUsagePerKg * quantityInKg;
+                const totalLand = landUsePerKg * quantityInKg;
+                
+                // Calculate rating (A-E) based on carbon footprint per 100g
+                const carbonPer100g = (totalCarbon / quantityInGrams) * 100;
+                let rating = 'C';
+                let ratingClass = 'rating-c';
+                
+                if (carbonPer100g < 0.5) {
+                    rating = 'A';
+                    ratingClass = 'rating-a';
+                } else if (carbonPer100g < 1.5) {
+                    rating = 'B';
+                    ratingClass = 'rating-b';
+                } else if (carbonPer100g < 3.0) {
+                    rating = 'C';
+                    ratingClass = 'rating-c';
+                } else if (carbonPer100g < 5.0) {
+                    rating = 'D';
+                    ratingClass = 'rating-d';
+                } else {
+                    rating = 'E';
+                    ratingClass = 'rating-e';
+                }
+                
+                // Get average meal values for comparison (based on typical meal of 500g)
+                const averageMealCarbon = 1.5; // kg CO2e
+                const lowCarbonBenchmark = 0.45; // kg CO2e (30% of average)
+                
+                // Calculate percentage for comparison bars
+                const userPercentage = Math.min(100, (totalCarbon / averageMealCarbon) * 100);
+                const benchmarkPercentage = (lowCarbonBenchmark / averageMealCarbon) * 100;
+                
+                // Update results
+                document.getElementById('carbon-score').innerHTML = `${totalCarbon.toFixed(2)}<span class="carbon-unit"> kg CO₂e</span>`;
+                document.getElementById('carbon-rating').textContent = rating;
+                document.getElementById('carbon-rating').className = 'rating ' + ratingClass;
+                document.getElementById('detail-carbon').textContent = `${totalCarbon.toFixed(2)} kg CO₂e`;
+                document.getElementById('detail-water').textContent = `${Math.round(totalWater)} L`;
+                document.getElementById('detail-land').textContent = `${totalLand.toFixed(2)} m²`;
+                
+                // Update comparison bars
+                document.getElementById('bar-user').style.width = `${userPercentage}%`;
+                
+                // Generate recommendations based on rating
+                let recommendations = '';
+                switch(rating) {
+                    case 'A':
+                        recommendations = `
+                            <p>🌟 Excellent! Your selection has a very low carbon footprint.</p>
+                            <p>Consider sharing your sustainable choices with others to inspire more eco-friendly eating habits.</p>
+                        `;
+                        break;
+                    case 'B':
+                        recommendations = `
+                            <p>👍 Great choice! Your selection has a relatively low carbon footprint.</p>
+                            <p>To improve further, consider replacing higher-impact ingredients with more plant-based alternatives.</p>
+                        `;
+                        break;
+                    case 'C':
+                        recommendations = `
+                            <p>✅ Good effort! Your selection has a moderate carbon footprint.</p>
+                            <p>Consider reducing portion sizes or replacing some ingredients with lower-impact alternatives like vegetables or grains.</p>
+                        `;
+                        break;
+                    case 'D':
+                        recommendations = `
+                            <p>⚠️ Your selection has a high carbon footprint.</p>
+                            <p>Consider replacing meat with plant-based proteins, or choosing poultry instead of red meat to significantly reduce emissions.</p>
+                        `;
+                        break;
+                    case 'E':
+                        recommendations = `
+                            <p>🔴 Your selection has a very high carbon footprint.</p>
+                            <p>Consider these alternatives: Replace beef with chicken (reduces footprint by ~80%), or try plant-based options which typically have 90% less emissions than beef.</p>
+                        `;
+                        break;
+                }
+                
+                // Add specific food recommendations
+                if (['Beef', 'Lamb', 'Cheese', 'Pork'].includes(foodItem)) {
+                    recommendations += `
+                        <p><strong>Did you know?</strong> ${foodItem} has one of the highest carbon footprints. Consider these alternatives:</p>
+                        <ul>
+                            <li>Chicken: ~80% lower emissions than ${foodItem.toLowerCase()}</li>
+                            <li>Tofu: ~90% lower emissions than ${foodItem.toLowerCase()}</li>
+                            <li>Vegetables: ~95% lower emissions than ${foodItem.toLowerCase()}</li>
+                        </ul>
+                    `;
+                }
+                
+                document.getElementById('recommendations-content').innerHTML = recommendations;
+                
+                // Hide loading, show results
+                loadingEl.classList.remove('active');
+                resultEl.classList.add('active');
+                
+            }, 1500); // Simulate 1.5 second calculation time
+        }
+        
+        // Calculate carbon footprint for recipe
+        function calculateRecipeCarbonFootprint(recipeName, ingredients) {
+            // Show loading spinner
+            const loadingEl = document.getElementById('calculator-loading');
+            const resultEl = document.getElementById('calculator-result');
+            loadingEl.classList.add('active');
+            resultEl.classList.remove('active');
+            
+            // Simulate calculation delay
+            setTimeout(() => {
+                let totalCarbon = 0;
+                let totalWater = 0;
+                let totalLand = 0;
+                let totalWeight = 0;
+                
+                // Calculate totals for all ingredients
+                ingredients.forEach(ingredient => {
+                    const quantityInKg = ingredient.quantity / 1000;
+                    totalCarbon += (foodCarbonData[ingredient.name] || 0) * quantityInKg;
+                    totalWater += (foodWaterData[ingredient.name] || 0) * quantityInKg;
+                    totalLand += (foodLandData[ingredient.name] || 0) * quantityInKg;
+                    totalWeight += ingredient.quantity;
+                });
+                
+                // Calculate rating based on carbon footprint per 100g of recipe
+                const carbonPer100g = (totalCarbon / totalWeight) * 100;
+                let rating = 'C';
+                let ratingClass = 'rating-c';
+                
+                if (carbonPer100g < 0.5) {
+                    rating = 'A';
+                    ratingClass = 'rating-a';
+                } else if (carbonPer100g < 1.5) {
+                    rating = 'B';
+                    ratingClass = 'rating-b';
+                } else if (carbonPer100g < 3.0) {
+                    rating = 'C';
+                    ratingClass = 'rating-c';
+                } else if (carbonPer100g < 5.0) {
+                    rating = 'D';
+                    ratingClass = 'rating-d';
+                } else {
+                    rating = 'E';
+                    ratingClass = 'rating-e';
+                }
+                
+                // Get average meal values for comparison (based on typical meal of 500g)
+                const averageMealCarbon = 1.5; // kg CO2e
+                const lowCarbonBenchmark = 0.45; // kg CO2e (30% of average)
+                
+                // Calculate percentage for comparison bars
+                const userPercentage = Math.min(100, (totalCarbon / averageMealCarbon) * 100);
+                const benchmarkPercentage = (lowCarbonBenchmark / averageMealCarbon) * 100;
+                
+                // Update results
+                document.getElementById('carbon-score').innerHTML = `${totalCarbon.toFixed(2)}<span class="carbon-unit"> kg CO₂e</span>`;
+                document.getElementById('carbon-rating').textContent = rating;
+                document.getElementById('carbon-rating').className = 'rating ' + ratingClass;
+                document.getElementById('detail-carbon').textContent = `${totalCarbon.toFixed(2)} kg CO₂e`;
+                document.getElementById('detail-water').textContent = `${Math.round(totalWater)} L`;
+                document.getElementById('detail-land').textContent = `${totalLand.toFixed(2)} m²`;
+                
+                // Update comparison bars
+                document.getElementById('bar-user').style.width = `${userPercentage}%`;
+                
+                // Generate recommendations based on rating
+                let recommendations = `<p><strong>Recipe: ${recipeName || 'Custom Recipe'}</strong></p>`;
+                
+                switch(rating) {
+                    case 'A':
+                        recommendations += `
+                            <p>🌟 Excellent! Your recipe has a very low carbon footprint.</p>
+                            <p>Your ingredient choices demonstrate great environmental awareness. Consider sharing this recipe to inspire others!</p>
+                        `;
+                        break;
+                    case 'B':
+                        recommendations += `
+                            <p>👍 Great recipe! Your ingredient selection has a relatively low carbon footprint.</p>
+                            <p>To improve further, consider increasing the proportion of vegetables or grains in your recipe.</p>
+                        `;
+                        break;
+                    case 'C':
+                        recommendations += `
+                            <p>✅ Good effort! Your recipe has a moderate carbon footprint.</p>
+                            <p>Consider reducing the amount of higher-impact ingredients or replacing them with more sustainable alternatives.</p>
+                        `;
+                        break;
+                    case 'D':
+                        recommendations += `
+                            <p>⚠️ Your recipe has a high carbon footprint.</p>
+                            <p>Try replacing some meat ingredients with plant-based proteins, or use smaller portions of high-impact ingredients.</p>
+                        `;
+                        break;
+                    case 'E':
+                        recommendations += `
+                            <p>🔴 Your recipe has a very high carbon footprint.</p>
+                            <p>Consider reformulating with these changes: Replace red meat with poultry or plant-based proteins, increase vegetable content, and reduce portion sizes of high-impact ingredients.</p>
+                        `;
+                        break;
+                }
+                
+                // Add breakdown of highest impact ingredients
+                if (ingredients.length > 1) {
+                    // Sort ingredients by carbon impact
+                    const sortedIngredients = [...ingredients].sort((a, b) => {
+                        const aCarbon = (foodCarbonData[a.name] || 0) * (a.quantity / 1000);
+                        const bCarbon = (foodCarbonData[b.name] || 0) * (b.quantity / 1000);
+                        return bCarbon - aCarbon;
+                    });
+                    
+                    recommendations += `<p><strong>Top 3 highest impact ingredients in your recipe:</strong></p><ol>`;
+                    
+                    for (let i = 0; i < Math.min(3, sortedIngredients.length); i++) {
+                        const ingredient = sortedIngredients[i];
+                        const ingredientCarbon = (foodCarbonData[ingredient.name] || 0) * (ingredient.quantity / 1000);
+                        const percentage = ((ingredientCarbon / totalCarbon) * 100).toFixed(1);
+                        recommendations += `<li>${ingredient.name}: ${ingredientCarbon.toFixed(2)} kg CO₂e (${percentage}%)</li>`;
+                    }
+                    
+                    recommendations += `</ol>`;
+                    
+                    // Suggest alternatives for highest impact ingredient
+                    const highestImpact = sortedIngredients[0];
+                    if (['Beef', 'Lamb', 'Cheese', 'Pork'].includes(highestImpact.name)) {
+                        recommendations += `
+                            <p><strong>Suggestion:</strong> Replacing ${highestImpact.name.toLowerCase()} with chicken would reduce this ingredient's carbon footprint by ~80%.</p>
+                        `;
+                    }
+                }
+                
+                document.getElementById('recommendations-content').innerHTML = recommendations;
+                
+                // Hide loading, show results
+                loadingEl.classList.remove('active');
+                resultEl.classList.add('active');
+                
+            }, 1500); // Simulate 1.5 second calculation time
+        }
+        
         // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
             particlesJS("particles-js", { 
@@ -2355,26 +3305,21 @@
             document.addEventListener('touchend', () => {
                 isDragging = false;
             });
-            
             // BridgePoint Tab Functionality
             const bridgepointTabs = document.querySelectorAll('.bridgepoint-tab');
             const bridgepointContents = document.querySelectorAll('.bridgepoint-content');
-            
             bridgepointTabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     // Remove active class from all tabs and contents
                     bridgepointTabs.forEach(t => t.classList.remove('active'));
                     bridgepointContents.forEach(c => c.classList.remove('active'));
-                    
                     // Add active class to clicked tab
                     tab.classList.add('active');
-                    
                     // Show corresponding content
                     const tabId = tab.getAttribute('data-tab');
                     document.getElementById(tabId).classList.add('active');
                 });
             });
-            
             // FAQ Toggle Functionality
             const faqItems = document.querySelectorAll('.faq-item');
             faqItems.forEach(item => {
@@ -2391,7 +3336,6 @@
                     }
                 });
             });
-            
             // Document Upload Area
             const uploadAreas = document.querySelectorAll('.upload-area');
             uploadAreas.forEach(area => {
@@ -2400,7 +3344,10 @@
                     alert('File upload dialog would appear here.');
                 });
             });
+            
+            // Initialize the food carbon footprint calculator
+            initializeCalculator();
         });
     </script>
 </body>
-</html>
+</html>      
