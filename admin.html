@@ -946,6 +946,92 @@
         font-weight: 500;
         color: var(--secondary-accent);
     }
+    /* Analytics Tabs Styles */
+.analytics-tabs {
+    display: flex;
+    gap: 0;
+    border-radius: 15px;
+    background: var(--glass-bg);
+    padding: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.analytics-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.tab-option {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--text-dark);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0.7;
+    min-width: fit-content;
+}
+
+.tab-option:hover {
+    opacity: 1;
+    background: rgba(176, 217, 177, 0.1);
+    transform: translateY(-1px);
+}
+
+.tab-option.active {
+    background: var(--accent-gradient);
+    color: var(--text-dark);
+    opacity: 1;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(134, 167, 137, 0.3);
+}
+
+.tab-content-container {
+    position: relative;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Responsive Design for Tabs */
+@media (max-width: 992px) {
+    .analytics-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tab-option {
+        flex: 1 1 calc(50% - 0.25rem);
+        min-width: calc(50% - 0.25rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .analytics-tabs {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .tab-option {
+        flex: none;
+        width: 100%;
+        min-width: 100%;
+    }
+}
     </style>
 </head>
 <body>
@@ -963,7 +1049,7 @@
             <section id="overview-section" class="page-section active">
                 <div class="stats-grid">
                     <div class="glass-card stat-card-admin"><div class="value">2,847 kg</div><div class="label">Surplus food saved today</div></div>
-                    <div class="glass-card stat-card-admin"><div class="value">1,423 kg</div><div class="label">CO₂ reduced today</div></div>
+                    <div class="glass-card stat-card-admin"><div class="value">8.5 tonnes </div><div class="label"> of CO2e saved</div></div>
                     <div class="glass-card stat-card-admin"><div class="value">156</div><div class="label">Active businesses & NGOs</div></div>
                     <div class="glass-card stat-card-admin"><div class="value">12,847</div><div class="label">Community members</div></div>
                 </div>
@@ -1283,123 +1369,267 @@
                     </table>
                 </div>
             </section>
-            <!-- ANALYTICS SECTION -->
-            <section id="analytics-section" class="page-section hidden">
-                <h2 class="section-title">Platform Analytics</h2>
-                <div class="glass-card">
-                    <div class="analytics-search-container">
-                        <div class="analytics-search-bar">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="analytics-search" placeholder="Search for specific data points...">
+            <!-- ANALYTICS SECTION with Tabs -->
+<section id="analytics-section" class="page-section hidden">
+    <h2 class="section-title">Platform Analytics</h2>
+    
+    <!-- Tab Navigation -->
+    <div class="glass-card" style="margin-bottom: 1rem;">
+        <div class="analytics-tabs">
+            <div class="tab-option active" data-tab="food-security">Food Security Metrics Dashboard</div>
+            <div class="tab-option" data-tab="awareness">Awareness & Engagement</div>
+            <div class="tab-option" data-tab="sustainability">Sustainability Indicators</div>
+            <div class="tab-option" data-tab="policy">Policy Support & Reporting</div>
+        </div>
+    </div>
+
+    <!-- Tab Content Container -->
+    <div class="tab-content-container">
+        
+        <!-- Food Security Metrics Dashboard Tab -->
+        <div class="tab-content active" id="food-security-tab">
+            <div class="glass-card">
+                <div class="analytics-search-container">
+                    <div class="analytics-search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="analytics-search" placeholder="Search for specific data points...">
+                    </div>
+                </div>
+                
+                <div class="analytics-filters">
+                    <!-- Location Filter -->
+                    <div class="filter-group">
+                        <div class="filter-label"><i class="fas fa-location-dot"></i> Location</div>
+                        <div class="filter-options" id="location-filters">
+                            <div class="filter-option" data-value="UAE" data-multiple="false">UAE</div>
+                            <div class="filter-option" data-value="Abu Dhabi" data-multiple="true">Abu Dhabi</div>
+                            <div class="filter-option" data-value="Dubai" data-multiple="true">Dubai</div>
+                            <div class="filter-option" data-value="Sharjah" data-multiple="true">Sharjah</div>
+                            <div class="filter-option" data-value="Ajman" data-multiple="true">Ajman</div>
+                            <div class="filter-option" data-value="Ras Al Khaimah" data-multiple="true">Ras Al Khaimah</div>
+                            <div class="filter-option" data-value="Umm Al Quwain" data-multiple="true">Umm Al Quwain</div>
+                            <div class="filter-option" data-value="Fujairah" data-multiple="true">Fujairah</div>
                         </div>
                     </div>
                     
-                    <div class="analytics-filters">
-                        <!-- Location Filter -->
-                        <div class="filter-group">
-                            <div class="filter-label"><i class="fas fa-location-dot"></i> Location</div>
-                            <div class="filter-options" id="location-filters">
-                                <div class="filter-option" data-value="UAE" data-multiple="false">UAE</div>
-                                <div class="filter-option" data-value="Abu Dhabi" data-multiple="true">Abu Dhabi</div>
-                                <div class="filter-option" data-value="Dubai" data-multiple="true">Dubai</div>
-                                <div class="filter-option" data-value="Sharjah" data-multiple="true">Sharjah</div>
-                                <div class="filter-option" data-value="Ajman" data-multiple="true">Ajman</div>
-                                <div class="filter-option" data-value="Ras Al Khaimah" data-multiple="true">Ras Al Khaimah</div>
-                                <div class="filter-option" data-value="Umm Al Quwain" data-multiple="true">Umm Al Quwain</div>
-                                <div class="filter-option" data-value="Fujairah" data-multiple="true">Fujairah</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Year Filter -->
-                        <div class="filter-group">
-                            <div class="filter-label"><i class="fas fa-calendar"></i> Year</div>
-                            <div class="filter-options" id="year-filters">
-                                <div class="filter-option" data-value="2020" data-multiple="true">2020</div>
-                                <div class="filter-option" data-value="2021" data-multiple="true">2021</div>
-                                <div class="filter-option" data-value="2022" data-multiple="true">2022</div>
-                                <div class="filter-option" data-value="2023" data-multiple="true">2023</div>
-                                <div class="filter-option" data-value="2024" data-multiple="true">2024</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Category Filter -->
-                        <div class="filter-group">
-                            <div class="filter-label"><i class="fas fa-list"></i> Category</div>
-                            <div class="filter-options" id="category-filters">
-                                <div class="filter-option" data-value="msw_total_tonnes" data-multiple="true">MSW Total Tonnes</div>
-                                <div class="filter-option" data-value="organic_food_fraction_%" data-multiple="true">Organic Food Fraction (%)</div>
-                                <div class="filter-option" data-value="food_waste_tonnes" data-multiple="true">Food Waste Tonnes</div>
-                                <div class="filter-option" data-value="waste_sector_ghg_tCO2e" data-multiple="true">Waste Sector GHG (tCO2e)</div>
-                                <div class="filter-option" data-value="food_waste_ghg_tCO2e" data-multiple="true">Food Waste GHG (tCO2e)</div>
-                                <div class="filter-option" data-value="wte_processed_tonnes" data-multiple="true">WtE Processed Tonnes</div>
-                                <div class="filter-option" data-value="msw_diversion_rate_%" data-multiple="true">MSW Diversion Rate (%)</div>
-                                <div class="filter-option" data-value="diverted_from_landfill_tonnes" data-multiple="true">Diverted from Landfill (tonnes)</div>
-                                <div class="filter-option" data-value="wte_ghg_avoided_tCO2e" data-multiple="true">WtE GHG Avoided (tCO2e)</div>
-                                <div class="filter-option" data-value="wte_co2e_offset_tCO2e" data-multiple="true">WtE CO2e Offset (tCO2e)</div>
-                                <div class="filter-option" data-value="monthly_avg_msw_tonnes" data-multiple="true">Monthly Avg MSW Tonnes</div>
-                                <div class="filter-option" data-value="monthly_avg_food_waste_tonnes" data-multiple="true">Monthly Avg Food Waste Tonnes</div>
-                                <div class="filter-option" data-value="wte_monthly_avg_tonnes" data-multiple="true">WtE Monthly Avg Tonnes</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Visualization Filter -->
-                        <div class="filter-group">
-                            <div class="filter-label"><i class="fas fa-chart-bar"></i> Visualization</div>
-                            <div class="filter-options" id="visualization-filters">
-                                <div class="filter-option" data-value="bar" data-multiple="false">Bar Graph</div>
-                                <div class="filter-option" data-value="line" data-multiple="false">Line Graph</div>
-                                <div class="filter-option" data-value="pie" data-multiple="false">Pie Chart</div>
-                                <div class="filter-option" data-value="dot" data-multiple="false">Dot Plot</div>
-                                <div class="filter-option" data-value="raw" data-multiple="false">Raw Data</div>
-                            </div>
+                    <!-- Year Filter -->
+                    <div class="filter-group">
+                        <div class="filter-label"><i class="fas fa-calendar"></i> Year</div>
+                        <div class="filter-options" id="year-filters">
+                            <div class="filter-option" data-value="2020" data-multiple="true">2020</div>
+                            <div class="filter-option" data-value="2021" data-multiple="true">2021</div>
+                            <div class="filter-option" data-value="2022" data-multiple="true">2022</div>
+                            <div class="filter-option" data-value="2023" data-multiple="true">2023</div>
+                            <div class="filter-option" data-value="2024" data-multiple="true">2024</div>
                         </div>
                     </div>
                     
-                    <div class="search-results" id="search-results">
-                        <div class="results-header">
-                            <div class="results-title" id="results-title">Search Results</div>
-                            <button class="download-btn" id="download-results">
-                                <i class="fas fa-download"></i> Download Results
-                            </button>
+                    <!-- Category Filter -->
+                    <div class="filter-group">
+                        <div class="filter-label"><i class="fas fa-list"></i> Category</div>
+                        <div class="filter-options" id="category-filters">
+                            <div class="filter-option" data-value="msw_total_tonnes" data-multiple="true">MSW Total Tonnes</div>
+                            <div class="filter-option" data-value="organic_food_fraction_%" data-multiple="true">Organic Food Fraction (%)</div>
+                            <div class="filter-option" data-value="food_waste_tonnes" data-multiple="true">Food Waste Tonnes</div>
+                            <div class="filter-option" data-value="waste_sector_ghg_tCO2e" data-multiple="true">Waste Sector GHG (tCO2e)</div>
+                            <div class="filter-option" data-value="food_waste_ghg_tCO2e" data-multiple="true">Food Waste GHG (tCO2e)</div>
+                            <div class="filter-option" data-value="wte_processed_tonnes" data-multiple="true">WtE Processed Tonnes</div>
+                            <div class="filter-option" data-value="msw_diversion_rate_%" data-multiple="true">MSW Diversion Rate (%)</div>
+                            <div class="filter-option" data-value="diverted_from_landfill_tonnes" data-multiple="true">Diverted from Landfill (tonnes)</div>
+                            <div class="filter-option" data-value="wte_ghg_avoided_tCO2e" data-multiple="true">WtE GHG Avoided (tCO2e)</div>
+                            <div class="filter-option" data-value="wte_co2e_offset_tCO2e" data-multiple="true">WtE CO2e Offset (tCO2e)</div>
+                            <div class="filter-option" data-value="monthly_avg_msw_tonnes" data-multiple="true">Monthly Avg MSW Tonnes</div>
+                            <div class="filter-option" data-value="monthly_avg_food_waste_tonnes" data-multiple="true">Monthly Avg Food Waste Tonnes</div>
+                            <div class="filter-option" data-value="wte_monthly_avg_tonnes" data-multiple="true">WtE Monthly Avg Tonnes</div>
                         </div>
-                        
-                        <div class="results-summary" id="results-summary">
-                            <div class="summary-item">
-                                <span class="summary-label">Selected:</span> 
-                                <span id="selected-summary">No data selected</span>
-                            </div>
-                            <div class="summary-item">
-                                <span class="summary-label">Data Points:</span> 
-                                <span id="data-points-count">0</span>
-                            </div>
-                        </div>
-                        
-                        <div id="visualization-container">
-                            <canvas id="analytics-chart" class="chart-container"></canvas>
-                        </div>
-                        
-                        <div class="raw-data-container" id="raw-data-container" style="display: none;">
-                            <table class="raw-data-table" id="raw-data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Year</th>
-                                        <th>Month</th>
-                                        <th>Emirate</th>
-                                        <th>Metric</th>
-                                        <th>Value</th>
-                                        <th>Unit</th>
-                                        <th>Waste Type</th>
-                                        <th>Source</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="raw-data-body">
-                                    <!-- Raw data will be populated here -->
-                                </tbody>
-                            </table>
+                    </div>
+                    
+                    <!-- Visualization Filter -->
+                    <div class="filter-group">
+                        <div class="filter-label"><i class="fas fa-chart-bar"></i> Visualization</div>
+                        <div class="filter-options" id="visualization-filters">
+                            <div class="filter-option" data-value="bar" data-multiple="false">Bar Graph</div>
+                            <div class="filter-option" data-value="line" data-multiple="false">Line Graph</div>
+                            <div class="filter-option" data-value="pie" data-multiple="false">Pie Chart</div>
+                            <div class="filter-option" data-value="dot" data-multiple="false">Dot Plot</div>
+                            <div class="filter-option" data-value="raw" data-multiple="false">Raw Data</div>
                         </div>
                     </div>
                 </div>
-            </section>
+                
+                <div class="search-results" id="search-results">
+                    <div class="results-header">
+                        <div class="results-title" id="results-title">Search Results</div>
+                        <button class="download-btn" id="download-results">
+                            <i class="fas fa-download"></i> Download Results
+                        </button>
+                    </div>
+                    
+                    <div class="results-summary" id="results-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Selected:</span> 
+                            <span id="selected-summary">No data selected</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Data Points:</span> 
+                            <span id="data-points-count">0</span>
+                        </div>
+                    </div>
+                    
+                    <div id="visualization-container">
+                        <canvas id="analytics-chart" class="chart-container"></canvas>
+                    </div>
+                    
+                    <div class="raw-data-container" id="raw-data-container" style="display: none;">
+                        <table class="raw-data-table" id="raw-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Year</th>
+                                    <th>Month</th>
+                                    <th>Emirate</th>
+                                    <th>Metric</th>
+                                    <th>Value</th>
+                                    <th>Unit</th>
+                                    <th>Waste Type</th>
+                                    <th>Source</th>
+                                </tr>
+                            </thead>
+                            <tbody id="raw-data-body">
+                                <!-- Raw data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Awareness & Engagement Tab -->
+        <div class="tab-content" id="awareness-tab">
+            <div class="glass-card">
+                <h3 class="section-title"><i class="fas fa-users"></i> Community Engagement Metrics</h3>
+                <div class="stats-grid">
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">12,847</div>
+                        <div class="label">Active Community Members</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">2,156</div>
+                        <div class="label">Campaign Participants This Month</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">89%</div>
+                        <div class="label">User Satisfaction Rate</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">435</div>
+                        <div class="label">Social Media Shares</div>
+                    </div>
+                </div>
+                <div class="glass-card large-card">
+                    <div class="placeholder">
+                        <i class="fas fa-chart-line" style="font-size: 4rem; color: var(--primary-accent); opacity: 0.5;"></i>
+                        <h3 style="margin-top: 1rem; opacity: 0.6;">Engagement Analytics Dashboard</h3>
+                        <p style="opacity: 0.4;">Detailed engagement metrics and trends would be displayed here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sustainability Indicators Tab -->
+        <div class="tab-content" id="sustainability-tab">
+            <div class="glass-card">
+                <h3 class="section-title"><i class="fas fa-leaf"></i> Environmental Impact Tracking</h3>
+                <div class="stats-grid">
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">847,230 kg</div>
+                        <div class="label">Total CO₂ Reduced This Year</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">1.2M kg</div>
+                        <div class="label">Food Waste Diverted</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">76%</div>
+                        <div class="label">Waste Diversion Rate</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">23</div>
+                        <div class="label">SDG Targets Supported</div>
+                    </div>
+                </div>
+                <div class="glass-card large-card">
+                    <div class="placeholder">
+                        <i class="fas fa-globe" style="font-size: 4rem; color: var(--secondary-accent); opacity: 0.5;"></i>
+                        <h3 style="margin-top: 1rem; opacity: 0.6;">Sustainability Dashboard</h3>
+                        <p style="opacity: 0.4;">Environmental impact metrics and sustainability indicators</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy Support & Reporting Tab -->
+        <div class="tab-content" id="policy-tab">
+            <div class="glass-card">
+                <h3 class="section-title"><i class="fas fa-file-alt"></i> Policy & Compliance Reports</h3>
+                <div class="stats-grid">
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">24</div>
+                        <div class="label">Policy Recommendations</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">12</div>
+                        <div class="label">Monthly Reports Generated</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">98%</div>
+                        <div class="label">Compliance Rate</div>
+                    </div>
+                    <div class="glass-card stat-card-admin">
+                        <div class="value">7</div>
+                        <div class="label">Stakeholder Agencies</div>
+                    </div>
+                </div>
+                <div class="glass-card large-card">
+                    <h3 style="margin-bottom: 1.5rem;"><i class="fas fa-download"></i> Available Reports</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Report Name</th>
+                                <th>Type</th>
+                                <th>Generated</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>UAE Food Security Assessment Q4 2024</td>
+                                <td>Quarterly</td>
+                                <td>Jan 15, 2024</td>
+                                <td><span class="status-tag status-approved">Ready</span></td>
+                                <td><button class="action-btn"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td>Waste Diversion Annual Report</td>
+                                <td>Annual</td>
+                                <td>Dec 31, 2023</td>
+                                <td><span class="status-tag status-approved">Ready</span></td>
+                                <td><button class="action-btn"><i class="fas fa-download"></i> Download</button></td>
+                            </tr>
+                            <tr>
+                                <td>Ministry Compliance Update</td>
+                                <td>Monthly</td>
+                                <td>Jan 10, 2024</td>
+                                <td><span class="status-tag status-pending">Processing</span></td>
+                                <td><button class="action-btn" disabled><i class="fas fa-clock"></i> Pending</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
             <!-- SETTINGS SECTION -->
             <section id="settings-section" class="page-section hidden">
                 <h2 class="section-title">System Maintenance & Settings</h2>
@@ -1551,6 +1781,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        
         // Particles.js - Sage Tones
         particlesJS("particles-js", {
             "particles": {
@@ -2581,36 +2812,45 @@
                 });
             }
         };
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = item.querySelector('a').dataset.target;
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-                pageSections.forEach(section => {
-                    section.classList.toggle('hidden', section.id !== targetId);
-                    section.classList.toggle('active', section.id === targetId);
-                });
-                // Show header only on dashboard
-                const header = document.getElementById('dashboard-header');
-                if (header) {
-                    header.style.display = targetId === 'overview-section' ? 'block' : 'none';
-                }
-                if (targetId === 'analytics-section') {
-                    setTimeout(initAnalyticsFunctionality, 50);
-                }
-                if (targetId === 'analytics-section') {
-                    setTimeout(initCharts, 50);
-                }
-                if (targetId === 'Campains-section') {
-                    setTimeout(initCampaignsFunctionality, 50);
-                }
-                if (targetId === 'requests-section') {
-                    setTimeout(initRequestsFunctionality, 50);
-                }
-                window.scrollTo(0, 0);
-            });
+        // Find this section in your existing JavaScript (around line 800-850)
+// Replace the existing navItems.forEach event listener with this modified version:
+
+navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = item.querySelector('a').dataset.target;
+        
+        // Special handling for analytics - redirect to separate page
+        if (targetId === 'analytics-section') {
+            window.location.href = 'food-metrics.html';
+            return; // Exit early, don't process as normal tab
+        }
+        
+        // Normal tab switching for other sections
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        pageSections.forEach(section => {
+            section.classList.toggle('hidden', section.id !== targetId);
+            section.classList.toggle('active', section.id === targetId);
         });
+        
+        // Show header only on dashboard
+        const header = document.getElementById('dashboard-header');
+        if (header) {
+            header.style.display = targetId === 'overview-section' ? 'block' : 'none';
+        }
+        
+        // Initialize functionality for other sections (keeping existing code)
+        if (targetId === 'Campains-section') {
+            setTimeout(initCampaignsFunctionality, 50);
+        }
+        if (targetId === 'requests-section') {
+            setTimeout(initRequestsFunctionality, 50);
+        }
+        
+        window.scrollTo(0, 0);
+    });
+});
         // Heatmap interactivity
         const heatmapContainer = document.querySelector('.heatmap-container');
         // Define your locations with approximate percentages relative to the image size
@@ -2687,6 +2927,35 @@ document.getElementById('create-notification-form').addEventListener('submit', f
         this.reset();
     }
 });
+// Analytics Tabs Functionality
+const initAnalyticsTabsFunctionality = () => {
+    const tabOptions = document.querySelectorAll('.tab-option');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabOptions.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and content
+            tabOptions.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            tab.classList.add('active');
+            
+            // Show corresponding tab content
+            const targetContent = document.getElementById(`${targetTab}-tab`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            
+            // If switching to the food-security tab, reinitialize the analytics functionality
+            if (targetTab === 'food-security') {
+                setTimeout(initAnalyticsFunctionality, 100);
+            }
+        });
+    });
+};
     </script>
 </body>
 </html>

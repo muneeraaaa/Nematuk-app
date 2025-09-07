@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nematuk - Awareness & Engagement Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-light: #FFFEFC;
+            --primary-accent: #B0D9B1;
+            --secondary-accent: #86A789;
+            --text-dark: #4A4A4A;
+            --glass-bg: rgba(255, 254, 252, 0.7);
+            --glass-border: rgba(176, 217, 177, 0.3);
+            --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+            --card-bg: rgba(255, 254, 252, 0.9);
+            --hover-shadow: 0 5px 20px rgba(134, 167, 137, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-accent);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--secondary-accent);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(176, 217, 177, 0.1);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 0.2rem;
+            right: 0.2rem;
+            width: 8px;
+            height: 8px;
+            background: #DC3545;
+            border-radius: 50%;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            border-bottom: 2px solid transparent;
+            color: var(--text-dark);
+            opacity: 0.7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            border-bottom-color: var(--secondary-accent);
+            color: var(--secondary-accent);
+            opacity: 1;
+        }
+
+        .nav-tab:hover {
+            opacity: 1;
+            color: var(--secondary-accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb .active {
+            color: var(--secondary-accent);
+            font-weight: 500;
+        }
+
+        .breadcrumb i {
+            font-size: 0.7rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+            margin: 0;
+        }
+
+        .download-btn {
+            background: var(--accent-gradient);
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .download-btn:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            color: var(--secondary-accent);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-select {
+            background: rgba(176, 217, 177, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            color: var(--text-dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-width: 110px;
+        }
+
+        .chart-container {
+            height: 250px;
+            position: relative;
+        }
+
+        /* Bottom Row Charts */
+        .bottom-charts {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .donut-container {
+            height: 200px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .donut-center {
+            position: absolute;
+            text-align: center;
+        }
+
+        .donut-total {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+        }
+
+        .donut-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        .legend {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .legend-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-value {
+            font-weight: 600;
+            color: var(--secondary-accent);
+        }
+
+        /* Progress Bars */
+        .progress-section {
+            margin-top: 1rem;
+        }
+
+        .progress-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .progress-value {
+            font-weight: 600;
+            color: var(--secondary-accent);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(176, 217, 177, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* AI Insights Sidebar */
+        .ai-sidebar {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-header i {
+            color: var(--secondary-accent);
+            font-size: 1.5rem;
+        }
+
+        .ai-header h3 {
+            color: var(--secondary-accent);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .insight-section {
+            margin-bottom: 2rem;
+        }
+
+        .insight-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .insight-item {
+            background: rgba(176, 217, 177, 0.1);
+            border: 1px solid rgba(176, 217, 177, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .insight-item h5 {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .insight-item p {
+            margin: 0;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        .insight-item strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: var(--accent-gradient);
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 1.5rem;
+        }
+
+        .generate-btn:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-1px);
+        }
+
+        .general-insights {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1.5rem;
+        }
+
+        .general-insight {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .general-insight i {
+            color: var(--secondary-accent);
+            font-size: 1rem;
+            margin-top: 0.1rem;
+            flex-shrink: 0;
+        }
+
+        .general-insight.warning i {
+            color: #F5A635;
+        }
+
+        .general-insight.opportunity i {
+            color: #0bda5b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-sidebar {
+                grid-row: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .bottom-charts {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 0.6rem 0.6rem 0.6rem 2.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dark);
+            opacity: 0.6;
+        }
+
+        /* Bottom Navigation Styles - Add these to your existing CSS */
+        .bottom-nav {
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100%;
+    background: rgba(255, 254, 252, 0.9);
+    border-top: 1px solid var(--glass-border);
+    padding: 0.5rem 0;
+    z-index: 9999;
+    margin-top: auto;
+}
+
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            opacity: 0.7;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item a i {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item a span {
+            font-size: 0.7rem;
+        }
+
+        .nav-item.active a {
+            opacity: 1;
+            color: var(--secondary-accent);
+            transform: translateY(-5px);
+        }
+
+        .nav-item.active a i {
+            text-shadow: 0 0 10px var(--secondary-accent);
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top" style="padding:2rem 0;">
+            <div class="logo" style="flex:1;">
+                <i class="fas fa-chart-bar" style="color: var(--secondary-accent); font-size: 3rem;"></i>
+                <h1 style="font-size: 3rem; font-weight: 500; color: var(--secondary-accent);">Platform Analytics</h1>
+            </div>
+            <div class="header-actions" style="margin-left:auto;">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <!-- Remove Dashboard tab, make Food Security active -->
+            <a href="food-metrics.html" class="nav-tab">
+                <i class="fas fa-wheat-awn"></i>
+                <span>Food Security</span>
+            </a>
+            <a href="#" class="nav-tab active">
+                <i class="fas fa-bullhorn"></i>
+                <span>Awareness & Engagement</span>
+            </a>
+            <a href="policy-metrics.html" class="nav-tab">
+                <i class="fas fa-gavel"></i>
+                <span>Policy Support</span>
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <span>Analytics</span>
+                <i class="fas fa-chevron-right"></i>
+                <span class="active">Awareness & Engagement</span>
+
+
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Awareness & Engagement Dashboard</h1>
+                <button class="download-btn">
+                    <i class="fas fa-download"></i>
+                    <span>Download</span>
+                </button>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Main Charts Column -->
+                <div>
+                    <!-- Top Row Charts -->
+                    <div class="main-charts">
+                        <!-- Campaign Reach Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Campaign Reach</h3>
+                                <div class="chart-controls">
+                                    <select class="chart-select">
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                    </select>
+                                    <select class="chart-select">
+                                        <option>All Emirates</option>
+                                        <option>Abu Dhabi</option>
+                                        <option>Dubai</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="campaign-reach-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Community Involvement Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Community Involvement</h3>
+                                <div class="chart-controls">
+                                    <select class="chart-select">
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                    </select>
+                                    <select class="chart-select">
+                                        <option>All Emirates</option>
+                                        <option>Abu Dhabi</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="community-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Row Charts -->
+                    <div class="bottom-charts" style="margin-top: 1.5rem;">
+                        <!-- Impact Badges Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Impact Badges Earned</h3>
+                                <div class="chart-controls">
+                                    <select class="chart-select">
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="donut-container">
+                                <canvas id="badges-donut"></canvas>
+                                <div class="donut-center">
+                                    <div class="donut-total">1,800</div>
+                                    <div class="donut-label">Total</div>
+                                </div>
+                            </div>
+                            <div class="legend">
+                                <div class="legend-item">
+                                    <div class="legend-left">
+                                        <span class="legend-dot" style="background-color: #0bda5b;"></span>
+                                        <span>Eco-Champion</span>
+                                    </div>
+                                    <span class="legend-value">800</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-left">
+                                        <span class="legend-dot" style="background-color: #F5A635;"></span>
+                                        <span>Waste Warrior</span>
+                                    </div>
+                                    <span class="legend-value">500</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-left">
+                                        <span class="legend-dot" style="background-color: #6366f1;"></span>
+                                        <span>Sustainable Chef</span>
+                                    </div>
+                                    <span class="legend-value">300</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-left">
+                                        <span class="legend-dot" style="background-color: #DC3545;"></span>
+                                        <span>Community Leader</span>
+                                    </div>
+                                    <span class="legend-value">200</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Education Outcomes Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3 class="chart-title">Education Outcomes</h3>
+                                <div class="chart-controls">
+                                    <select class="chart-select">
+                                        <option>2024</option>
+                                        <option>2023</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Awareness Program Completion Rate</span>
+                                        <span class="progress-value">75%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%;"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-label">Professional Course Completion Rate</span>
+                                        <span class="progress-value">60%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insights Sidebar -->
+                <div class="ai-sidebar">
+                    <div class="ai-header">
+                        <i class="fas fa-brain"></i>
+                        <h3>AI Insights</h3>
+                    </div>
+
+                    <div class="insight-section">
+                        <h4>Campaign Effectiveness Predictions</h4>
+                        <div class="insight-item">
+                            <h5>Highest Engagement Potential</h5>
+                            <p><strong>Challenges</strong> are predicted to have the highest engagement with the
+                                <strong>18-24 demographic</strong> in Dubai.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h5>Optimal Launch Timings</h5>
+                            <p>Launch <strong>Social Media Campaigns</strong> <strong>before national holidays</strong>
+                                for maximum reach.</p>
+                        </div>
+                        <div class="insight-item">
+                            <h5>Recommendation for Courses</h5>
+                            <p><strong>Educational Courses</strong> show higher completion rates when launched during
+                                <strong>school semesters</strong>, targeting the <strong>35-44 demographic</strong>.</p>
+                        </div>
+                        <button class="generate-btn">Generate New Predictions</button>
+                    </div>
+
+                    <div class="general-insights">
+                        <h4>General Insights</h4>
+                        <div class="general-insight opportunity">
+                            <i class="fas fa-chart-line"></i>
+                            <span>There's a growing interest in <strong>"Sustainable Cooking"</strong> workshops among
+                                the 25-34 age group in Abu Dhabi.</span>
+                        </div>
+                        <div class="general-insight warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Anomaly detected: Engagement in Sharjah dropped by <strong>15%</strong> last quarter,
+                                which is unusual. Further analysis is recommended.</span>
+                        </div>
+                        <div class="general-insight opportunity">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Opportunity: Gamified educational content could significantly boost engagement for
+                                younger audiences (18-24).</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Initialize charts when page loads
+            document.addEventListener('DOMContentLoaded', function () {
+                // Campaign Reach Bar Chart
+                const reachCtx = document.getElementById('campaign-reach-chart').getContext('2d');
+                new Chart(reachCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
+                        datasets: [{
+                            label: 'Campaign Reach',
+                            data: [50, 100, 20, 75, 30],
+                            backgroundColor: '#86A789',
+                            borderRadius: 4,
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                                grid: { display: false }
+                            },
+                            y: {
+                                ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                                grid: { color: 'rgba(176, 217, 177, 0.2)', drawBorder: false },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Community Involvement Line Chart
+                const communityCtx = document.getElementById('community-chart').getContext('2d');
+                new Chart(communityCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        datasets: [{
+                            label: 'Community Involvement',
+                            data: [180, 50, 100, 200, 150, 50, 120, 80, 120, 150, 180, 220],
+                            borderColor: '#86A789',
+                            backgroundColor: 'rgba(134, 167, 137, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#86A789',
+                            pointBorderColor: '#86A789',
+                            pointRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                                grid: { color: 'rgba(176, 217, 177, 0.2)', drawBorder: false }
+                            },
+                            y: {
+                                ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                                grid: { color: 'rgba(176, 217, 177, 0.2)', drawBorder: false },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                // Impact Badges Donut Chart
+                const badgesCtx = document.getElementById('badges-donut').getContext('2d');
+                new Chart(badgesCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Eco-Champion', 'Waste Warrior', 'Sustainable Chef', 'Community Leader'],
+                        datasets: [{
+                            data: [800, 500, 300, 200],
+                            backgroundColor: ['#0bda5b', '#F5A635', '#6366f1', '#DC3545'],
+                            borderWidth: 3,
+                            borderColor: '#FFFEFC',
+                            cutout: '70%',
+                            hoverOffset: 5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } }
+                    }
+                });
+            });
+            // Add this to your existing script section
+            document.addEventListener('DOMContentLoaded', function () {
+                // Handle navigation clicks
+                const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        // Let the browser handle the navigation to the main dashboard
+                        // The hash will automatically trigger the section switching there
+                    });
+                });
+            });
+        </script>
+
+        <nav class="bottom-nav">
+            <ul class="nav-items">
+                <li class="nav-item">
+                    <a href="admin.html#overview-section">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html#Campains-section">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Campaigns</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html#requests-section">
+                        <i class="fas fa-file-signature"></i>
+                        <span>Requests</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="food-metrics.html">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admin.html#settings-section">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+</body>
+
+</html>

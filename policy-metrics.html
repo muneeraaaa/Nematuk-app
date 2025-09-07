@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nematuk - Policy Support Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-light: #FFFEFC;
+            --primary-accent: #B0D9B1;
+            --secondary-accent: #86A789;
+            --text-dark: #4A4A4A;
+            --glass-bg: rgba(255, 254, 252, 0.7);
+            --glass-border: rgba(176, 217, 177, 0.3);
+            --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
+            --card-bg: rgba(255, 254, 252, 0.9);
+            --hover-shadow: 0 5px 20px rgba(134, 167, 137, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            background: var(--glass-bg);
+            border-bottom: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: var(--secondary-accent);
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-accent);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 0.6rem 0.6rem 0.6rem 2.5rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dark);
+            opacity: 0.6;
+        }
+
+        .notification-btn {
+            position: relative;
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(176, 217, 177, 0.1);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 0.2rem;
+            right: 0.2rem;
+            width: 8px;
+            height: 8px;
+            background: #DC3545;
+            border-radius: 50%;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0;
+            border-bottom: 2px solid transparent;
+            color: var(--text-dark);
+            opacity: 0.7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            border-bottom-color: var(--secondary-accent);
+            color: var(--secondary-accent);
+            opacity: 1;
+        }
+
+        .nav-tab:hover {
+            opacity: 1;
+            color: var(--secondary-accent);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb .active {
+            color: var(--secondary-accent);
+            font-weight: 500;
+        }
+
+        .breadcrumb i {
+            font-size: 0.7rem;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .page-title-section h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+            margin: 0 0 0.5rem 0;
+        }
+
+        .page-subtitle {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        .download-btn {
+            background: var(--accent-gradient);
+            border: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .download-btn:hover {
+            box-shadow: var(--hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            color: var(--secondary-accent);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-select {
+            background: rgba(176, 217, 177, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 0.4rem 0.8rem;
+            color: var(--text-dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-width: 110px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            background: rgba(176, 217, 177, 0.1);
+            border-radius: 6px;
+            padding: 0.2rem;
+        }
+
+        .toggle-btn {
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-gradient);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .chart-container {
+            height: 300px;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .chart-description {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Progress Bars */
+        .progress-section {
+            margin-top: 1rem;
+        }
+
+        .progress-item {
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
+        .progress-value {
+            font-weight: 700;
+            color: var(--secondary-accent);
+            font-size: 1rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(176, 217, 177, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-uae {
+            background: var(--accent-gradient);
+        }
+
+        .progress-un {
+            background: linear-gradient(90deg, #0bda5b 0%, #00a844 100%);
+        }
+
+        .progress-change {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        .positive-change {
+            color: #0bda5b;
+            font-weight: 600;
+        }
+
+        /* AI Insights Sidebar */
+        .ai-sidebar {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .ai-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-header i {
+            color: var(--secondary-accent);
+            font-size: 1.5rem;
+        }
+
+        .ai-header h3 {
+            color: var(--secondary-accent);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .insight-section {
+            margin-bottom: 2rem;
+        }
+
+        .insight-item {
+            background: rgba(176, 217, 177, 0.1);
+            border-left: 4px solid var(--secondary-accent);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .insight-item.cyan {
+            border-left-color: #0bda5b;
+        }
+
+        /* Feedback Section */
+        .feedback-section {
+            margin-bottom: 2rem;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-header i {
+            color: #F5A635;
+            font-size: 1.5rem;
+        }
+
+        .feedback-header h3 {
+            color: var(--secondary-accent);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .feedback-category {
+            margin-bottom: 1.5rem;
+        }
+
+        .feedback-category h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .feedback-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .feedback-icon {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 600;
+            min-width: 80px;
+        }
+
+        .feedback-icon i {
+            font-size: 1rem;
+        }
+
+        .feedback-positive {
+            color: #0bda5b;
+        }
+
+        .feedback-neutral {
+            color: #F5A635;
+        }
+
+        .feedback-negative {
+            color: #DC3545;
+        }
+
+        .feedback-text {
+            color: var(--text-dark);
+            opacity: 0.8;
+            flex: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .chart-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        /* Bottom Navigation Styles - Add these to your existing CSS */
+.bottom-nav {
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    right: 0;
+    width: 100%; 
+    background: rgba(255, 254, 252, 0.9);
+    backdrop-filter: blur(15px); 
+    border-top: 1px solid var(--glass-border);
+    padding: 0.5rem 0; 
+    z-index: 100;
+}
+
+.nav-items { 
+    display: flex; 
+    justify-content: space-around; 
+    list-style: none; 
+    margin: 0; 
+    padding: 0; 
+}
+
+.nav-item a {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    text-decoration: none; 
+    color: var(--text-dark);
+    opacity: 0.7; 
+    padding: 0.5rem; 
+    transition: all 0.3s ease;
+}
+
+.nav-item a i { 
+    font-size: 1.5rem; 
+    margin-bottom: 0.25rem; 
+}
+
+.nav-item a span { 
+    font-size: 0.7rem; 
+}
+
+.nav-item.active a { 
+    opacity: 1; 
+    color: var(--secondary-accent); 
+    transform: translateY(-5px); 
+}
+
+.nav-item.active a i { 
+    text-shadow: 0 0 10px var(--secondary-accent); 
+}
+
+/* Add padding to main content to prevent overlap with bottom nav */
+body {
+    padding-bottom: 80px;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top" style="padding:2rem 0;">
+            <div class="logo" style="flex:1;">
+                <i class="fas fa-chart-bar" style="color: var(--secondary-accent); font-size: 3rem;"></i>
+                <h1 style="font-size: 3rem; font-weight: 500; color: var(--secondary-accent);">Platform Analytics</h1>
+            </div>
+            <div class="header-actions" style="margin-left:auto;">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <a href="food-metrics.html" class="nav-tab">
+                <i class="fas fa-wheat-awn"></i>
+                <span>Food Security</span>
+            </a>
+            <a href="awareness-metrics.html" class="nav-tab">
+                <i class="fas fa-bullhorn"></i>
+                <span>Awareness & Engagement</span>
+            </a>
+            <a href="#" class="nav-tab active">
+                <i class="fas fa-gavel"></i>
+                <span>Policy Support</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <span>Analytics</span>
+            <i class="fas fa-chevron-right"></i>
+            <span class="active">Policy Support</span>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="page-title-section">
+                <h1>Policy Support & Reporting</h1>
+                <p class="page-subtitle">Analyze data to inform policy decisions and drive impactful change in food waste reduction.</p>
+            </div>
+            <button class="download-btn">
+                <i class="fas fa-download"></i>
+                <span>Download Report</span>
+            </button>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Main Section -->
+            <div class="main-section">
+                <!-- Long-Term Vision Indicators -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Long-Term Vision Indicators</h3>
+                    </div>
+
+                    <!-- Predictive Impact Section -->
+                    <div style="margin-bottom: 3rem;">
+                        <div class="chart-header">
+                            <h4 style="color: var(--text-dark); font-size: 1.1rem; font-weight: 600; margin: 0;">Predictive Impact (AI Forecasting)</h4>
+                            <div class="toggle-buttons">
+                                <button class="toggle-btn active">Projection</button>
+                                <button class="toggle-btn">Actuals</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="predictive-chart"></canvas>
+                        </div>
+                        <p class="chart-description">Food Waste Reduction (Tons) - Next 3-6 Months Forecast vs. Historical Data</p>
+                    </div>
+
+                    <!-- Global Alignment Section -->
+                    <div>
+                        <div class="chart-header">
+                            <h4 style="color: var(--text-dark); font-size: 1.1rem; font-weight: 600; margin: 0;">Global Alignment</h4>
+                            <select class="chart-select">
+                                <option>2024 vs 2023</option>
+                                <option>2023 vs 2022</option>
+                                <option>2022 vs 2021</option>
+                            </select>
+                        </div>
+                        <div class="progress-section">
+                            <div class="progress-item">
+                                <div class="progress-header">
+                                    <span class="progress-label">UAE Food Security Strategy 2051</span>
+                                    <span class="progress-value">75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill progress-uae" style="width: 75%;"></div>
+                                </div>
+                                <p class="progress-change">2024 Progress. <span class="positive-change">+15% from 2023</span></p>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-header">
+                                    <span class="progress-label">UN SDG 12.3: Halve Food Waste</span>
+                                    <span class="progress-value">60%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill progress-un" style="width: 60%;"></div>
+                                </div>
+                                <p class="progress-change">2024 Progress. <span class="positive-change">+10% from 2023</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <!-- AI Insights -->
+                <div class="ai-sidebar">
+                    <div class="ai-header">
+                        <i class="fas fa-brain"></i>
+                        <h3>AI Insights</h3>
+                    </div>
+                    <div class="insight-section">
+                        <div class="insight-item">
+                            Forecasts indicate a 15% increase in food waste reduction over the next 6 months if current initiatives are maintained.
+                        </div>
+                        <div class="insight-item cyan">
+                            To accelerate progress towards UN SDG 12.3, consider launching targeted campaigns in high-waste sectors identified in the monthly summary.
+                        </div>
+                        <div class="insight-item">
+                            The positive trend in UAE Food Security Strategy alignment is strongly correlated with business-level incentives. Policy enhancement in this area is recommended.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Loop -->
+                <div class="ai-sidebar">
+                    <div class="feedback-header">
+                        <i class="fas fa-comments"></i>
+                        <h3>Feedback Loop</h3>
+                    </div>
+
+                    <div class="feedback-category">
+                        <h4>Community Feedback</h4>
+                        <div class="feedback-item">
+                            <div class="feedback-icon feedback-positive">
+                                <i class="fas fa-smile"></i>
+                                <span>Positive</span>
+                            </div>
+                            <div class="feedback-text">"The new community fridge initiative is fantastic! It's so easy to donate."</div>
+                        </div>
+                        <div class="feedback-item">
+                            <div class="feedback-icon feedback-neutral">
+                                <i class="fas fa-meh"></i>
+                                <span>Suggestion</span>
+                            </div>
+                            <div class="feedback-text">"Could we get more collection points in the downtown area? It would help more people participate."</div>
+                        </div>
+                        <div class="feedback-item">
+                            <div class="feedback-icon feedback-negative">
+                                <i class="fas fa-frown"></i>
+                                <span>Concern</span>
+                            </div>
+                            <div class="feedback-text">"The app was a bit slow to update the donation status last week."</div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-category">
+                        <h4>Business Feedback</h4>
+                        <div class="feedback-item">
+                            <div class="feedback-icon feedback-positive">
+                                <i class="fas fa-smile"></i>
+                                <span>Positive</span>
+                            </div>
+                            <div class="feedback-text">"The new reporting dashboard simplifies our compliance process significantly."</div>
+                        </div>
+                        <div class="feedback-item">
+                            <div class="feedback-icon feedback-neutral">
+                                <i class="fas fa-meh"></i>
+                                <span>Suggestion</span>
+                            </div>
+                            <div class="feedback-text">"We'd love to see a feature for scheduling recurring pickups for surplus food."</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize chart when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Predictive Impact Chart
+            const predictiveCtx = document.getElementById('predictive-chart').getContext('2d');
+            new Chart(predictiveCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: [{
+                        label: 'Historical Data',
+                        data: [120, 150, 180, 160, 200, 220, 190, 240, 210, 280, 250, 300],
+                        borderColor: '#86A789',
+                        backgroundColor: 'rgba(134, 167, 137, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#86A789',
+                        pointBorderColor: '#86A789',
+                        pointRadius: 4
+                    }, {
+                        label: 'Forecast',
+                        data: [null, null, null, null, null, null, null, null, 210, 320, 350, 380],
+                        borderColor: '#B0D9B1',
+                        backgroundColor: 'rgba(176, 217, 177, 0.1)',
+                        fill: false,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#B0D9B1',
+                        pointBorderColor: '#B0D9B1',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { 
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#4A4A4A',
+                                font: { family: 'Poppins', size: 12 }
+                            }
+                        } 
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                            grid: { color: 'rgba(176, 217, 177, 0.2)', drawBorder: false }
+                        },
+                        y: {
+                            ticks: { color: '#4A4A4A', font: { family: 'Poppins', size: 11 } },
+                            grid: { color: 'rgba(176, 217, 177, 0.2)', drawBorder: false },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Toggle button functionality
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+        // Add this to your existing script section
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle navigation clicks
+    const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Let the browser handle the navigation to the main dashboard
+            // The hash will automatically trigger the section switching there
+        });
+    });
+});
+    </script>
+    <nav class="bottom-nav">
+    <ul class="nav-items">
+        <li class="nav-item">
+            <a href="admin.html#overview-section">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="admin.html#Campains-section">
+                <i class="fas fa-bullhorn"></i>
+                <span>Campaigns</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="admin.html#requests-section">
+                <i class="fas fa-file-signature"></i>
+                <span>Requests</span>
+            </a>
+        </li>
+        <li class="nav-item active">
+            <a href="food-metrics.html">
+                <i class="fas fa-chart-bar"></i>
+                <span>Analytics</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="admin.html#settings-section">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
