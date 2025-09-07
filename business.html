@@ -1,20 +1,17 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Dashboard | Ne'matuk</title>
     <link rel="shortcut icon" href="./img/logo_transparent.png" type="image/x-icon">
-
-    <!-- Google Fonts: Poppins -->
+    <!-- Google Fonts: Poppins and Amiri for Arabic -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Amiri&display=swap" rel="stylesheet">
-
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-
     <style>
         /* --- "Sage & Earth Tones" Color Scheme --- */
         :root {
@@ -27,8 +24,9 @@
             --light-overlay-bg: rgba(248, 244, 227, 0.8);
             --accent-gradient: linear-gradient(90deg, var(--primary-accent) 0%, var(--secondary-accent) 100%);
             --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --tab-active: #86A789;
+            --tab-inactive: #D3D3D3;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
         #particles-js { position: fixed; width: 100vw; height: 100vh; top: 0; left: 0; z-index: -1; }
@@ -36,12 +34,10 @@
         body::-webkit-scrollbar { width: 8px; }
         body::-webkit-scrollbar-track { background: var(--bg-light); }
         body::-webkit-scrollbar-thumb { background: var(--accent-gradient); border-radius: 4px; }
-
         header { display: flex; align-items: center; margin-bottom: 2rem; }
         .header-icon { font-size: 2.5rem; margin-right: 1.5rem; color: var(--secondary-accent); }
         .header-title h1 { font-size: 2.5rem; font-weight: 600; color: var(--text-dark); }
         .header-title p { font-size: 1.1rem; opacity: 0.8; color: var(--text-dark); }
-
         .section-title { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; opacity: 0.9; text-align: left; color: var(--text-dark); }
         .glass-card { 
             background: var(--glass-bg); 
@@ -54,11 +50,9 @@
             box-shadow: var(--card-shadow);
         }
         .glass-card:hover { transform: translateY(-3px); }
-
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .action-bar { 
             display: inline-flex; 
             align-items: center; 
@@ -75,7 +69,6 @@
         }
         .action-bar:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-3px); }
         .action-bar i { margin-right: 0.75rem; }
-
         .carousel { 
             display: flex; 
             overflow-x: auto; 
@@ -94,7 +87,6 @@
         .stat-card i { font-size: 2rem; margin-bottom: 0.8rem; color: var(--secondary-accent); }
         .stat-card .value { font-size: 1.8rem; font-weight: 700; color: var(--secondary-accent); }
         .stat-card .label { font-size: 0.9rem; opacity: 0.8; color: var(--text-dark); }
-
         .search-filter-container {
             display: flex;
             gap: 1rem;
@@ -120,7 +112,6 @@
             color: var(--text-dark);
             font-family: inherit;
         }
-
         .inventory-table {
             width: 100%;
             border-collapse: collapse;
@@ -138,7 +129,6 @@
         }
         .inventory-table tr:last-child td { border-bottom: none; }
         .low-stock { color: #d9534f; font-weight: 600; }
-
         .status-tag {
             display: inline-block;
             padding: 0.3rem 0.8rem;
@@ -150,7 +140,6 @@
         .status-reserved { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
         .status-collected { background-color: rgba(74, 74, 74, 0.2); color: #aab8c5; }
         .time-left { font-size: 0.9rem; opacity: 0.8; }
-
         .request-item { 
             display: flex; 
             justify-content: space-between; 
@@ -182,7 +171,6 @@
         .action-btn.decline { background: rgba(220, 53, 69, 0.3); }
         .action-btn:hover { box-shadow: 0 0 15px var(--secondary-accent); transform: translateY(-2px); }
         .action-btn.decline:hover { box-shadow: 0 0 15px #dc3545; }
-
         .badge {
             display: inline-block;
             padding: 0.2rem 0.5rem;
@@ -196,7 +184,6 @@
         .badge-pending { background-color: rgba(245, 166, 35, 0.3); color: #F5A623; }
         .badge-approved { background-color: rgba(176, 217, 177, 0.3); color: #B0D9B1; }
         .badge-rejected { background-color: rgba(220, 53, 69, 0.3); color: #dc3545; }
-
         .impact-grid { 
             display: grid; 
             grid-template-columns: 1fr; 
@@ -204,13 +191,52 @@
             margin-bottom: 3rem; 
         }
         .chart-container { height: 350px; }
-
-        .telegram-layout {
+        /* Modified Messages Section with Split View */
+        .split-view-container {
             display: flex;
             height: 600px;
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        .split-panel {
+            height: 100%;
+            overflow: auto;
+            transition: width 0.3s ease;
+        }
+        .split-divider {
+            width: 8px;
+            background: var(--primary-accent);
+            cursor: col-resize;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .split-divider::before {
+            content: "⋮";
+            color: white;
+            font-size: 24px;
+            transform: rotate(90deg);
+        }
+        .split-divider:hover {
+            background: var(--secondary-accent);
+        }
+        .requests-panel {
+            background: white;
+            padding: 1.5rem;
+        }
+        .messages-panel {
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-layout {
+            display: flex;
+            height: 100%;
+            border-radius: 0;
         }
         .chat-sidebar {
             width: 30%;
@@ -295,7 +321,6 @@
             border-radius: 8px;
             cursor: pointer;
         }
-
         .profile-options { display: flex; flex-direction: column; gap: 1rem; }
         .profile-option { 
             display: flex; 
@@ -309,7 +334,6 @@
         .profile-option:hover { background: rgba(74, 74, 74, 0.1); transform: translateX(5px); }
         .profile-option i { font-size: 1.2rem; width: 40px; opacity: 0.8; }
         .profile-option span { flex: 1; font-weight: 500; }
-
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
@@ -344,7 +368,6 @@
         .nav-item a span { font-size: 0.7rem; }
         .nav-item.active a { opacity: 1; color: var(--secondary-accent); transform: translateY(-5px); }
         .nav-item.active a i { text-shadow: 0 0 10px var(--secondary-accent); }
-
         /* Language Toggle Button */
         .language-toggle {
             position: fixed;
@@ -369,25 +392,602 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
-
+        /* BridgePoint Compliance Section Styles */
+        .bridgepoint-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            padding: 0;
+            list-style: none;
+            border-bottom: 2px solid var(--glass-border);
+        }
+        .bridgepoint-tab {
+            padding: 12px 24px;
+            background: var(--tab-inactive);
+            border: none;
+            border-radius: 12px 12px 0 0;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+        .bridgepoint-tab.active {
+            background: var(--tab-active);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .bridgepoint-tab:hover:not(.active) {
+            background: var(--glass-bg);
+            transform: translateY(-2px);
+        }
+        .bridgepoint-content {
+            display: none;
+            padding: 2rem 0;
+        }
+        .bridgepoint-content.active {
+            display: block;
+        }
+        .compliance-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .compliance-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .compliance-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .compliance-card p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            opacity: 0.9;
+        }
+        .compliance-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            width: fit-content;
+        }
+        .status-compliant {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .status-violation {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+        }
+        .document-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .document-item:last-child {
+            border-bottom: none;
+        }
+        .document-name {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .document-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+        }
+        .status-uploaded {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-required {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        .faq-item {
+            margin-bottom: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 1rem 1.5rem;
+            background: var(--glass-bg);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background: white;
+        }
+        .faq-item.active .faq-answer {
+            padding: 1rem 1.5rem;
+            max-height: 500px;
+        }
+        .contact-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .contact-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .contact-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .contact-card p {
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+        .upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: var(--secondary-accent);
+            background: rgba(176, 217, 177, 0.1);
+        }
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--secondary-accent);
+            margin-bottom: 1rem;
+        }
+        .upload-area p {
+            margin: 0;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .notification-item {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .notification-icon {
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+        .notification-content {
+            flex: 1;
+        }
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-dark);
+        }
+        .notification-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+        }
+        .notification-new {
+            border-left: 4px solid var(--secondary-accent);
+        }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+        .checklist-status {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        .checklist-complete {
+            background: #28a745;
+            color: white;
+        }
+        .checklist-pending {
+            background: #ffc107;
+            color: white;
+        }
+        .checklist-incomplete {
+            background: #dc3545;
+            color: white;
+        }
+        .report-card {
+            background: white;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .report-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .report-date {
+            color: var(--text-dark);
+            opacity: 0.7;
+        }
+        .report-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .report-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-submitted {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        .status-reviewed {
+            background: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+        }
+        .status-action-required {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        /* Food Carbon Footprint Calculator Styles */
+        .calculator-container {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            border-radius: 20px;
+            background: white;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+        }
+        .calculator-tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--glass-border);
+        }
+        .calculator-tab {
+            padding: 12px 24px;
+            background: var(--tab-inactive);
+            border: none;
+            border-radius: 12px 12px 0 0;
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+        .calculator-tab.active {
+            background: var(--tab-active);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .calculator-tab:hover:not(.active) {
+            background: var(--glass-bg);
+            transform: translateY(-2px);
+        }
+        .calculator-content {
+            display: none;
+        }
+        .calculator-content.active {
+            display: block;
+        }
+        .calculator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .form-control {
+            padding: 0.8rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+        .ingredient-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        .ingredient-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            background: var(--glass-bg);
+            color: var(--text-dark);
+            font-family: inherit;
+        }
+        .remove-ingredient {
+            background: rgba(220, 53, 69, 0.3);
+            color: #dc3545;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-ingredient {
+            background: var(--accent-gradient);
+            color: var(--text-dark);
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .calculate-btn {
+            background: var(--accent-gradient);
+            color: var(--text-dark);
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--secondary-accent);
+        }
+        .result-card {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            display: none;
+        }
+        .result-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .carbon-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+        }
+        .carbon-unit {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        .rating {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .rating-a { background: #4CAF50; color: white; }
+        .rating-b { background: #8BC34A; color: white; }
+        .rating-c { background: #FFC107; color: white; }
+        .rating-d { background: #FF9800; color: white; }
+        .rating-e { background: #F44336; color: white; }
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .detail-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .detail-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-accent);
+            margin: 0.5rem 0;
+        }
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: var(--text-dark);
+        }
+        .comparison-chart {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+        }
+        .chart-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .comparison-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .comparison-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .item-label {
+            width: 150px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .bar-container {
+            flex: 1;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .bar {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 1s ease-in-out;
+        }
+        .bar-user {
+            background: var(--secondary-accent);
+        }
+        .bar-average {
+            background: #FFC107;
+        }
+        .bar-benchmark {
+            background: #4CAF50;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        .loading.active {
+            display: block;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(134, 167, 137, 0.3);
+            border-top: 4px solid var(--secondary-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         @media (max-width: 768px) {
             .impact-grid { grid-template-columns: 1fr; }
             .search-filter-container { flex-direction: column; }
             .carousel { flex-direction: column; }
             .stat-card { min-width: auto; }
-            .telegram-layout { flex-direction: column; }
-            .chat-sidebar, .chat-main { width: 100%; }
+            .split-view-container { flex-direction: column; height: auto; }
+            .split-divider { width: 100%; height: 8px; cursor: row-resize; }
+            .split-divider::before { transform: rotate(0deg); }
             .request-item { flex-direction: column; align-items: flex-start; }
             .actions { margin-top: 1rem; align-self: flex-end; }
+            .bridgepoint-tabs { flex-direction: column; border-bottom: none; }
+            .bridgepoint-tab { border-radius: 12px; margin-bottom: 0.5rem; }
+            .contact-options { grid-template-columns: 1fr; }
+            .calculator-form { gap: 1rem; }
+            .ingredient-row { flex-direction: column; align-items: stretch; }
+            .result-details { grid-template-columns: 1fr; }
+        }
+        /* Arabic Language Styles */
+        body.ar {
+            font-family: 'Amiri', serif;
+            direction: rtl;
+        }
+        body.ar .bridgepoint-tabs {
+            flex-direction: row;
+        }
+        body.ar .split-divider::before {
+            transform: rotate(270deg);
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-    
     <!-- Language Toggle Button -->
     <button id="language-toggle" class="language-toggle">EN</button>
-
     <div class="dashboard-container">
         <header>
             <div class="header-icon"><i class="fas fa-store"></i></div>
@@ -396,12 +996,10 @@
                 <p id="header-subtitle">Welcome to Artisan Bakes Cafe</p>
             </div>
         </header>
-
         <main>
             <!-- DASHBOARD SECTION -->
             <section id="surplus-section" class="page-section active">
                 <h2 class="section-title" id="welcome-title">Welcome, Artisan Bakes Cafe!</h2>
-                
                 <div class="carousel">
                     <div class="glass-card stat-card">
                         <i class="fas fa-utensils"></i>
@@ -424,7 +1022,6 @@
                         <div class="label" id="expiry-label">Items Near Expiry</div>
                     </div>
                 </div>
-
                 <div class="search-filter-container">
                     <input type="text" class="search-bar" id="inventory-search" placeholder="Search inventory..." />
                     <select class="filter-select" id="availability-filter">
@@ -436,7 +1033,6 @@
                         <i class="fas fa-plus"></i> <span id="add-item-text">Add New Item</span>
                     </button>
                 </div>
-
                 <div class="glass-card">
                     <table class="inventory-table">
                         <thead>
@@ -457,39 +1053,648 @@
                     </table>
                 </div>
             </section>
-
-            <!-- REQUESTS SECTION -->
-            <section id="requests-section" class="page-section">
-                <h2 class="section-title" id="requests-title">Requests Management</h2>
-                
-                <div class="search-filter-container">
-                    <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
-                    <select class="filter-select" id="request-type-filter">
-                        <option value="all">All Types</option>
-                        <option value="user">User</option>
-                        <option value="company">Company</option>
-                    </select>
-                    <select class="filter-select" id="request-status-filter">
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
+            <!-- BridgePoint SECTION -->
+            <section id="BridgePoint-section" class="page-section">
+                <h2 class="section-title" id="BridgePoint-title">BridgePoint Compliance Portal</h2>
+                <!-- Tabs Navigation -->
+                <ul class="bridgepoint-tabs">
+                    <li><button class="bridgepoint-tab active" data-tab="licensing">Licensing & Registration</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="permits">Permits & Certifications</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="compliance">Compliance & Regulations</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="requests">Requests & Approvals</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="reports">Reports & Audits</button></li>
+                    <li><button class="bridgepoint-tab" data-tab="support">Support & Guidance</button></li>
+                </ul>
+                <!-- Licensing & Registration Tab -->
+                <div id="licensing" class="bridgepoint-content active">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-file-contract"></i> <span id="apply-license-title">Apply for New Business License</span></h3>
+                        <p id="apply-license-desc">Submit your application for a new business license. Our team will review your documents and contact you within 3-5 business days.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-plus"></i> <span id="apply-license-btn">Apply Now</span>
+                        </button>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-sync-alt"></i> <span id="renew-license-title">Renew Existing License</span></h3>
+                        <p id="renew-license-desc">Check the status of your current license and renew before expiration to avoid any interruptions to your business operations.</p>
+                        <div class="compliance-status status-compliant">
+                            <i class="fas fa-check-circle"></i> <span id="license-status">License Active - Expires: Dec 15, 2024</span>
+                        </div>
+                        <button class="action-bar">
+                            <i class="fas fa-sync"></i> <span id="renew-license-btn">Renew License</span>
+                        </button>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-upload"></i> <span id="upload-docs-title">Upload Required Documents</span></h3>
+                        <p id="upload-docs-desc">Upload necessary documents for your license application or renewal. Accepted formats: PDF, JPG, PNG (max 10MB).</p>
+                        <div class="upload-area" id="document-upload">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p id="upload-prompt">Click to upload or drag and drop files here</p>
+                        </div>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Business Registration Certificate</span>
+                                <span class="document-status status-uploaded">Uploaded</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Owner ID Copy</span>
+                                <span class="document-status status-uploaded">Uploaded</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Floor Plan</span>
+                                <span class="document-status status-required">Required</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-
-                <button class="action-bar" id="issue-request-btn">
-                    <i class="fas fa-file-alt"></i> <span id="issue-request-text">Issue a Request</span>
-                </button>
-
-                <div class="glass-card" id="requests-list" style="margin-top: 1.5rem;">
-                    <!-- Requests will be populated by JS -->
+                <!-- Permits & Certifications Tab -->
+                <div id="permits" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-utensils"></i> <span id="food-permit-title">Food Safety / Health Permits</span></h3>
+                        <p id="food-permit-desc">Apply for food safety and health permits required for your business operations. Ensure your establishment meets all health and safety standards.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-file-medical"></i> <span id="apply-food-permit-btn">Apply for Permit</span>
+                        </button>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-tree"></i> <span id="env-cert-title">Environmental Compliance Certificates</span></h3>
+                        <p id="env-cert-desc">Obtain environmental compliance certificates to demonstrate your commitment to sustainable business practices and environmental regulations.</p>
+                        <div class="compliance-status status-pending">
+                            <i class="fas fa-clock"></i> <span id="env-status">Application Pending - Review in Progress</span>
+                        </div>
+                        <button class="action-bar">
+                            <i class="fas fa-leaf"></i> <span id="apply-env-cert-btn">Apply for Certificate</span>
+                        </button>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-city"></i> <span id="municipal-title">Municipality Approvals</span></h3>
+                        <p id="municipal-desc">Apply for necessary municipality approvals for distribution, logistics, waste management, and other operational aspects of your business.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Distribution License</span>
+                                <span class="document-status status-uploaded">Approved</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Plan</span>
+                                <span class="document-status status-uploaded">Approved</span>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Parking & Loading Zone</span>
+                                <span class="document-status status-required">Application Needed</span>
+                            </li>
+                        </ul>
+                        <button class="action-bar">
+                            <i class="fas fa-building"></i> <span id="apply-municipal-btn">Apply for Approval</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Compliance & Regulations Tab -->
+                <div id="compliance" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-clipboard-check"></i> <span id="checklist-title">Compliance Checklist</span></h3>
+                        <p id="checklist-desc">Review the mandatory compliance requirements for your business type. Ensure all items are completed to maintain good standing.</p>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item1">Valid business license displayed at premises</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item2">Food handler certificates for all staff</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-pending">!</div>
+                            <div><span id="checklist-item3">Quarterly pest control inspection (Due: Nov 30, 2024)</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-incomplete">✗</div>
+                            <div><span id="checklist-item4">Employee health and safety training records</span></div>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checklist-status checklist-complete">✓</div>
+                            <div><span id="checklist-item5">Proper waste segregation and disposal system</span></div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-bell"></i> <span id="notifications-title">Regulation Notifications</span></h3>
+                        <p id="notifications-desc">Stay updated with the latest regulatory changes and requirements that may affect your business operations.</p>
+                        <div class="notification-item notification-new">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-circle" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title1">New Food Safety Regulations Effective Jan 2025</div>
+                                <p id="notif-desc1">Updated guidelines for food storage temperatures and handling procedures. Compliance required by January 15, 2025.</p>
+                                <div class="notification-date">Posted: Oct 15, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-info-circle" style="color: #17a2b8;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title2">Waste Management Policy Update</div>
+                                <p id="notif-desc2">Revised requirements for commercial waste disposal. New documentation needed for quarterly reporting.</p>
+                                <div class="notification-date">Posted: Sep 28, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="notif-title3">Health Inspection Passed</div>
+                                <p id="notif-desc3">Your establishment has passed the quarterly health inspection with no violations noted.</p>
+                                <div class="notification-date">Posted: Aug 12, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-book"></i> <span id="guidance-title">Guidance Documents & Official Policies</span></h3>
+                        <p id="guidance-desc">Access official guidance documents, policy manuals, and regulatory frameworks to ensure your business remains compliant.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Food Safety Standards Manual</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Guidelines</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Employee Health & Safety Policy</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Environmental Compliance Framework</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Requests & Approvals Tab -->
+                <div id="requests" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-file-alt"></i> <span id="submit-request-title">Submit Official Requests</span></h3>
+                        <p id="submit-request-desc">Submit requests for business expansion, additional storage space, waste handling modifications, or other operational changes.</p>
+                        <button class="action-bar">
+                            <i class="fas fa-plus"></i> <span id="new-request-btn">Submit New Request</span>
+                        </button>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-tasks"></i> <span id="track-requests-title">Track Approval Process</span></h3>
+                        <p id="track-requests-desc">Monitor the status of your submitted requests with real-time updates on their progress through the approval workflow.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clock" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title1">Expansion Request - Additional Seating</div>
+                                <p id="request-desc1">Request for 20 additional indoor seating capacity. Currently under review by Planning Department.</p>
+                                <div class="notification-date">Submitted: Oct 5, 2024 | Status: Under Review</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title2">Waste Handling Modification</div>
+                                <p id="request-desc2">Request to modify waste collection schedule from daily to twice daily. Approved and implemented.</p>
+                                <div class="notification-date">Submitted: Sep 15, 2024 | Status: Approved</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="request-title3">Outdoor Seating Expansion</div>
+                                <p id="request-desc3">Request for outdoor seating area expansion. Additional documentation required regarding pedestrian access.</p>
+                                <div class="notification-date">Submitted: Aug 20, 2024 | Status: Action Required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-comments"></i> <span id="messaging-title">Direct Messaging with Authority</span></h3>
+                        <p id="messaging-desc">Communicate directly with regulatory authorities regarding your requests, compliance questions, or clarification needs.</p>
+                        <div class="upload-area" style="margin: 1rem 0;">
+                            <i class="fas fa-comment-dots"></i>
+                            <p id="message-prompt">Click here to start a conversation with the Business Compliance Office</p>
+                        </div>
+                        <div class="notification-item" style="margin-top: 1rem;">
+                            <div class="notification-icon">
+                                <i class="fas fa-reply" style="color: #17a2b8;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="message-title1">Response from Compliance Officer</div>
+                                <p id="message-desc1">Regarding your waste handling modification request: Approved with the condition that additional bins must be clearly labeled.</p>
+                                <div class="notification-date">Responded: Sep 18, 2024</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Reports & Audits Tab -->
+                <div id="reports" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-clipboard-list"></i> <span id="submit-reports-title">Submit Mandatory Reports</span></h3>
+                        <p id="submit-reports-desc">Submit required reports including food waste logs, distribution reports, and other regulatory documentation on a scheduled basis.</p>
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title" id="report-title1">Monthly Food Waste Log</div>
+                                <div class="report-date">Due: 5th of each month</div>
+                            </div>
+                            <p id="report-desc1">Record all food waste generated, including type, quantity, and disposal method.</p>
+                            <div class="report-status status-submitted">Submitted</div>
+                            <div class="report-actions">
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-edit"></i> Edit Report
+                                </button>
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-file-pdf"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="report-card">
+                            <div class="report-header">
+                                <div class="report-title" id="report-title2">Quarterly Distribution Report</div>
+                                <div class="report-date">Due: Jan 10, Apr 10, Jul 10, Oct 10</div>
+                            </div>
+                            <p id="report-desc2">Report on all distributed food items, recipients, and quantities for the quarter.</p>
+                            <div class="report-status status-action-required">Action Required</div>
+                            <div class="report-actions">
+                                <button class="action-btn" style="font-size: 0.9rem;">
+                                    <i class="fas fa-upload"></i> Submit Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-search"></i> <span id="inspection-results-title">Inspection Results</span></h3>
+                        <p id="inspection-results-desc">View results from recent inspections conducted by regulatory authorities at your establishment.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title1">Health & Safety Inspection - Oct 2024</div>
+                                <p id="inspection-desc1">Score: 98/100. Excellent hygiene practices observed. Minor suggestion: Consider additional hand sanitizer stations.</p>
+                                <div class="notification-date">Inspected: Oct 12, 2024 | Inspector: Ahmed Al Mansoori</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title2">Waste Management Audit - Jul 2024</div>
+                                <p id="inspection-desc2">Score: 95/100. Proper waste segregation observed. Suggestion: Increase recycling of cardboard packaging.</p>
+                                <div class="notification-date">Inspected: Jul 8, 2024 | Inspector: Fatima Al Hashimi</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clipboard-check" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="inspection-title3">Food Safety Inspection - Apr 2024</div>
+                                <p id="inspection-desc3">Score: 87/100. Temperature logs incomplete for 2 days. Corrective action required: Implement daily temperature recording.</p>
+                                <div class="notification-date">Inspected: Apr 15, 2024 | Inspector: Mohammed Al Ketbi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> <span id="feedback-title">Feedback & Corrective Actions</span></h3>
+                        <p id="feedback-desc">Review feedback from inspectors and implement required corrective actions to maintain compliance.</p>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle" style="color: #28a745;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="feedback-title1">Corrective Action Completed</div>
+                                <p id="feedback-desc1">Temperature logging system upgraded with digital monitoring. Verification completed on May 10, 2024.</p>
+                                <div class="notification-date">Closed: May 10, 2024</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <div class="notification-icon">
+                                <i class="fas fa-clock" style="color: #ffc107;"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title" id="feedback-title2">Staff Training Requirement</div>
+                                <p id="feedback-desc2">All food handling staff must complete updated food safety training by December 1, 2024.</p>
+                                <div class="notification-date">Due: Dec 1, 2024 | Status: In Progress</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Support & Guidance Tab -->
+                <div id="support" class="bridgepoint-content">
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-question-circle"></i> <span id="faq-title">FAQ for Business Owners</span></h3>
+                        <p id="faq-desc">Find answers to frequently asked questions about compliance, licensing, permits, and regulatory requirements.</p>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q1">How long does it take to process a new business license?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a1">New business license applications are typically processed within 5-7 business days after all required documents have been submitted and verified. Processing times may vary depending on the complexity of the business and completeness of the application.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q2">What documents do I need for a food safety permit?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a2">For a food safety permit, you will need: 1) Business license, 2) Floor plan of your establishment, 3) Menu and food handling procedures, 4) Certificates of food handler training for all staff, 5) Pest control contract, and 6) Waste management plan. All documents must be current and valid.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q3">How do I renew my environmental compliance certificate?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a3">Environmental compliance certificates can be renewed through the BridgePoint portal 60 days before expiration. You will need to submit updated documentation showing continued compliance with environmental regulations, including waste disposal records, energy consumption reports, and any required environmental impact assessments.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span id="faq-q4">What happens if I miss a mandatory report deadline?</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="faq-answer">
+                                <p id="faq-a4">Missing a mandatory report deadline may result in a warning for first-time offenses. Repeated failures to submit reports on time may lead to fines or suspension of certain business privileges. We recommend setting calendar reminders for all report deadlines and submitting reports at least 2-3 days before the due date to avoid any issues.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-headset"></i> <span id="contact-desk-title">Contact Desk for Regulatory Help</span></h3>
+                        <p id="contact-desk-desc">Get personalized assistance from our regulatory compliance specialists for any questions or issues you may encounter.</p>
+                        <div class="contact-options">
+                            <div class="contact-card">
+                                <i class="fas fa-phone"></i>
+                                <h3 id="phone-support">Phone Support</h3>
+                                <p id="phone-desc">Call our compliance hotline for immediate assistance</p>
+                                <div class="action-btn" style="width: 100%;">+971 4 123 4567</div>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fas fa-envelope"></i>
+                                <h3 id="email-support">Email Support</h3>
+                                <p id="email-desc">Send detailed inquiries and receive written responses</p>
+                                <div class="action-btn" style="width: 100%;">compliance@ne-matuk.ae</div>
+                            </div>
+                            <div class="contact-card">
+                                <i class="fas fa-calendar-check"></i>
+                                <h3 id="appointment">Schedule Appointment</h3>
+                                <p id="appointment-desc">Book a virtual or in-person consultation</p>
+                                <button class="action-btn" style="width: 100%;">
+                                    <i class="fas fa-calendar"></i> Book Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="compliance-card">
+                        <h3><i class="fas fa-graduation-cap"></i> <span id="tutorials-title">Tutorials & Compliance Guidelines</span></h3>
+                        <p id="tutorials-desc">Access step-by-step tutorials and comprehensive guidelines to help you navigate compliance requirements successfully.</p>
+                        <ul class="document-list">
+                            <li class="document-item">
+                                <span class="document-name">Step-by-Step: Applying for Business Licenses</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Food Safety Compliance Checklist</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Waste Management Best Practices</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Environmental Compliance Guide</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </li>
+                            <li class="document-item">
+                                <span class="document-name">Employee Training Requirements</span>
+                                <button class="action-btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                                    <i class="fas fa-play"></i> Watch Tutorial
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </section>
-
             <!-- IMPACT SECTION -->
             <section id="impact-section" class="page-section">
                 <h2 class="section-title" id="impact-title">Business Impact</h2>
-                
+                <!-- Food Carbon Footprint Calculator -->
+                <div class="calculator-container">
+                    <h2 class="section-title">Food Carbon Footprint Calculator</h2>
+                    <p style="margin-bottom: 1.5rem; opacity: 0.8;">Calculate the carbon footprint of your food items or recipes to understand their environmental impact.</p>
+                    <div class="calculator-tabs">
+                        <button class="calculator-tab active" data-calculator="single">Single Item</button>
+                        <button class="calculator-tab" data-calculator="recipe">Recipe</button>
+                    </div>
+                    <div id="single-calculator" class="calculator-content active">
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="food-item">Select Food Item</label>
+                                <select id="food-item" class="form-control">
+                                    <option value="">-- Select a food item --</option>
+                                    <option value="Beef">Beef</option>
+                                    <option value="Lamb">Lamb</option>
+                                    <option value="Cheese">Cheese</option>
+                                    <option value="Pork">Pork</option>
+                                    <option value="Chicken">Chicken</option>
+                                    <option value="Eggs">Eggs</option>
+                                    <option value="Rice">Rice</option>
+                                    <option value="Fish">Fish</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Vegetables">Vegetables</option>
+                                    <option value="Fruits">Fruits</option>
+                                    <option value="Bread">Bread</option>
+                                    <option value="Pasta">Pasta</option>
+                                    <option value="Potatoes">Potatoes</option>
+                                    <option value="Tofu">Tofu</option>
+                                    <option value="Nuts">Nuts</option>
+                                    <option value="Coffee">Coffee</option>
+                                    <option value="Chocolate">Chocolate</option>
+                                    <option value="Croissant">Croissant</option>
+                                    <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                                    <option value="Blueberry Muffin">Blueberry Muffin</option>
+                                    <option value="Baguette">Baguette</option>
+                                    <option value="Cinnamon Roll">Cinnamon Roll</option>
+                                    <option value="Apple Pie">Apple Pie</option>
+                                    <option value="Chocolate Eclair">Chocolate Eclair</option>
+                                    <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                                    <option value="Palmier">Palmier</option>
+                                    <option value="Cheese Danish">Cheese Danish</option>
+                                    <option value="Almond Croissant">Almond Croissant</option>
+                                    <option value="Banana Bread">Banana Bread</option>
+                                    <option value="Pretzel">Pretzel</option>
+                                    <option value="Raspberry Tart">Raspberry Tart</option>
+                                    <option value="Sourdough Loaf">Sourdough Loaf</option>
+                                    <option value="Lemon Bar">Lemon Bar</option>
+                                    <option value="Chocolate Brownie">Chocolate Brownie</option>
+                                    <option value="Pumpkin Scone">Pumpkin Scone</option>
+                                    <option value="Focaccia Bread">Focaccia Bread</option>
+                                    <option value="Macaron">Macaron</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="food-quantity">Quantity (grams)</label>
+                                <input type="number" id="food-quantity" class="form-control" min="1" value="100" placeholder="Enter quantity in grams">
+                            </div>
+                            <button id="calculate-single" class="calculate-btn">
+                                <i class="fas fa-calculator"></i> Calculate Carbon Footprint
+                            </button>
+                        </div>
+                    </div>
+                    <div id="recipe-calculator" class="calculator-content">
+                        <div class="calculator-form">
+                            <div class="form-group">
+                                <label for="recipe-name">Recipe Name</label>
+                                <input type="text" id="recipe-name" class="form-control" placeholder="Enter recipe name">
+                            </div>
+                            <div class="form-group">
+                                <label>Ingredients</label>
+                                <div id="ingredients-container">
+                                    <div class="ingredient-row">
+                                        <select class="ingredient-input ingredient-select">
+                                            <option value="">-- Select ingredient --</option>
+                                            <option value="Beef">Beef</option>
+                                            <option value="Lamb">Lamb</option>
+                                            <option value="Cheese">Cheese</option>
+                                            <option value="Pork">Pork</option>
+                                            <option value="Chicken">Chicken</option>
+                                            <option value="Eggs">Eggs</option>
+                                            <option value="Rice">Rice</option>
+                                            <option value="Fish">Fish</option>
+                                            <option value="Milk">Milk</option>
+                                            <option value="Vegetables">Vegetables</option>
+                                            <option value="Fruits">Fruits</option>
+                                            <option value="Bread">Bread</option>
+                                            <option value="Pasta">Pasta</option>
+                                            <option value="Potatoes">Potatoes</option>
+                                            <option value="Tofu">Tofu</option>
+                                            <option value="Nuts">Nuts</option>
+                                            <option value="Coffee">Coffee</option>
+                                            <option value="Chocolate">Chocolate</option>
+                                            <option value="Croissant">Croissant</option>
+                                            <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                                            <option value="Blueberry Muffin">Blueberry Muffin</option>
+                                            <option value="Baguette">Baguette</option>
+                                            <option value="Cinnamon Roll">Cinnamon Roll</option>
+                                            <option value="Apple Pie">Apple Pie</option>
+                                            <option value="Chocolate Eclair">Chocolate Eclair</option>
+                                            <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                                            <option value="Palmier">Palmier</option>
+                                            <option value="Cheese Danish">Cheese Danish</option>
+                                            <option value="Almond Croissant">Almond Croissant</option>
+                                            <option value="Banana Bread">Banana Bread</option>
+                                            <option value="Pretzel">Pretzel</option>
+                                            <option value="Raspberry Tart">Raspberry Tart</option>
+                                            <option value="Sourdough Loaf">Sourdough Loaf</option>
+                                            <option value="Lemon Bar">Lemon Bar</option>
+                                            <option value="Chocolate Brownie">Chocolate Brownie</option>
+                                            <option value="Pumpkin Scone">Pumpkin Scone</option>
+                                            <option value="Focaccia Bread">Focaccia Bread</option>
+                                            <option value="Macaron">Macaron</option>
+                                        </select>
+                                        <input type="number" class="ingredient-input ingredient-quantity" min="1" value="100" placeholder="Quantity (g)">
+                                        <button class="remove-ingredient" style="display: none;">×</button>
+                                    </div>
+                                </div>
+                                <button id="add-ingredient" class="add-ingredient">
+                                    <i class="fas fa-plus"></i> Add Ingredient
+                                </button>
+                            </div>
+                            <button id="calculate-recipe" class="calculate-btn">
+                                <i class="fas fa-calculator"></i> Calculate Recipe Carbon Footprint
+                            </button>
+                        </div>
+                    </div>
+                    <div id="calculator-loading" class="loading">
+                        <div class="spinner"></div>
+                        <p>Calculating your carbon footprint...</p>
+                    </div>
+                    <div id="calculator-result" class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <h3 id="result-title">Carbon Footprint Result</h3>
+                                <p id="result-description">Environmental impact of your food selection</p>
+                            </div>
+                            <div>
+                                <div class="carbon-score" id="carbon-score">0.00<span class="carbon-unit"> kg CO₂e</span></div>
+                                <div class="rating" id="carbon-rating">C</div>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Carbon Footprint</div>
+                                <div class="detail-value" id="detail-carbon">0.00 kg CO₂e</div>
+                                <div>Greenhouse gas emissions</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Water Usage</div>
+                                <div class="detail-value" id="detail-water">0 L</div>
+                                <div>Water consumed in production</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Land Use</div>
+                                <div class="detail-value" id="detail-land">0 m²</div>
+                                <div>Land required for production</div>
+                            </div>
+                        </div>
+                        <div class="comparison-chart">
+                            <h3 class="chart-title">Comparison with Averages</h3>
+                            <div class="comparison-bars">
+                                <div class="comparison-item">
+                                    <div class="item-label">Your Selection</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-user" id="bar-user" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="comparison-item">
+                                    <div class="item-label">Average Meal</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-average" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="comparison-item">
+                                    <div class="item-label">Low Carbon Benchmark</div>
+                                    <div class="bar-container">
+                                        <div class="bar bar-benchmark" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="result-recommendations" style="margin-top: 1.5rem;">
+                            <h3 style="font-weight: 600; margin-bottom: 1rem;">Recommendations</h3>
+                            <div id="recommendations-content" style="background: white; padding: 1rem; border-radius: 12px; border: 1px solid var(--glass-border);">
+                                <!-- Recommendations will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Original Impact Section Content -->
                 <div class="search-filter-container">
                     <select class="filter-select" id="impact-year-filter">
                         <option value="2026">2026</option>
@@ -521,7 +1726,6 @@
                         <i class="fas fa-download"></i> <span id="download-text">Download Data</span>
                     </button>
                 </div>
-
                 <div class="impact-grid">
                     <div class="glass-card">
                         <h3 style="margin-bottom: 1.5rem; font-weight: 600;" id="revenue-chart-title">Revenue & Savings</h3>
@@ -536,76 +1740,100 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="action-bar" style="margin-top: 2rem;" id="certificate-btn">
                     <i class="fas fa-certificate"></i> <span id="certificate-text">Generate Impact Certificate</span>
                 </button>
             </section>
-
-            <!-- MESSAGES SECTION -->
+            <!-- MESSAGES SECTION (Now contains both Messages and BridgePoint content side by side) -->
             <section id="messages-section" class="page-section">
-                <h2 class="section-title" id="messages-title">Messages</h2>
-                
-                <div class="telegram-layout">
-                    <div class="chat-sidebar">
-                        <div class="chat-contact active">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <div id="Muneera-contact">Muneera K.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Hi, about the croissants...</div>
-                            </div>
+                <h2 class="section-title" id="messages-title">Messages & Requests</h2>
+                <div class="split-view-container">
+                    <div class="split-panel requests-panel" id="requests-panel">
+                        <h2 class="section-title" id="requests-management-title">Requests Management</h2>
+                        <div class="search-filter-container">
+                            <input type="text" class="search-bar" id="requests-search" placeholder="Search requests..." />
+                            <select class="filter-select" id="request-type-filter">
+                                <option value="all">All Types</option>
+                                <option value="user">User</option>
+                                <option value="company">Company</option>
+                            </select>
+                            <select class="filter-select" id="request-status-filter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
                         </div>
-                        <div class="chat-contact">
-                            <i class="fas fa-building"></i>
-                            <div>
-                                <div id="supplier-contact">Bakery Supplies Co.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Delivery scheduled for tomorrow</div>
-                            </div>
-                        </div>
-                        <div class="chat-contact">
-                            <i class="fas fa-user-circle"></i>
-                            <div>
-                                <div id="sara-contact">Sara M.</div>
-                                <div style="font-size: 0.8rem; opacity: 0.8;">Thank you for the pastries!</div>
-                            </div>
+                        <button class="action-bar" id="issue-request-btn">
+                            <i class="fas fa-file-alt"></i> <span id="issue-request-text">Issue a Request</span>
+                        </button>
+                        <div class="glass-card" id="requests-list" style="margin-top: 1.5rem; margin-bottom: 0;">
+                            <!-- Requests will be populated by JS -->
                         </div>
                     </div>
-                    <div class="chat-main">
-                        <div class="chat-header">Muneera K.</div>
-                        <div class="chat-messages">
-                            <div class="message-row received">
-                                <div class="message-bubble">
-                                    Hi, I just reserved the croissants for tomorrow morning. Is that okay?
-                                    <div class="message-time">10:30 AM</div>
+                    <div class="split-divider" id="split-divider"></div>
+                    <div class="split-panel messages-panel" id="messages-panel">
+                        <div class="chat-layout">
+                            <div class="chat-sidebar">
+                                <div class="chat-contact active">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div>
+                                        <div id="Muneera-contact">Muneera K.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Hi, about the croissants...</div>
+                                    </div>
+                                </div>
+                                <div class="chat-contact">
+                                    <i class="fas fa-building"></i>
+                                    <div>
+                                        <div id="supplier-contact">Bakery Supplies Co.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Delivery scheduled for tomorrow</div>
+                                    </div>
+                                </div>
+                                <div class="chat-contact">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div>
+                                        <div id="sara-contact">Sara M.</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.8;">Thank you for the pastries!</div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="message-row sent">
-                                <div class="message-bubble">
-                                    Yes, that works perfectly! We'll have them ready for you.
-                                    <div class="message-time">10:32 AM</div>
+                            <div class="chat-main">
+                                <div class="chat-header">Muneera K.</div>
+                                <div class="chat-messages">
+                                    <div class="message-row received">
+                                        <div class="message-bubble">
+                                            Hi, I just reserved the croissants for tomorrow morning. Is that okay?
+                                            <div class="message-time">10:30 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row sent">
+                                        <div class="message-bubble">
+                                            Yes, that works perfectly! We'll have them ready for you.
+                                            <div class="message-time">10:32 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row received">
+                                        <div class="message-bubble">
+                                            Great! Also, do you have any almond croissants available this week?
+                                            <div class="message-time">10:35 AM</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-row sent">
+                                        <div class="message-bubble">
+                                            Yes, we have 9 almond croissants available. Would you like to reserve some?
+                                            <div class="message-time">10:36 AM</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-input">
+                                    <input type="text" placeholder="Type a message..." />
+                                    <button><i class="fas fa-paper-plane"></i></button>
                                 </div>
                             </div>
-                            <div class="message-row received">
-                                <div class="message-bubble">
-                                    Great! Also, do you have any almond croissants available this week?
-                                    <div class="message-time">10:35 AM</div>
-                                </div>
-                            </div>
-                            <div class="message-row sent">
-                                <div class="message-bubble">
-                                    Yes, we have 9 almond croissants available. Would you like to reserve some?
-                                    <div class="message-time">10:36 AM</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-input">
-                            <input type="text" placeholder="Type a message..." />
-                            <button><i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
             </section>
-
             <!-- PROFILE SECTION -->
             <section id="profile-section" class="page-section">
                 <h2 class="section-title" id="profile-title">Business Profile</h2>
@@ -638,19 +1866,18 @@
             </section>
         </main>
     </div>
-
     <nav class="bottom-nav">
         <ul class="nav-items">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a href="#" data-target="surplus-section">
                     <i class="fas fa-box-open"></i>
                     <span id="nav-dashboard">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" data-target="requests-section">
+            <li class="nav-item active">
+                <a href="#" data-target="BridgePoint-section">
                     <i class="fas fa-receipt"></i>
-                    <span id="nav-requests">Requests</span>
+                    <span id="nav-BridgePoint">BridgePoint</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -673,7 +1900,6 @@
             </li>
         </ul>
     </nav>
-    
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -705,7 +1931,6 @@
             {Item:"Tiramisu",Quantity:5,Weight_per_piece:120,Calories_per_piece:380,CO2_footprint_per_piece:950,Expiry_time_left:24,Price_before_discount:6.50,Price_after_discount:3.25},
             {Item:"Strawberry Shortcake",Quantity:3,Weight_per_piece:180,Calories_per_piece:450,CO2_footprint_per_piece:1050,Expiry_time_left:12,Price_before_discount:8.50,Price_after_discount:4.25}
         ];
-
         const salesData = [
             {Year:2024,Month:"January",Revenue_USD:12500,CO2_Tonnes_Saved:0.85,Water_Saved_Litres:12500,Food_Saved_Kg:85,Food_Waste_Kg:45},
             {Year:2024,Month:"February",Revenue_USD:11800,CO2_Tonnes_Saved:0.80,Water_Saved_Litres:11800,Food_Saved_Kg:80,Food_Waste_Kg:42},
@@ -744,7 +1969,6 @@
             {Year:2026,Month:"November",Revenue_USD:20500,CO2_Tonnes_Saved:1.68,Water_Saved_Litres:20500,Food_Saved_Kg:168,Food_Waste_Kg:46},
             {Year:2026,Month:"December",Revenue_USD:27000,CO2_Tonnes_Saved:2.20,Water_Saved_Litres:27000,Food_Saved_Kg:220,Food_Waste_Kg:55}
         ];
-
         // Predefined requests
         const requestList = [
             {
@@ -836,7 +2060,6 @@
                 time: '1 week ago'
             }
         ];
-
         // Language translation data
         const translations = {
             en: {
@@ -844,7 +2067,6 @@
                 'header-main-title': 'Dashboard',
                 'header-subtitle': 'Welcome to Artisan Bakes Cafe',
                 'welcome-title': 'Welcome, Artisan Bakes Cafe!',
-                
                 // Dashboard
                 'meals-label': 'Meals Sold (This Week)',
                 'revenue-label': 'Revenue (This Week)',
@@ -859,9 +2081,111 @@
                 'price-header': 'Price',
                 'status-header': 'Status',
                 'add-item-text': 'Add New Item',
-                
+                // BridgePoint Tabs
+                'nav-BridgePoint': 'BridgePoint',
+                'BridgePoint-title': 'BridgePoint Compliance Portal',
+                // Licensing & Registration
+                'apply-license-title': 'Apply for New Business License',
+                'apply-license-desc': 'Submit your application for a new business license. Our team will review your documents and contact you within 3-5 business days.',
+                'apply-license-btn': 'Apply Now',
+                'renew-license-title': 'Renew Existing License',
+                'renew-license-desc': 'Check the status of your current license and renew before expiration to avoid any interruptions to your business operations.',
+                'license-status': 'License Active - Expires: Dec 15, 2024',
+                'renew-license-btn': 'Renew License',
+                'upload-docs-title': 'Upload Required Documents',
+                'upload-docs-desc': 'Upload necessary documents for your license application or renewal. Accepted formats: PDF, JPG, PNG (max 10MB).',
+                'upload-prompt': 'Click to upload or drag and drop files here',
+                // Permits & Certifications
+                'food-permit-title': 'Food Safety / Health Permits',
+                'food-permit-desc': 'Apply for food safety and health permits required for your business operations. Ensure your establishment meets all health and safety standards.',
+                'apply-food-permit-btn': 'Apply for Permit',
+                'env-cert-title': 'Environmental Compliance Certificates',
+                'env-cert-desc': 'Obtain environmental compliance certificates to demonstrate your commitment to sustainable business practices and environmental regulations.',
+                'env-status': 'Application Pending - Review in Progress',
+                'apply-env-cert-btn': 'Apply for Certificate',
+                'municipal-title': 'Municipality Approvals',
+                'municipal-desc': 'Apply for necessary municipality approvals for distribution, logistics, waste management, and other operational aspects of your business.',
+                'apply-municipal-btn': 'Apply for Approval',
+                // Compliance & Regulations
+                'checklist-title': 'Compliance Checklist',
+                'checklist-desc': 'Review the mandatory compliance requirements for your business type. Ensure all items are completed to maintain good standing.',
+                'checklist-item1': 'Valid business license displayed at premises',
+                'checklist-item2': 'Food handler certificates for all staff',
+                'checklist-item3': 'Quarterly pest control inspection (Due: Nov 30, 2024)',
+                'checklist-item4': 'Employee health and safety training records',
+                'checklist-item5': 'Proper waste segregation and disposal system',
+                'notifications-title': 'Regulation Notifications',
+                'notifications-desc': 'Stay updated with the latest regulatory changes and requirements that may affect your business operations.',
+                'notif-title1': 'New Food Safety Regulations Effective Jan 2025',
+                'notif-desc1': 'Updated guidelines for food storage temperatures and handling procedures. Compliance required by January 15, 2025.',
+                'notif-title2': 'Waste Management Policy Update',
+                'notif-desc2': 'Revised requirements for commercial waste disposal. New documentation needed for quarterly reporting.',
+                'notif-title3': 'Health Inspection Passed',
+                'notif-desc3': 'Your establishment has passed the quarterly health inspection with no violations noted.',
+                'guidance-title': 'Guidance Documents & Official Policies',
+                'guidance-desc': 'Access official guidance documents, policy manuals, and regulatory frameworks to ensure your business remains compliant.',
+                // Requests & Approvals
+                'submit-request-title': 'Submit Official Requests',
+                'submit-request-desc': 'Submit requests for business expansion, additional storage space, waste handling modifications, or other operational changes.',
+                'new-request-btn': 'Submit New Request',
+                'track-requests-title': 'Track Approval Process',
+                'track-requests-desc': 'Monitor the status of your submitted requests with real-time updates on their progress through the approval workflow.',
+                'request-title1': 'Expansion Request - Additional Seating',
+                'request-desc1': 'Request for 20 additional indoor seating capacity. Currently under review by Planning Department.',
+                'request-title2': 'Waste Handling Modification',
+                'request-desc2': 'Request to modify waste collection schedule from daily to twice daily. Approved and implemented.',
+                'request-title3': 'Outdoor Seating Expansion',
+                'request-desc3': 'Request for outdoor seating area expansion. Additional documentation required regarding pedestrian access.',
+                'messaging-title': 'Direct Messaging with Authority',
+                'messaging-desc': 'Communicate directly with regulatory authorities regarding your requests, compliance questions, or clarification needs.',
+                'message-prompt': 'Click here to start a conversation with the Business Compliance Office',
+                'message-title1': 'Response from Compliance Officer',
+                'message-desc1': 'Regarding your waste handling modification request: Approved with the condition that additional bins must be clearly labeled.',
+                // Reports & Audits
+                'submit-reports-title': 'Submit Mandatory Reports',
+                'submit-reports-desc': 'Submit required reports including food waste logs, distribution reports, and other regulatory documentation on a scheduled basis.',
+                'report-title1': 'Monthly Food Waste Log',
+                'report-desc1': 'Record all food waste generated, including type, quantity, and disposal method.',
+                'report-title2': 'Quarterly Distribution Report',
+                'report-desc2': 'Report on all distributed food items, recipients, and quantities for the quarter.',
+                'inspection-results-title': 'Inspection Results',
+                'inspection-results-desc': 'View results from recent inspections conducted by regulatory authorities at your establishment.',
+                'inspection-title1': 'Health & Safety Inspection - Oct 2024',
+                'inspection-desc1': 'Score: 98/100. Excellent hygiene practices observed. Minor suggestion: Consider additional hand sanitizer stations.',
+                'inspection-title2': 'Waste Management Audit - Jul 2024',
+                'inspection-desc2': 'Score: 95/100. Proper waste segregation observed. Suggestion: Increase recycling of cardboard packaging.',
+                'inspection-title3': 'Food Safety Inspection - Apr 2024',
+                'inspection-desc3': 'Score: 87/100. Temperature logs incomplete for 2 days. Corrective action required: Implement daily temperature recording.',
+                'feedback-title': 'Feedback & Corrective Actions',
+                'feedback-desc': 'Review feedback from inspectors and implement required corrective actions to maintain compliance.',
+                'feedback-title1': 'Corrective Action Completed',
+                'feedback-desc1': 'Temperature logging system upgraded with digital monitoring. Verification completed on May 10, 2024.',
+                'feedback-title2': 'Staff Training Requirement',
+                'feedback-desc2': 'All food handling staff must complete updated food safety training by December 1, 2024.',
+                // Support & Guidance
+                'faq-title': 'FAQ for Business Owners',
+                'faq-desc': 'Find answers to frequently asked questions about compliance, licensing, permits, and regulatory requirements.',
+                'faq-q1': 'How long does it take to process a new business license?',
+                'faq-a1': 'New business license applications are typically processed within 5-7 business days after all required documents have been submitted and verified. Processing times may vary depending on the complexity of the business and completeness of the application.',
+                'faq-q2': 'What documents do I need for a food safety permit?',
+                'faq-a2': 'For a food safety permit, you will need: 1) Business license, 2) Floor plan of your establishment, 3) Menu and food handling procedures, 4) Certificates of food handler training for all staff, 5) Pest control contract, and 6) Waste management plan. All documents must be current and valid.',
+                'faq-q3': 'How do I renew my environmental compliance certificate?',
+                'faq-a3': 'Environmental compliance certificates can be renewed through the BridgePoint portal 60 days before expiration. You will need to submit updated documentation showing continued compliance with environmental regulations, including waste disposal records, energy consumption reports, and any required environmental impact assessments.',
+                'faq-q4': 'What happens if I miss a mandatory report deadline?',
+                'faq-a4': 'Missing a mandatory report deadline may result in a warning for first-time offenses. Repeated failures to submit reports on time may lead to fines or suspension of certain business privileges. We recommend setting calendar reminders for all report deadlines and submitting reports at least 2-3 days before the due date to avoid any issues.',
+                'contact-desk-title': 'Contact Desk for Regulatory Help',
+                'contact-desk-desc': 'Get personalized assistance from our regulatory compliance specialists for any questions or issues you may encounter.',
+                'phone-support': 'Phone Support',
+                'phone-desc': 'Call our compliance hotline for immediate assistance',
+                'email-support': 'Email Support',
+                'email-desc': 'Send detailed inquiries and receive written responses',
+                'appointment': 'Schedule Appointment',
+                'appointment-desc': 'Book a virtual or in-person consultation',
+                'tutorials-title': 'Tutorials & Compliance Guidelines',
+                'tutorials-desc': 'Access step-by-step tutorials and comprehensive guidelines to help you navigate compliance requirements successfully.',
                 // Requests
                 'requests-title': 'Requests Management',
+                'requests-management-title': 'Requests Management',
                 'issue-request-text': 'Issue a Request',
                 'filter-all': 'All Types',
                 'filter-user': 'User',
@@ -874,20 +2198,17 @@
                 'items': 'items',
                 'accept-btn': 'Accept',
                 'decline-btn': 'Decline',
-                
                 // Impact
                 'impact-title': 'Business Impact',
                 'revenue-chart-title': 'Revenue & Savings',
                 'environmental-chart-title': 'Environmental Impact',
                 'download-text': 'Download Data',
                 'certificate-text': 'Generate Impact Certificate',
-                
                 // Messages
-                'messages-title': 'Messages',
+                'messages-title': 'Messages & Requests',
                 'Muneera-contact': 'Muneera K.',
                 'supplier-contact': 'Bakery Supplies Co.',
                 'sara-contact': 'Sara M.',
-                
                 // Profile
                 'profile-title': 'Business Profile',
                 'store-settings': 'Store Settings',
@@ -895,10 +2216,8 @@
                 'manage-staff': 'Manage Staff',
                 'compliance-docs': 'Compliance Documents',
                 'logout-text': 'Logout',
-                
                 // Navigation
                 'nav-dashboard': 'Dashboard',
-                'nav-requests': 'Requests',
                 'nav-impact': 'Impact',
                 'nav-messages': 'Messages',
                 'nav-profile': 'Profile'
@@ -908,7 +2227,6 @@
                 'header-main-title': 'لوحة التحكم',
                 'header-subtitle': 'مرحبًا في مقهى Artisan Bakes',
                 'welcome-title': 'مرحبًا، مقهى Artisan Bakes!',
-                
                 // Dashboard
                 'meals-label': 'الوجبات المباعة (هذا الأسبوع)',
                 'revenue-label': 'الإيرادات (هذا الأسبوع)',
@@ -923,9 +2241,111 @@
                 'price-header': 'السعر',
                 'status-header': 'الحالة',
                 'add-item-text': 'إضافة عنصر جديد',
-                
+                // BridgePoint Tabs
+                'nav-BridgePoint': 'بوابة الامتثال',
+                'BridgePoint-title': 'بوابة الامتثال BridgePoint',
+                // Licensing & Registration
+                'apply-license-title': 'التقدم بطلب للحصول على رخصة عمل جديدة',
+                'apply-license-desc': 'قدم طلبك للحصول على رخصة عمل جديدة. سيقوم فريقنا بمراجعة مستنداتك والاتصال بك خلال 3-5 أيام عمل.',
+                'apply-license-btn': 'تقدم الآن',
+                'renew-license-title': 'تجديد الرخصة الحالية',
+                'renew-license-desc': 'تحقق من حالة رخصتك الحالية وجددها قبل انتهاء الصلاحية لتجنب أي انقطاع في عمليات عملك.',
+                'license-status': 'الرخصة نشطة - تنتهي في: 15 ديسمبر 2024',
+                'renew-license-btn': 'تجديد الرخصة',
+                'upload-docs-title': 'تحميل المستندات المطلوبة',
+                'upload-docs-desc': 'قم بتحميل المستندات اللازمة لطلب أو تجديد رخصتك. الصيغ المقبولة: PDF، JPG، PNG (بحد أقصى 10 ميجابايت).',
+                'upload-prompt': 'انقر للتحميل أو اسحب وأفلت الملفات هنا',
+                // Permits & Certifications
+                'food-permit-title': 'تصاريح السلامة الغذائية / الصحية',
+                'food-permit-desc': 'تقدم بطلب للحصول على تصاريح السلامة والصحة الغذائية المطلوبة لعمليات عملك. تأكد من أن مؤسستك تلبي جميع معايير الصحة والسلامة.',
+                'apply-food-permit-btn': 'تقدم بطلب للحصول على تصريح',
+                'env-cert-title': 'شهادات الامتثال البيئي',
+                'env-cert-desc': 'احصل على شهادات الامتثال البيئي لإظهار التزامك بممارسات العمل المستدامة واللوائح البيئية.',
+                'env-status': 'قيد الانتظار - المراجعة جارية',
+                'apply-env-cert-btn': 'تقدم بطلب للحصول على الشهادة',
+                'municipal-title': 'موافقات البلدية',
+                'municipal-desc': 'تقدم بطلب للحصول على الموافقات البلدية اللازمة للتوزيع، والخدمات اللوجستية، وإدارة النفايات، والجوانب التشغيلية الأخرى لعملك.',
+                'apply-municipal-btn': 'تقدم بطلب للحصول على الموافقة',
+                // Compliance & Regulations
+                'checklist-title': 'قائمة مراجعة الامتثال',
+                'checklist-desc': 'راجع متطلبات الامتثال الإلزامية لنوع عملك. تأكد من إكمال جميع العناصر للحفاظ على وضع جيد.',
+                'checklist-item1': 'عرض رخصة العمل الصالحة في المنشأة',
+                'checklist-item2': 'شهادات معالجة الطعام لجميع الموظفين',
+                'checklist-item3': 'فحص مكافحة الآفات ربع السنوي (مستحق في: 30 نوفمبر 2024)',
+                'checklist-item4': 'سجلات تدريب صحة وسلامة الموظفين',
+                'checklist-item5': 'نظام مناسب لفصل النفايات والتخلص منها',
+                'notifications-title': 'إشعارات اللوائح',
+                'notifications-desc': 'ابق على اطلاع بأحدث التغييرات والمتطلبات التنظيمية التي قد تؤثر على عمليات عملك.',
+                'notif-title1': 'لوائح سلامة غذائية جديدة سارية المفعول يناير 2025',
+                'notif-desc1': 'إرشادات محدثة لدرجات حرارة تخزين الطعام وإجراءات التعامل. الامتثال مطلوب بحلول 15 يناير 2025.',
+                'notif-title2': 'تحديث سياسة إدارة النفايات',
+                'notif-desc2': 'متطلبات محدثة للتخلص من النفايات التجارية. مطلوب توثيق جديد للإبلاغ ربع السنوي.',
+                'notif-title3': 'اجتياز التفتيش الصحي',
+                'notif-desc3': 'لقد اجتازت مؤسستك التفتيش الصحي ربع السنوي دون تسجيل أي مخالفات.',
+                'guidance-title': 'وثائق الإرشادات والسياسات الرسمية',
+                'guidance-desc': 'وصول إلى وثائق الإرشادات الرسمية، وكتيبات السياسات، والأطر التنظيمية لضمان استمرار امتثال عملك.',
+                // Requests & Approvals
+                'submit-request-title': 'تقديم طلبات رسمية',
+                'submit-request-desc': 'قدم طلبات لتوسيع العمل، أو مساحة تخزين إضافية، أو تعديلات في معالجة النفايات، أو تغييرات تشغيلية أخرى.',
+                'new-request-btn': 'تقديم طلب جديد',
+                'track-requests-title': 'تتبع عملية الموافقة',
+                'track-requests-desc': 'راقب حالة طلباتك المقدمة مع تحديثات فورية حول تقدمها خلال سير عمل الموافقة.',
+                'request-title1': 'طلب التوسع - مقاعد إضافية',
+                'request-desc1': 'طلب 20 مقعدًا إضافيًا داخليًا. قيد المراجعة حاليًا من قبل إدارة التخطيط.',
+                'request-title2': 'تعديل معالجة النفايات',
+                'request-desc2': 'طلب تعديل جدول جمع النفايات من يومي إلى مرتين يوميًا. تمت الموافقة عليه وتنفيذه.',
+                'request-title3': 'توسيع المقاعد الخارجية',
+                'request-desc3': 'طلب توسيع منطقة المقاعد الخارجية. مطلوب توثيق إضافي فيما يتعلق بوصول المشاة.',
+                'messaging-title': 'المراسلة المباشرة مع السلطة',
+                'messaging-desc': 'تواصل مباشرة مع السلطات التنظيمية بشأن طلباتك، أو أسئلة الامتثال، أو احتياجات التوضيح.',
+                'message-prompt': 'انقر هنا لبدء محادثة مع مكتب الامتثال التجاري',
+                'message-title1': 'رد من مسؤول الامتثال',
+                'message-desc1': 'بخصوص طلبك لتعديل معالجة النفايات: تمت الموافقة عليه بشرط أن تكون الحاويات الإضافية مُعلمة بوضوح.',
+                // Reports & Audits
+                'submit-reports-title': 'تقديم التقارير الإلزامية',
+                'submit-reports-desc': 'قدم التقارير المطلوبة بما في ذلك سجلات نفايات الطعام، وتقارير التوزيع، والتوثيق التنظيمي الآخر على أساس مجدول.',
+                'report-title1': 'سجل نفايات الطعام الشهري',
+                'report-desc1': 'سجل جميع نفايات الطعام المولدة، بما في ذلك النوع، والكمية، وطريقة التخلص.',
+                'report-title2': 'تقرير التوزيع ربع السنوي',
+                'report-desc2': 'أبلغ عن جميع المواد الغذائية الموزعة، والمستفيدين، والكميات لربع السنة.',
+                'inspection-results-title': 'نتائج التفتيش',
+                'inspection-results-desc': 'عرض نتائج التفتيشات الحديثة التي أجرتها السلطات التنظيمية في مؤسستك.',
+                'inspection-title1': 'تفتيش الصحة والسلامة - أكتوبر 2024',
+                'inspection-desc1': 'الدرجة: 98/100. لوحظت ممارسات نظافة ممتازة. اقتراح طفيف: النظر في محطات إضافية لمطهر اليدين.',
+                'inspection-title2': 'مراجعة إدارة النفايات - يوليو 2024',
+                'inspection-desc2': 'الدرجة: 95/100. لوحظ الفصل المناسب للنفايات. اقتراح: زيادة إعادة تدوير عبوات الكرتون.',
+                'inspection-title3': 'تفتيش سلامة الغذاء - أبريل 2024',
+                'inspection-desc3': 'الدرجة: 87/100. سجلات درجات الحرارة غير مكتملة ليومين. مطلوب إجراء تصحيحي: تنفيذ تسجيل يومي لدرجات الحرارة.',
+                'feedback-title': 'الملاحظات والإجراءات التصحيحية',
+                'feedback-desc': 'راجع الملاحظات من المفتشين ونفذ الإجراءات التصحيحية المطلوبة للحفاظ على الامتثال.',
+                'feedback-title1': 'اكتمال الإجراء التصحيحي',
+                'feedback-desc1': 'تم ترقية نظام تسجيل درجات الحرارة مع المراقبة الرقمية. اكتملت عملية التحقق في 10 مايو 2024.',
+                'feedback-title2': 'متطلب تدريب الموظفين',
+                'feedback-desc2': 'يجب على جميع موظفي معالجة الطعام إكمال تدريب السلامة الغذائية المحدث بحلول 1 ديسمبر 2024.',
+                // Support & Guidance
+                'faq-title': 'الأسئلة الشائعة لأصحاب الأعمال',
+                'faq-desc': 'اعثر على إجابات للأسئلة الشائعة حول الامتثال، والتراخيص، والتصاريح، والمتطلبات التنظيمية.',
+                'faq-q1': 'كم من الوقت يستغرق معالجة رخصة عمل جديدة؟',
+                'faq-a1': 'عادةً ما تتم معالجة طلبات رخص العمل الجديدة خلال 5-7 أيام عمل بعد تقديم جميع المستندات المطلوبة والتحقق منها. قد تختلف أوقات المعالجة حسب تعقيد العمل واكتمال الطلب.',
+                'faq-q2': 'ما هي المستندات التي أحتاجها للحصول على تصريح سلامة غذائية؟',
+                'faq-a2': 'للحصول على تصريح سلامة غذائية، ستحتاج إلى: 1) رخصة العمل، 2) مخطط أرضي لمؤسستك، 3) قائمة الطعام وإجراءات التعامل مع الطعام، 4) شهادات تدريب معالجة الطعام لجميع الموظفين، 5) عقد مكافحة الآفات، و6) خطة إدارة النفايات. يجب أن تكون جميع المستندات حالية وصالحة.',
+                'faq-q3': 'كيف يمكنني تجديد شهادة الامتثال البيئي الخاصة بي؟',
+                'faq-a3': 'يمكن تجديد شهادات الامتثال البيئي من خلال بوابة BridgePoint قبل 60 يومًا من انتهاء الصلاحية. ستحتاج إلى تقديم توثيق محدث يوضح استمرار الامتثال للوائح البيئية، بما في ذلك سجلات التخلص من النفايات، وتقارير استهلاك الطاقة، وأي تقييمات بيئية مطلوبة.',
+                'faq-q4': 'ماذا يحدث إذا فاتني موعد نهائي لتقرير إلزامي؟',
+                'faq-a4': 'قد يؤدي تفويت الموعد النهائي للتقرير الإلزامي إلى تحذير للجرائم الأولى. قد تؤدي حالات الفشل المتكررة في تقديم التقارير في الوقت المحدد إلى غرامات أو تعليق لبعض امتيازات العمل. نوصي بتعيين تذكيرات في التقويم لجميع مواعيد التقارير وتقديم التقارير قبل يومين إلى ثلاثة أيام على الأقل من الموعد المستحق لتجنب أي مشاكل.',
+                'contact-desk-title': 'مكتب الاتصال للمساعدة التنظيمية',
+                'contact-desk-desc': 'احصل على مساعدة شخصية من متخصصينا في الامتثال التنظيمي لأي أسئلة أو مشكلات قد تواجهها.',
+                'phone-support': 'الدعم الهاتفي',
+                'phone-desc': 'اتصل بخط المساعدة الخاص بالامتثال للحصول على مساعدة فورية',
+                'email-support': 'دعم البريد الإلكتروني',
+                'email-desc': 'أرسل استفسارات مفصلة واحصل على ردود مكتوبة',
+                'appointment': 'حجز موعد',
+                'appointment-desc': 'احجز استشارة افتراضية أو شخصية',
+                'tutorials-title': 'الدروس التعليمية وإرشادات الامتثال',
+                'tutorials-desc': 'وصول إلى دروس تعليمية خطوة بخطوة وإرشادات شاملة لمساعدتك على التنقل في متطلبات الامتثال بنجاح.',
                 // Requests
                 'requests-title': 'إدارة الطلبات',
+                'requests-management-title': 'إدارة الطلبات',
                 'issue-request-text': 'تقديم طلب',
                 'filter-all': 'جميع الأنواع',
                 'filter-user': 'مستخدم',
@@ -938,20 +2358,17 @@
                 'items': 'عناصر',
                 'accept-btn': 'قبول',
                 'decline-btn': 'رفض',
-                
                 // Impact
                 'impact-title': 'أثر العمل',
                 'revenue-chart-title': 'الإيرادات والمدخرات',
                 'environmental-chart-title': 'الأثر البيئي',
                 'download-text': 'تنزيل البيانات',
                 'certificate-text': 'إنشاء شهادة الأثر',
-                
                 // Messages
-                'messages-title': 'الرسائل',
+                'messages-title': 'الرسائل والطلبات',
                 'Muneera-contact': 'منيرة ك.',
                 'supplier-contact': 'شركة مستلزمات المخابز',
                 'sara-contact': 'سارة م.',
-                
                 // Profile
                 'profile-title': 'ملف العمل',
                 'store-settings': 'إعدادات المتجر',
@@ -959,20 +2376,139 @@
                 'manage-staff': 'إدارة الموظفين',
                 'compliance-docs': 'وثائق الامتثال',
                 'logout-text': 'تسجيل الخروج',
-                
                 // Navigation
                 'nav-dashboard': 'لوحة التحكم',
-                'nav-requests': 'الطلبات',
                 'nav-impact': 'الأثر',
                 'nav-messages': 'الرسائل',
                 'nav-profile': 'الملف الشخصي'
             }
         };
-
+        // Food carbon footprint data (kg CO2e per kg of food)
+        const foodCarbonData = {
+            'Beef': 27.0,
+            'Lamb': 22.0,
+            'Cheese': 13.5,
+            'Pork': 6.0,
+            'Chicken': 4.5,
+            'Eggs': 3.5,
+            'Rice': 2.7,
+            'Fish': 3.5,
+            'Milk': 1.9,
+            'Vegetables': 0.4,
+            'Fruits': 0.5,
+            'Bread': 0.8,
+            'Pasta': 1.0,
+            'Potatoes': 0.3,
+            'Tofu': 1.0,
+            'Nuts': 0.3,
+            'Coffee': 10.0,
+            'Chocolate': 12.0,
+            'Croissant': 2.5,
+            'Chocolate Chip Cookie': 1.8,
+            'Blueberry Muffin': 1.2,
+            'Baguette': 0.9,
+            'Cinnamon Roll': 2.0,
+            'Apple Pie': 1.5,
+            'Chocolate Eclair': 2.2,
+            'Whole Wheat Bread': 0.7,
+            'Palmier': 1.6,
+            'Cheese Danish': 2.3,
+            'Almond Croissant': 2.8,
+            'Banana Bread': 1.1,
+            'Pretzel': 0.8,
+            'Raspberry Tart': 1.7,
+            'Sourdough Loaf': 0.7,
+            'Lemon Bar': 1.9,
+            'Chocolate Brownie': 2.1,
+            'Pumpkin Scone': 1.3,
+            'Focaccia Bread': 0.8,
+            'Macaron': 1.5
+        };
+        // Water usage data (liters per kg of food)
+        const foodWaterData = {
+            'Beef': 15415,
+            'Lamb': 8763,
+            'Cheese': 5060,
+            'Pork': 4809,
+            'Chicken': 4325,
+            'Eggs': 3300,
+            'Rice': 2497,
+            'Fish': 2000,
+            'Milk': 1020,
+            'Vegetables': 322,
+            'Fruits': 962,
+            'Bread': 1608,
+            'Pasta': 1849,
+            'Potatoes': 287,
+            'Tofu': 318,
+            'Nuts': 9063,
+            'Coffee': 18900,
+            'Chocolate': 17196,
+            'Croissant': 1200,
+            'Chocolate Chip Cookie': 800,
+            'Blueberry Muffin': 600,
+            'Baguette': 1100,
+            'Cinnamon Roll': 900,
+            'Apple Pie': 700,
+            'Chocolate Eclair': 1000,
+            'Whole Wheat Bread': 900,
+            'Palmier': 750,
+            'Cheese Danish': 1100,
+            'Almond Croissant': 1300,
+            'Banana Bread': 550,
+            'Pretzel': 650,
+            'Raspberry Tart': 850,
+            'Sourdough Loaf': 600,
+            'Lemon Bar': 750,
+            'Chocolate Brownie': 950,
+            'Pumpkin Scone': 600,
+            'Focaccia Bread': 700,
+            'Macaron': 800
+        };
+        // Land use data (m² per kg of food)
+        const foodLandData = {
+            'Beef': 164.0,
+            'Lamb': 185.0,
+            'Cheese': 88.0,
+            'Pork': 11.0,
+            'Chicken': 7.1,
+            'Eggs': 5.7,
+            'Rice': 3.0,
+            'Fish': 2.5,
+            'Milk': 8.9,
+            'Vegetables': 0.3,
+            'Fruits': 0.5,
+            'Bread': 1.5,
+            'Pasta': 1.8,
+            'Potatoes': 0.2,
+            'Tofu': 0.8,
+            'Nuts': 2.5,
+            'Coffee': 1.1,
+            'Chocolate': 1.5,
+            'Croissant': 0.9,
+            'Chocolate Chip Cookie': 0.7,
+            'Blueberry Muffin': 0.5,
+            'Baguette': 0.6,
+            'Cinnamon Roll': 0.8,
+            'Apple Pie': 0.6,
+            'Chocolate Eclair': 0.9,
+            'Whole Wheat Bread': 0.5,
+            'Palmier': 0.6,
+            'Cheese Danish': 0.8,
+            'Almond Croissant': 1.0,
+            'Banana Bread': 0.4,
+            'Pretzel': 0.5,
+            'Raspberry Tart': 0.7,
+            'Sourdough Loaf': 0.4,
+            'Lemon Bar': 0.7,
+            'Chocolate Brownie': 0.8,
+            'Pumpkin Scone': 0.5,
+            'Focaccia Bread': 0.5,
+            'Macaron': 0.7
+        };
         // Initialize language from localStorage or default to English
         const storedLanguage = localStorage.getItem('siteLanguage') || 'en';
         let currentLanguage = storedLanguage;
-
         // Apply translations based on current language
         function applyTranslations() {
             Object.keys(translations[currentLanguage]).forEach(key => {
@@ -981,7 +2517,6 @@
                     element.textContent = translations[currentLanguage][key];
                 }
             });
-
             // Update filter options
             document.querySelector('#request-type-filter option[value="all"]').textContent = translations[currentLanguage]['filter-all'];
             document.querySelector('#request-type-filter option[value="user"]').textContent = translations[currentLanguage]['filter-user'];
@@ -990,44 +2525,39 @@
             document.querySelector('#request-status-filter option[value="pending"]').textContent = translations[currentLanguage]['status-pending'];
             document.querySelector('#request-status-filter option[value="approved"]').textContent = translations[currentLanguage]['status-approved'];
             document.querySelector('#request-status-filter option[value="rejected"]').textContent = translations[currentLanguage]['status-rejected'];
-
             const langButton = document.getElementById('language-toggle');
             langButton.textContent = currentLanguage === 'en' ? 'EN' : 'AR';
-            
             if (currentLanguage === 'ar') {
                 document.body.style.fontFamily = "'Amiri', serif";
+                document.body.setAttribute('dir', 'rtl');
                 document.querySelectorAll('.glass-card').forEach(el => {
                     el.style.textAlign = 'right';
                 });
             } else {
                 document.body.style.fontFamily = "'Poppins', sans-serif";
+                document.body.setAttribute('dir', 'ltr');
                 document.querySelectorAll('.glass-card').forEach(el => {
                     el.style.textAlign = 'left';
                 });
             }
         }
-
         // Toggle language function
         function toggleLanguage() {
             currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
             localStorage.setItem('siteLanguage', currentLanguage);
             applyTranslations();
         }
-
         // Format currency
         function formatCurrency(amount) {
             return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
         }
-
         // Populate inventory table
         function populateInventory(data) {
             const tbody = document.getElementById('inventory-body');
             tbody.innerHTML = '';
-            
             data.forEach(item => {
                 const isLowStock = item.Quantity < 10;
                 const expiryClass = item.Expiry_time_left < 24 ? 'low-stock' : '';
-                
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.Item}</td>
@@ -1042,26 +2572,20 @@
                 tbody.appendChild(row);
             });
         }
-
         // Populate requests list
         function populateRequests(requests) {
             const container = document.getElementById('requests-list');
             container.innerHTML = '';
-            
             if (requests.length === 0) {
                 container.innerHTML = '<p style="text-align: center; padding: 2rem; color: var(--text-dark); opacity: 0.7;">No requests match your criteria</p>';
                 return;
             }
-            
             requests.forEach(request => {
                 const requestEl = document.createElement('div');
                 requestEl.className = 'request-item';
-                
                 const statusBadge = request.status === 'pending' ? 'badge-pending' :
                                   request.status === 'approved' ? 'badge-approved' : 'badge-rejected';
-                
                 const typeBadge = request.type === 'user' ? 'badge-user' : 'badge-business';
-                
                 requestEl.innerHTML = `
                     <div class="user-info">
                         <i class="fas fa-${request.avatar}-circle"></i>
@@ -1088,74 +2612,58 @@
                     </div>
                     <span class="badge ${statusBadge}" style="margin-left: 1rem;">${request.status.charAt(0).toUpperCase() + request.status.slice(1)}</span>
                 `;
-                
                 container.appendChild(requestEl);
             });
         }
-
         // Handle request action
         function handleRequest(id, action) {
             alert(`${action === 'accept' ? 'Accepted' : 'Declined'} request #${id}`);
             // In a real app, this would update the request status
             filterRequests();
         }
-
         // Filter requests
         function filterRequests() {
             const searchValue = document.getElementById('requests-search').value.toLowerCase();
             const typeFilter = document.getElementById('request-type-filter').value;
             const statusFilter = document.getElementById('request-status-filter').value;
-            
             const filtered = requestList.filter(request => {
                 const matchesSearch = request.user.toLowerCase().includes(searchValue) ||
                                     request.item.toLowerCase().includes(searchValue) ||
                                     request.message.toLowerCase().includes(searchValue);
-                
                 let matchesType = true;
                 if (typeFilter !== 'all') {
                     matchesType = request.type === typeFilter;
                 }
-                
                 let matchesStatus = true;
                 if (statusFilter !== 'all') {
                     matchesStatus = request.status === statusFilter;
                 }
-                
                 return matchesSearch && matchesType && matchesStatus;
             });
-            
             populateRequests(filtered);
         }
-
         // Filter inventory
         function filterInventory() {
             const searchValue = document.getElementById('inventory-search').value.toLowerCase();
             const availabilityFilter = document.getElementById('availability-filter').value;
-            
             const filtered = inventoryData.filter(item => {
                 const matchesSearch = item.Item.toLowerCase().includes(searchValue) ||
                                     item.Quantity.toString().includes(searchValue);
-                
                 let matchesAvailability = true;
                 if (availabilityFilter === 'low') {
                     matchesAvailability = item.Quantity < 10;
                 } else if (availabilityFilter === 'available') {
                     matchesAvailability = item.Quantity >= 10;
                 }
-                
                 return matchesSearch && matchesAvailability;
             });
-            
             populateInventory(filtered);
         }
-
         // Initialize Charts
         let revenueChart, impactDoughnut;
-        
         function initCharts() {
             const revenueCtx = document.getElementById('revenueChart').getContext('2d');
             const doughnutCtx = document.getElementById('impactDoughnut').getContext('2d');
-            
             revenueChart = new Chart(revenueCtx, { 
                 type: 'bar', 
                 data: { 
@@ -1196,7 +2704,6 @@
                     }
                 }
             });
-            
             impactDoughnut = new Chart(doughnutCtx, {
                 type: 'doughnut',
                 data: {
@@ -1225,20 +2732,16 @@
                     }
                 }
             });
-            
             updateImpactCharts();
         }
-
         // Update impact charts based on filters
         function updateImpactCharts() {
             const year = document.getElementById('impact-year-filter').value;
             const month = document.getElementById('impact-month-filter').value;
             const chartType = document.getElementById('chart-type-filter').value;
-            
             const filteredData = salesData.filter(d => {
                 return d.Year == year && (month === 'all' || d.Month === month);
             });
-            
             if (chartType === 'raw') {
                 document.getElementById('revenueChart').style.display = 'none';
                 document.getElementById('impactDoughnut').style.display = 'none';
@@ -1246,20 +2749,17 @@
                 document.getElementById('revenueChart').style.display = 'block';
                 document.getElementById('impactDoughnut').style.display = 'block';
             }
-            
             if (chartType === 'bar' || chartType === 'line' || chartType === 'pie') {
                 const labels = filteredData.map(d => d.Month);
                 const revenueData = filteredData.map(d => d.Revenue_USD);
                 const foodSaved = filteredData.map(d => d.Food_Saved_Kg);
                 const co2Saved = filteredData.map(d => d.CO2_Tonnes_Saved);
                 const waterSaved = filteredData.map(d => d.Water_Saved_Litres);
-                
                 revenueChart.data.labels = labels;
                 revenueChart.data.datasets[0].data = revenueData;
                 revenueChart.data.datasets[0].type = chartType === 'line' ? 'line' : 'bar';
                 revenueChart.options.plugins.legend.display = chartType !== 'pie';
                 revenueChart.update();
-                
                 if (chartType !== 'pie') {
                     impactDoughnut.data.datasets[0].data = [
                         foodSaved.reduce((a, b) => a + b, 0),
@@ -1280,16 +2780,418 @@
                 }
             }
         }
-
         // Simulate PDF download
         function downloadData() {
             alert('Data downloaded successfully!');
         }
-        
         function generateCertificate() {
             alert('Impact certificate generated and downloaded!');
         }
-
+        
+        // Food Carbon Footprint Calculator Functions
+        function initializeCalculator() {
+            // Calculator Tab Switching
+            const calculatorTabs = document.querySelectorAll('.calculator-tab');
+            const calculatorContents = document.querySelectorAll('.calculator-content');
+            
+            calculatorTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    calculatorTabs.forEach(t => t.classList.remove('active'));
+                    calculatorContents.forEach(c => c.classList.remove('active'));
+                    tab.classList.add('active');
+                    const calculatorType = tab.getAttribute('data-calculator');
+                    document.getElementById(`${calculatorType}-calculator`).classList.add('active');
+                });
+            });
+            
+            // Add ingredient functionality
+            document.getElementById('add-ingredient').addEventListener('click', () => {
+                const container = document.getElementById('ingredients-container');
+                const newRow = document.createElement('div');
+                newRow.className = 'ingredient-row';
+                newRow.innerHTML = `
+                    <select class="ingredient-input ingredient-select">
+                        <option value="">-- Select ingredient --</option>
+                        <option value="Beef">Beef</option>
+                        <option value="Lamb">Lamb</option>
+                        <option value="Cheese">Cheese</option>
+                        <option value="Pork">Pork</option>
+                        <option value="Chicken">Chicken</option>
+                        <option value="Eggs">Eggs</option>
+                        <option value="Rice">Rice</option>
+                        <option value="Fish">Fish</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Bread">Bread</option>
+                        <option value="Pasta">Pasta</option>
+                        <option value="Potatoes">Potatoes</option>
+                        <option value="Tofu">Tofu</option>
+                        <option value="Nuts">Nuts</option>
+                        <option value="Coffee">Coffee</option>
+                        <option value="Chocolate">Chocolate</option>
+                        <option value="Croissant">Croissant</option>
+                        <option value="Chocolate Chip Cookie">Chocolate Chip Cookie</option>
+                        <option value="Blueberry Muffin">Blueberry Muffin</option>
+                        <option value="Baguette">Baguette</option>
+                        <option value="Cinnamon Roll">Cinnamon Roll</option>
+                        <option value="Apple Pie">Apple Pie</option>
+                        <option value="Chocolate Eclair">Chocolate Eclair</option>
+                        <option value="Whole Wheat Bread">Whole Wheat Bread</option>
+                        <option value="Palmier">Palmier</option>
+                        <option value="Cheese Danish">Cheese Danish</option>
+                        <option value="Almond Croissant">Almond Croissant</option>
+                        <option value="Banana Bread">Banana Bread</option>
+                        <option value="Pretzel">Pretzel</option>
+                        <option value="Raspberry Tart">Raspberry Tart</option>
+                        <option value="Sourdough Loaf">Sourdough Loaf</option>
+                        <option value="Lemon Bar">Lemon Bar</option>
+                        <option value="Chocolate Brownie">Chocolate Brownie</option>
+                        <option value="Pumpkin Scone">Pumpkin Scone</option>
+                        <option value="Focaccia Bread">Focaccia Bread</option>
+                        <option value="Macaron">Macaron</option>
+                    </select>
+                    <input type="number" class="ingredient-input ingredient-quantity" min="1" value="100" placeholder="Quantity (g)">
+                    <button class="remove-ingredient">×</button>
+                `;
+                container.appendChild(newRow);
+                
+                // Add event listener to the new remove button
+                const removeBtn = newRow.querySelector('.remove-ingredient');
+                removeBtn.addEventListener('click', () => {
+                    newRow.remove();
+                });
+                removeBtn.style.display = 'flex';
+            });
+            
+            // Single item calculation
+            document.getElementById('calculate-single').addEventListener('click', () => {
+                const foodItem = document.getElementById('food-item').value;
+                const quantity = parseFloat(document.getElementById('food-quantity').value) || 0;
+                
+                if (!foodItem) {
+                    alert('Please select a food item');
+                    return;
+                }
+                
+                if (quantity <= 0) {
+                    alert('Please enter a valid quantity');
+                    return;
+                }
+                
+                calculateCarbonFootprint(foodItem, quantity, 'single');
+            });
+            
+            // Recipe calculation
+            document.getElementById('calculate-recipe').addEventListener('click', () => {
+                const recipeName = document.getElementById('recipe-name').value;
+                const ingredients = [];
+                const ingredientRows = document.querySelectorAll('.ingredient-row');
+                
+                let hasError = false;
+                ingredientRows.forEach(row => {
+                    const select = row.querySelector('.ingredient-select');
+                    const quantityInput = row.querySelector('.ingredient-quantity');
+                    const ingredient = select.value;
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    
+                    if (ingredient && quantity > 0) {
+                        ingredients.push({ name: ingredient, quantity: quantity });
+                    } else if (ingredient || quantity > 0) {
+                        // Only show error if one field is filled but not the other
+                        hasError = true;
+                    }
+                });
+                
+                if (hasError) {
+                    alert('Please complete all ingredient fields or remove incomplete rows');
+                    return;
+                }
+                
+                if (ingredients.length === 0) {
+                    alert('Please add at least one ingredient');
+                    return;
+                }
+                
+                calculateRecipeCarbonFootprint(recipeName, ingredients);
+            });
+            
+            // Event delegation for dynamically added remove buttons
+            document.getElementById('ingredients-container').addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-ingredient')) {
+                    const row = e.target.closest('.ingredient-row');
+                    if (document.querySelectorAll('.ingredient-row').length > 1) {
+                        row.remove();
+                    } else {
+                        // Clear the fields instead of removing the last row
+                        const select = row.querySelector('.ingredient-select');
+                        const quantity = row.querySelector('.ingredient-quantity');
+                        select.value = '';
+                        quantity.value = '100';
+                    }
+                }
+            });
+        }
+        
+        // Calculate carbon footprint for single item
+        function calculateCarbonFootprint(foodItem, quantityInGrams, mode) {
+            // Show loading spinner
+            const loadingEl = document.getElementById('calculator-loading');
+            const resultEl = document.getElementById('calculator-result');
+            loadingEl.classList.add('active');
+            resultEl.classList.remove('active');
+            
+            // Simulate calculation delay
+            setTimeout(() => {
+                // Convert grams to kilograms for calculation
+                const quantityInKg = quantityInGrams / 1000;
+                
+                // Get carbon footprint (kg CO2e per kg of food)
+                const carbonFootprintPerKg = foodCarbonData[foodItem] || 0;
+                const waterUsagePerKg = foodWaterData[foodItem] || 0;
+                const landUsePerKg = foodLandData[foodItem] || 0;
+                
+                // Calculate total impact
+                const totalCarbon = carbonFootprintPerKg * quantityInKg;
+                const totalWater = waterUsagePerKg * quantityInKg;
+                const totalLand = landUsePerKg * quantityInKg;
+                
+                // Calculate rating (A-E) based on carbon footprint per 100g
+                const carbonPer100g = (totalCarbon / quantityInGrams) * 100;
+                let rating = 'C';
+                let ratingClass = 'rating-c';
+                
+                if (carbonPer100g < 0.5) {
+                    rating = 'A';
+                    ratingClass = 'rating-a';
+                } else if (carbonPer100g < 1.5) {
+                    rating = 'B';
+                    ratingClass = 'rating-b';
+                } else if (carbonPer100g < 3.0) {
+                    rating = 'C';
+                    ratingClass = 'rating-c';
+                } else if (carbonPer100g < 5.0) {
+                    rating = 'D';
+                    ratingClass = 'rating-d';
+                } else {
+                    rating = 'E';
+                    ratingClass = 'rating-e';
+                }
+                
+                // Get average meal values for comparison (based on typical meal of 500g)
+                const averageMealCarbon = 1.5; // kg CO2e
+                const lowCarbonBenchmark = 0.45; // kg CO2e (30% of average)
+                
+                // Calculate percentage for comparison bars
+                const userPercentage = Math.min(100, (totalCarbon / averageMealCarbon) * 100);
+                const benchmarkPercentage = (lowCarbonBenchmark / averageMealCarbon) * 100;
+                
+                // Update results
+                document.getElementById('carbon-score').innerHTML = `${totalCarbon.toFixed(2)}<span class="carbon-unit"> kg CO₂e</span>`;
+                document.getElementById('carbon-rating').textContent = rating;
+                document.getElementById('carbon-rating').className = 'rating ' + ratingClass;
+                document.getElementById('detail-carbon').textContent = `${totalCarbon.toFixed(2)} kg CO₂e`;
+                document.getElementById('detail-water').textContent = `${Math.round(totalWater)} L`;
+                document.getElementById('detail-land').textContent = `${totalLand.toFixed(2)} m²`;
+                
+                // Update comparison bars
+                document.getElementById('bar-user').style.width = `${userPercentage}%`;
+                
+                // Generate recommendations based on rating
+                let recommendations = '';
+                switch(rating) {
+                    case 'A':
+                        recommendations = `
+                            <p>🌟 Excellent! Your selection has a very low carbon footprint.</p>
+                            <p>Consider sharing your sustainable choices with others to inspire more eco-friendly eating habits.</p>
+                        `;
+                        break;
+                    case 'B':
+                        recommendations = `
+                            <p>👍 Great choice! Your selection has a relatively low carbon footprint.</p>
+                            <p>To improve further, consider replacing higher-impact ingredients with more plant-based alternatives.</p>
+                        `;
+                        break;
+                    case 'C':
+                        recommendations = `
+                            <p>✅ Good effort! Your selection has a moderate carbon footprint.</p>
+                            <p>Consider reducing portion sizes or replacing some ingredients with lower-impact alternatives like vegetables or grains.</p>
+                        `;
+                        break;
+                    case 'D':
+                        recommendations = `
+                            <p>⚠️ Your selection has a high carbon footprint.</p>
+                            <p>Consider replacing meat with plant-based proteins, or choosing poultry instead of red meat to significantly reduce emissions.</p>
+                        `;
+                        break;
+                    case 'E':
+                        recommendations = `
+                            <p>🔴 Your selection has a very high carbon footprint.</p>
+                            <p>Consider these alternatives: Replace beef with chicken (reduces footprint by ~80%), or try plant-based options which typically have 90% less emissions than beef.</p>
+                        `;
+                        break;
+                }
+                
+                // Add specific food recommendations
+                if (['Beef', 'Lamb', 'Cheese', 'Pork'].includes(foodItem)) {
+                    recommendations += `
+                        <p><strong>Did you know?</strong> ${foodItem} has one of the highest carbon footprints. Consider these alternatives:</p>
+                        <ul>
+                            <li>Chicken: ~80% lower emissions than ${foodItem.toLowerCase()}</li>
+                            <li>Tofu: ~90% lower emissions than ${foodItem.toLowerCase()}</li>
+                            <li>Vegetables: ~95% lower emissions than ${foodItem.toLowerCase()}</li>
+                        </ul>
+                    `;
+                }
+                
+                document.getElementById('recommendations-content').innerHTML = recommendations;
+                
+                // Hide loading, show results
+                loadingEl.classList.remove('active');
+                resultEl.classList.add('active');
+                
+            }, 1500); // Simulate 1.5 second calculation time
+        }
+        
+        // Calculate carbon footprint for recipe
+        function calculateRecipeCarbonFootprint(recipeName, ingredients) {
+            // Show loading spinner
+            const loadingEl = document.getElementById('calculator-loading');
+            const resultEl = document.getElementById('calculator-result');
+            loadingEl.classList.add('active');
+            resultEl.classList.remove('active');
+            
+            // Simulate calculation delay
+            setTimeout(() => {
+                let totalCarbon = 0;
+                let totalWater = 0;
+                let totalLand = 0;
+                let totalWeight = 0;
+                
+                // Calculate totals for all ingredients
+                ingredients.forEach(ingredient => {
+                    const quantityInKg = ingredient.quantity / 1000;
+                    totalCarbon += (foodCarbonData[ingredient.name] || 0) * quantityInKg;
+                    totalWater += (foodWaterData[ingredient.name] || 0) * quantityInKg;
+                    totalLand += (foodLandData[ingredient.name] || 0) * quantityInKg;
+                    totalWeight += ingredient.quantity;
+                });
+                
+                // Calculate rating based on carbon footprint per 100g of recipe
+                const carbonPer100g = (totalCarbon / totalWeight) * 100;
+                let rating = 'C';
+                let ratingClass = 'rating-c';
+                
+                if (carbonPer100g < 0.5) {
+                    rating = 'A';
+                    ratingClass = 'rating-a';
+                } else if (carbonPer100g < 1.5) {
+                    rating = 'B';
+                    ratingClass = 'rating-b';
+                } else if (carbonPer100g < 3.0) {
+                    rating = 'C';
+                    ratingClass = 'rating-c';
+                } else if (carbonPer100g < 5.0) {
+                    rating = 'D';
+                    ratingClass = 'rating-d';
+                } else {
+                    rating = 'E';
+                    ratingClass = 'rating-e';
+                }
+                
+                // Get average meal values for comparison (based on typical meal of 500g)
+                const averageMealCarbon = 1.5; // kg CO2e
+                const lowCarbonBenchmark = 0.45; // kg CO2e (30% of average)
+                
+                // Calculate percentage for comparison bars
+                const userPercentage = Math.min(100, (totalCarbon / averageMealCarbon) * 100);
+                const benchmarkPercentage = (lowCarbonBenchmark / averageMealCarbon) * 100;
+                
+                // Update results
+                document.getElementById('carbon-score').innerHTML = `${totalCarbon.toFixed(2)}<span class="carbon-unit"> kg CO₂e</span>`;
+                document.getElementById('carbon-rating').textContent = rating;
+                document.getElementById('carbon-rating').className = 'rating ' + ratingClass;
+                document.getElementById('detail-carbon').textContent = `${totalCarbon.toFixed(2)} kg CO₂e`;
+                document.getElementById('detail-water').textContent = `${Math.round(totalWater)} L`;
+                document.getElementById('detail-land').textContent = `${totalLand.toFixed(2)} m²`;
+                
+                // Update comparison bars
+                document.getElementById('bar-user').style.width = `${userPercentage}%`;
+                
+                // Generate recommendations based on rating
+                let recommendations = `<p><strong>Recipe: ${recipeName || 'Custom Recipe'}</strong></p>`;
+                
+                switch(rating) {
+                    case 'A':
+                        recommendations += `
+                            <p>🌟 Excellent! Your recipe has a very low carbon footprint.</p>
+                            <p>Your ingredient choices demonstrate great environmental awareness. Consider sharing this recipe to inspire others!</p>
+                        `;
+                        break;
+                    case 'B':
+                        recommendations += `
+                            <p>👍 Great recipe! Your ingredient selection has a relatively low carbon footprint.</p>
+                            <p>To improve further, consider increasing the proportion of vegetables or grains in your recipe.</p>
+                        `;
+                        break;
+                    case 'C':
+                        recommendations += `
+                            <p>✅ Good effort! Your recipe has a moderate carbon footprint.</p>
+                            <p>Consider reducing the amount of higher-impact ingredients or replacing them with more sustainable alternatives.</p>
+                        `;
+                        break;
+                    case 'D':
+                        recommendations += `
+                            <p>⚠️ Your recipe has a high carbon footprint.</p>
+                            <p>Try replacing some meat ingredients with plant-based proteins, or use smaller portions of high-impact ingredients.</p>
+                        `;
+                        break;
+                    case 'E':
+                        recommendations += `
+                            <p>🔴 Your recipe has a very high carbon footprint.</p>
+                            <p>Consider reformulating with these changes: Replace red meat with poultry or plant-based proteins, increase vegetable content, and reduce portion sizes of high-impact ingredients.</p>
+                        `;
+                        break;
+                }
+                
+                // Add breakdown of highest impact ingredients
+                if (ingredients.length > 1) {
+                    // Sort ingredients by carbon impact
+                    const sortedIngredients = [...ingredients].sort((a, b) => {
+                        const aCarbon = (foodCarbonData[a.name] || 0) * (a.quantity / 1000);
+                        const bCarbon = (foodCarbonData[b.name] || 0) * (b.quantity / 1000);
+                        return bCarbon - aCarbon;
+                    });
+                    
+                    recommendations += `<p><strong>Top 3 highest impact ingredients in your recipe:</strong></p><ol>`;
+                    
+                    for (let i = 0; i < Math.min(3, sortedIngredients.length); i++) {
+                        const ingredient = sortedIngredients[i];
+                        const ingredientCarbon = (foodCarbonData[ingredient.name] || 0) * (ingredient.quantity / 1000);
+                        const percentage = ((ingredientCarbon / totalCarbon) * 100).toFixed(1);
+                        recommendations += `<li>${ingredient.name}: ${ingredientCarbon.toFixed(2)} kg CO₂e (${percentage}%)</li>`;
+                    }
+                    
+                    recommendations += `</ol>`;
+                    
+                    // Suggest alternatives for highest impact ingredient
+                    const highestImpact = sortedIngredients[0];
+                    if (['Beef', 'Lamb', 'Cheese', 'Pork'].includes(highestImpact.name)) {
+                        recommendations += `
+                            <p><strong>Suggestion:</strong> Replacing ${highestImpact.name.toLowerCase()} with chicken would reduce this ingredient's carbon footprint by ~80%.</p>
+                        `;
+                    }
+                }
+                
+                document.getElementById('recommendations-content').innerHTML = recommendations;
+                
+                // Hide loading, show results
+                loadingEl.classList.remove('active');
+                resultEl.classList.add('active');
+                
+            }, 1500); // Simulate 1.5 second calculation time
+        }
+        
         // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
             particlesJS("particles-js", { 
@@ -1312,64 +3214,140 @@
                 }, 
                 "retina_detect": true 
             });
-
             // Initialize inventory and requests
             populateInventory(inventoryData);
             populateRequests(requestList);
-            
-            // Set up event listeners
+            // Set up event listeners for inventory
             document.getElementById('inventory-search').addEventListener('input', filterInventory);
             document.getElementById('availability-filter').addEventListener('change', filterInventory);
             document.getElementById('add-item-btn').addEventListener('click', () => {
                 alert('Add new item functionality would open a form here.');
             });
-            
+            // Set up event listeners for requests
             document.getElementById('requests-search').addEventListener('input', filterRequests);
             document.getElementById('request-type-filter').addEventListener('change', filterRequests);
             document.getElementById('request-status-filter').addEventListener('change', filterRequests);
             document.getElementById('issue-request-btn').addEventListener('click', () => {
                 alert('Issue request form would appear here.');
             });
-            
+            // Set up event listeners for impact
             document.getElementById('impact-year-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('impact-month-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('chart-type-filter').addEventListener('change', updateImpactCharts);
             document.getElementById('download-data-btn').addEventListener('click', downloadData);
             document.getElementById('certificate-btn').addEventListener('click', generateCertificate);
-            
             // Initialize charts
             initCharts();
-            
             // Navigation
             const navItems = document.querySelectorAll('.nav-item');
             const pageSections = document.querySelectorAll('.page-section');
-            
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
                     e.preventDefault();
                     const targetId = item.querySelector('a').dataset.target;
-                    
                     navItems.forEach(nav => nav.classList.remove('active'));
                     item.classList.add('active');
-                    
                     pageSections.forEach(section => {
                         section.classList.remove('active');
                         if (section.id === targetId) {
                             section.classList.add('active');
                         }
                     });
-                    
                     window.scrollTo(0, 0);
                 });
             });
-            
             // Set up language toggle button
             const langButton = document.getElementById('language-toggle');
             langButton.addEventListener('click', toggleLanguage);
-            
             // Apply initial translations
             applyTranslations();
+            // Initialize split view functionality
+            const splitDivider = document.getElementById('split-divider');
+            const requestsPanel = document.getElementById('requests-panel');
+            const messagesPanel = document.getElementById('messages-panel');
+            const splitContainer = document.querySelector('.split-view-container');
+            // Set initial width (50% each)
+            requestsPanel.style.width = '50%';
+            messagesPanel.style.width = '50%';
+            let isDragging = false;
+            splitDivider.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                document.body.style.cursor = 'col-resize';
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const containerRect = splitContainer.getBoundingClientRect();
+                let percentage = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+                // Limit to reasonable values (20%-80%)
+                percentage = Math.max(20, Math.min(80, percentage));
+                requestsPanel.style.width = percentage + '%';
+                messagesPanel.style.width = (100 - percentage) + '%';
+            });
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                document.body.style.cursor = 'default';
+            });
+            // Handle touch events for mobile
+            splitDivider.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                e.preventDefault();
+            });
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const containerRect = splitContainer.getBoundingClientRect();
+                let percentage = ((e.touches[0].clientX - containerRect.left) / containerRect.width) * 100;
+                // Limit to reasonable values (20%-80%)
+                percentage = Math.max(20, Math.min(80, percentage));
+                requestsPanel.style.width = percentage + '%';
+                messagesPanel.style.width = (100 - percentage) + '%';
+            });
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+            // BridgePoint Tab Functionality
+            const bridgepointTabs = document.querySelectorAll('.bridgepoint-tab');
+            const bridgepointContents = document.querySelectorAll('.bridgepoint-content');
+            bridgepointTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    bridgepointTabs.forEach(t => t.classList.remove('active'));
+                    bridgepointContents.forEach(c => c.classList.remove('active'));
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    // Show corresponding content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            // FAQ Toggle Functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                    const icon = question.querySelector('i');
+                    if (item.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+            // Document Upload Area
+            const uploadAreas = document.querySelectorAll('.upload-area');
+            uploadAreas.forEach(area => {
+                area.addEventListener('click', () => {
+                    // In a real app, this would trigger a file input
+                    alert('File upload dialog would appear here.');
+                });
+            });
+            
+            // Initialize the food carbon footprint calculator
+            initializeCalculator();
         });
     </script>
 </body>
-</html>
+</html>      
