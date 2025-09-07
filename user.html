@@ -209,14 +209,16 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(240, 244, 248, 0.3);
+            background: rgba(134, 167, 137, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .dot.active {
-            background: var(--secondary-accent);
-            transform: scale(1.2);
+             background: var(--secondary-accent);
+    transform: scale(1.2);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--secondary-accent), 0 2px 8px rgba(73, 231, 205, 0.15);
         }
 
         /* Home: Chart Section */
@@ -392,14 +394,17 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: rgba(240, 244, 248, 0.3);
+            background: rgba(64, 85, 65, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
         }
 
         .news-dot.active {
-            background: var(--secondary-accent);
-            transform: scale(1.2);
+             background: var(--secondary-accent);
+    transform: scale(1.2);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--secondary-accent), 0 2px 8px rgba(73, 231, 205, 0.15);
         }
 
         .food-card {
@@ -721,7 +726,7 @@
             left: 0;
             right: 0;
             width: 100%;
-            background: rgba(26, 29, 46, 0.9);
+            background: rgba(255, 254, 252, 0.95);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-top: 1px solid var(--glass-border);
@@ -2843,7 +2848,9 @@
 .news-dot.active,
 .filter-btn.active {
     background: var(--accent-gradient);
-    color: white;
+    color: var(--text-dark); /* Use dark text for visibility */
+    box-shadow: 0 0 15px rgba(134, 167, 137, 0.3);
+
 }
 
 .news-dot {
