@@ -1,14 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nematuk - Policy Support Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com  ">
+    <link rel="preconnect" href="https://fonts.gstatic.com  " crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css  ">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js  "></script>
     <style>
         :root {
             --bg-light: #FFFEFC;
@@ -422,10 +423,6 @@
             margin: 0;
         }
 
-        .insight-section {
-            margin-bottom: 2rem;
-        }
-
         .insight-item {
             background: rgba(176, 217, 177, 0.1);
             border-left: 4px solid var(--secondary-accent);
@@ -593,9 +590,54 @@
 body {
     padding-bottom: 80px;
 }
+
+/* Language Toggle Button */
+.language-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 25px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.language-toggle:hover {
+    background: rgba(255, 254, 252, 0.9);
+    box-shadow: 0 2px 10px rgba(134, 167, 137, 0.2);
+}
+
+.language-toggle i {
+    font-size: 1rem;
+}
+
+/* Arabic text styling */
+.arabic {
+    font-family: 'Cairo', 'Poppins', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+/* For browsers that support Arabic fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
     </style>
 </head>
 <body>
+    <!-- Language Toggle Button -->
+    <div class="language-toggle" id="languageToggle">
+        <i class="fas fa-language"></i>
+        <span id="languageText">EN</span>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-top" style="padding:2rem 0;">
@@ -786,6 +828,291 @@ body {
     </div>
 
     <script>
+        // Language translations
+        const translations = {
+            en: {
+                // Page title
+                pageTitle: "Nematuk - Policy Support Dashboard",
+                
+                // Header
+                platformAnalytics: "Platform Analytics",
+                searchPlaceholder: "Search...",
+                
+                // Navigation tabs
+                foodSecurity: "Food Security",
+                awarenessEngagement: "Awareness & Engagement",
+                policySupport: "Policy Support",
+                
+                // Breadcrumb
+                analytics: "Analytics",
+                policySupportBreadcrumb: "Policy Support",
+                
+                // Page header
+                policySupportReporting: "Policy Support & Reporting",
+                policySubtitle: "Analyze data to inform policy decisions and drive impactful change in food waste reduction.",
+                downloadReport: "Download Report",
+                
+                // Chart titles
+                longTermVision: "Long-Term Vision Indicators",
+                predictiveImpact: "Predictive Impact (AI Forecasting)",
+                globalAlignment: "Global Alignment",
+                
+                // Toggle buttons
+                projection: "Projection",
+                actuals: "Actuals",
+                
+                // Time period options
+                yearComparison: "2024 vs 2023",
+                yearComparison2: "2023 vs 2022",
+                yearComparison3: "2022 vs 2021",
+                
+                // Progress indicators
+                uaeStrategy: "UAE Food Security Strategy 2051",
+                unSDG: "UN SDG 12.3: Halve Food Waste",
+                progress: "Progress",
+                fromPrevious: "from 2023",
+                
+                // AI Insights
+                aiInsights: "AI Insights",
+                insight1: "Forecasts indicate a 15% increase in food waste reduction over the next 6 months if current initiatives are maintained.",
+                insight2: "To accelerate progress towards UN SDG 12.3, consider launching targeted campaigns in high-waste sectors identified in the monthly summary.",
+                insight3: "The positive trend in UAE Food Security Strategy alignment is strongly correlated with business-level incentives. Policy enhancement in this area is recommended.",
+                
+                // Feedback Loop
+                feedbackLoop: "Feedback Loop",
+                communityFeedback: "Community Feedback",
+                businessFeedback: "Business Feedback",
+                positive: "Positive",
+                suggestion: "Suggestion",
+                concern: "Concern",
+                
+                // Feedback messages
+                feedback1: "The new community fridge initiative is fantastic! It's so easy to donate.",
+                feedback2: "Could we get more collection points in the downtown area? It would help more people participate.",
+                feedback3: "The app was a bit slow to update the donation status last week.",
+                feedback4: "The new reporting dashboard simplifies our compliance process significantly.",
+                feedback5: "We'd love to see a feature for scheduling recurring pickups for surplus food.",
+                
+                // Chart description
+                chartDescription: "Food Waste Reduction (Tons) - Next 3-6 Months Forecast vs. Historical Data",
+                
+                // Bottom nav
+                dashboard: "Dashboard",
+                campaigns: "Campaigns",
+                requests: "Requests",
+                analyticsNav: "Analytics",
+                settings: "Settings",
+                
+                // Language toggle
+                language: "English",
+                languageArabic: "العربية"
+            },
+            ar: {
+                // Page title
+                pageTitle: "نمتك - لوحة دعم السياسات",
+                
+                // Header
+                platformAnalytics: "تحليلات المنصة",
+                searchPlaceholder: "بحث...",
+                
+                // Navigation tabs
+                foodSecurity: "الأمن الغذائي",
+                awarenessEngagement: "الوعي والمشاركة",
+                policySupport: "دعم السياسات",
+                
+                // Breadcrumb
+                analytics: "التحليلات",
+                policySupportBreadcrumb: "دعم السياسات",
+                
+                // Page header
+                policySupportReporting: "دعم السياسات وإعداد التقارير",
+                policySubtitle: "تحليل البيانات لإبلاغ قرارات السياسات ودفع التغيير المؤثر في تقليل هدر الطعام.",
+                downloadReport: "تنزيل التقرير",
+                
+                // Chart titles
+                longTermVision: "مؤشرات الرؤية طويلة المدى",
+                predictiveImpact: "التأثير التنبؤي (التنبؤ بالذكاء الاصطناعي)",
+                globalAlignment: "المحاذاة العالمية",
+                
+                // Toggle buttons
+                projection: "توقع",
+                actuals: "فعلي",
+                
+                // Time period options
+                yearComparison: "2024 مقابل 2023",
+                yearComparison2: "2023 مقابل 2022",
+                yearComparison3: "2022 مقابل 2021",
+                
+                // Progress indicators
+                uaeStrategy: "استراتيجية الأمن الغذائي لدولة الإمارات 2051",
+                unSDG: "هدف التنمية المستدامة للأمم المتحدة 12.3: خفض هدر الطعام إلى النصف",
+                progress: "تقدم",
+                fromPrevious: "من 2023",
+                
+                // AI Insights
+                aiInsights: "رؤى الذكاء الاصطناعي",
+                insight1: "تشير التوقعات إلى زيادة بنسبة 15٪ في تقليل هدر الطعام خلال الأشهر الستة القادمة إذا تم الحفاظ على المبادرات الحالية.",
+                insight2: "لتسريع التقدم نحو هدف التنمية المستدامة للأمم المتحدة 12.3، فكر في إطلاق حملات مستهدفة في القطاعات ذات الهدر المرتفع المحددة في الملخص الشهري.",
+                insight3: "يرتبط الاتجاه الإيجابي في محاذاة استراتيجية الأمن الغذائي لدولة الإمارات ارتباطًا وثيقًا بالحوافز على مستوى الأعمال. يُوصى بتعزيز السياسة في هذا المجال.",
+                
+                // Feedback Loop
+                feedbackLoop: "حلقة التغذية الراجعة",
+                communityFeedback: "ملاحظات المجتمع",
+                businessFeedback: "ملاحظات الأعمال",
+                positive: "إيجابي",
+                suggestion: "اقتراح",
+                concern: "قلق",
+                
+                // Feedback messages
+                feedback1: "مبادرة ثلاجة المجتمع الجديدة رائعة! من السهل جدًا التبرع.",
+                feedback2: "هل يمكننا الحصول على المزيد من نقاط الجمع في وسط المدينة؟ سيساعد ذلك المزيد من الناس على المشاركة.",
+                feedback3: "كان التطبيق بطيئًا بعض الشيء في تحديث حالة التبرع الأسبوع الماضي.",
+                feedback4: "يُبسّط لوحة التقارير الجديدة عملية الامتثال لدينا بشكل كبير.",
+                feedback5: "نود أن نرى ميزة لجدولة عمليات الاستلام المتكررة للطعام الفائض.",
+                
+                // Chart description
+                chartDescription: "خفض هدر الطعام (بالأطنان) - توقعات 3-6 أشهر القادمة مقابل البيانات التاريخية",
+                
+                // Bottom nav
+                dashboard: "لوحة التحكم",
+                campaigns: "الحملات",
+                requests: "الطلبات",
+                analyticsNav: "التحليلات",
+                settings: "الإعدادات",
+                
+                // Language toggle
+                language: "العربية",
+                languageArabic: "English"
+            }
+        };
+
+        // Initialize language toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageToggle = document.getElementById('languageToggle');
+            const languageText = document.getElementById('languageText');
+            
+            // Check for saved language preference
+            let currentLanguage = localStorage.getItem('language') || 'en';
+            
+            // Apply initial language
+            updateLanguage(currentLanguage);
+            
+            // Toggle language on button click
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+                updateLanguage(currentLanguage);
+                localStorage.setItem('language', currentLanguage);
+            });
+            
+            // Function to update all text elements with translations
+            function updateLanguage(lang) {
+                // Update page title
+                document.title = translations[lang].pageTitle;
+                
+                // Update language toggle text
+                languageText.textContent = lang === 'en' ? translations.en.language : translations.ar.languageArabic;
+                
+                // Update body class for RTL support
+                if (lang === 'ar') {
+                    document.body.classList.add('arabic');
+                } else {
+                    document.body.classList.remove('arabic');
+                }
+                
+                // Update header elements
+                document.querySelector('.logo h1').textContent = translations[lang].platformAnalytics;
+                document.querySelector('.search-box input').placeholder = translations[lang].searchPlaceholder;
+                
+                // Update navigation tabs
+                const navTabs = document.querySelectorAll('.nav-tab');
+                navTabs[0].querySelector('span').textContent = translations[lang].foodSecurity;
+                navTabs[1].querySelector('span').textContent = translations[lang].awarenessEngagement;
+                navTabs[2].querySelector('span').textContent = translations[lang].policySupport;
+                
+                // Update breadcrumb
+                document.querySelector('.breadcrumb span:first-child').textContent = translations[lang].analytics;
+                document.querySelector('.breadcrumb .active').textContent = translations[lang].policySupportBreadcrumb;
+                
+                // Update page header
+                document.querySelector('.page-title-section h1').textContent = translations[lang].policySupportReporting;
+                document.querySelector('.page-subtitle').textContent = translations[lang].policySubtitle;
+                document.querySelector('.download-btn span').textContent = translations[lang].downloadReport;
+                
+                // Update chart titles
+                document.querySelector('.chart-title').textContent = translations[lang].longTermVision;
+                document.querySelectorAll('.chart-header h4')[0].textContent = translations[lang].predictiveImpact;
+                document.querySelectorAll('.chart-header h4')[1].textContent = translations[lang].globalAlignment;
+                
+                // Update toggle buttons
+                const toggleBtns = document.querySelectorAll('.toggle-btn');
+                toggleBtns[0].textContent = translations[lang].projection;
+                toggleBtns[1].textContent = translations[lang].actuals;
+                
+                // Update select options for year comparison
+                const yearSelect = document.querySelector('.chart-select');
+                yearSelect.options[0].text = translations[lang].yearComparison;
+                yearSelect.options[1].text = translations[lang].yearComparison2;
+                yearSelect.options[2].text = translations[lang].yearComparison3;
+                
+                // Update progress indicators
+                const progressItems = document.querySelectorAll('.progress-item');
+                progressItems[0].querySelector('.progress-label').textContent = translations[lang].uaeStrategy;
+                progressItems[1].querySelector('.progress-label').textContent = translations[lang].unSDG;
+                
+                // Update progress change text
+                const progressChanges = document.querySelectorAll('.progress-change');
+                progressChanges[0].innerHTML = translations[lang].progress + ". <span class='positive-change'>+" + 
+                    progressChanges[0].textContent.match(/\d+/)[0] + "% " + translations[lang].fromPrevious + "</span>";
+                progressChanges[1].innerHTML = translations[lang].progress + ". <span class='positive-change'>+" + 
+                    progressChanges[1].textContent.match(/\d+/)[0] + "% " + translations[lang].fromPrevious + "</span>";
+                
+                // Update AI Insights section
+                document.querySelector('.ai-header h3').textContent = translations[lang].aiInsights;
+                const insightItems = document.querySelectorAll('.insight-item');
+                if (insightItems.length >= 3) {
+                    insightItems[0].textContent = translations[lang].insight1;
+                    insightItems[1].textContent = translations[lang].insight2;
+                    insightItems[2].textContent = translations[lang].insight3;
+                }
+                
+                // Update Feedback Loop section
+                document.querySelector('.feedback-header h3').textContent = translations[lang].feedbackLoop;
+                document.querySelectorAll('.feedback-category h4')[0].textContent = translations[lang].communityFeedback;
+                document.querySelectorAll('.feedback-category h4')[1].textContent = translations[lang].businessFeedback;
+                
+                // Update feedback icons
+                const feedbackIcons = document.querySelectorAll('.feedback-icon');
+                feedbackIcons[0].querySelector('span').textContent = translations[lang].positive;
+                feedbackIcons[1].querySelector('span').textContent = translations[lang].suggestion;
+                feedbackIcons[2].querySelector('span').textContent = translations[lang].concern;
+                feedbackIcons[3].querySelector('span').textContent = translations[lang].positive;
+                feedbackIcons[4].querySelector('span').textContent = translations[lang].suggestion;
+                
+                // Update feedback text
+                const feedbackTexts = document.querySelectorAll('.feedback-text');
+                if (feedbackTexts.length >= 5) {
+                    feedbackTexts[0].textContent = translations[lang].feedback1;
+                    feedbackTexts[1].textContent = translations[lang].feedback2;
+                    feedbackTexts[2].textContent = translations[lang].feedback3;
+                    feedbackTexts[3].textContent = translations[lang].feedback4;
+                    feedbackTexts[4].textContent = translations[lang].feedback5;
+                }
+                
+                // Update chart description
+                document.querySelector('.chart-description').textContent = translations[lang].chartDescription;
+                
+                // Update bottom navigation
+                const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item span');
+                if (bottomNavItems.length >= 5) {
+                    bottomNavItems[0].textContent = translations[lang].dashboard;
+                    bottomNavItems[1].textContent = translations[lang].campaigns;
+                    bottomNavItems[2].textContent = translations[lang].requests;
+                    bottomNavItems[3].textContent = translations[lang].analyticsNav;
+                    bottomNavItems[4].textContent = translations[lang].settings;
+                }
+            }
+        });
+
         // Initialize chart when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Predictive Impact Chart
@@ -854,17 +1181,18 @@ body {
                 });
             });
         });
+        
         // Add this to your existing script section
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle navigation clicks
-    const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Let the browser handle the navigation to the main dashboard
-            // The hash will automatically trigger the section switching there
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle navigation clicks
+            const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Let the browser handle the navigation to the main dashboard
+                    // The hash will automatically trigger the section switching there
+                });
+            });
         });
-    });
-});
     </script>
     <nav class="bottom-nav">
     <ul class="nav-items">

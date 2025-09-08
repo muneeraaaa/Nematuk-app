@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,12 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nematuk - Government Analytics Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com  ">
+    <link rel="preconnect" href="https://fonts.gstatic.com  " crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="  https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css  ">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js  "></script>
     <style>
         :root {
             --bg-light: #FFFEFC;
@@ -565,10 +566,55 @@
 body {
     padding-bottom: 80px;
 }
+
+/* Language Toggle Button */
+.language-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 25px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.language-toggle:hover {
+    background: rgba(255, 254, 252, 0.9);
+    box-shadow: 0 2px 10px rgba(134, 167, 137, 0.2);
+}
+
+.language-toggle i {
+    font-size: 1rem;
+}
+
+/* Arabic text styling */
+.arabic {
+    font-family: 'Cairo', 'Poppins', sans-serif;
+    direction: rtl;
+    text-align: right;
+}
+
+/* For browsers that support Arabic fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
     </style>
 </head>
 
 <body>
+    <!-- Language Toggle Button -->
+    <div class="language-toggle" id="languageToggle">
+        <i class="fas fa-language"></i>
+        <span id="languageText">EN</span>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-top" style="padding:2rem 0;">
@@ -784,6 +830,317 @@ body {
     </div>
 
     <script>
+        // Language translations
+        const translations = {
+            en: {
+                // Page title
+                pageTitle: "Nematuk - Government Analytics Dashboard",
+                
+                // Header
+                platformAnalytics: "Platform Analytics",
+                searchPlaceholder: "Search...",
+                
+                // Navigation tabs
+                foodSecurity: "Food Security",
+                awarenessEngagement: "Awareness & Engagement",
+                policySupport: "Policy Support",
+                
+                // Breadcrumb
+                nematuk: "Nematuk",
+                foodSecurityBreadcrumb: "Food Security",
+                
+                // Dashboard title
+                foodSecurityMetrics: "Food Security Metrics Dashboard",
+                
+                // Time period options
+                last12Months: "Last 12 months",
+                last6Months: "Last 6 months",
+                last30Days: "Last 30 days",
+                
+                // Emirates options
+                allEmirates: "All Emirates",
+                abuDhabi: "Abu Dhabi",
+                dubai: "Dubai",
+                sharjah: "Sharjah",
+                
+                // Download button
+                downloadReport: "Download Report",
+                
+                // Chart titles and descriptions
+                foodWasteReduction: "Food Waste Reduction Over Time",
+                foodWasteDescription: "This line graph illustrates the volume of food waste reduced in tonnes over the selected period. A downward trend indicates successful waste reduction initiatives.",
+                
+                businessParticipation: "Business Participation",
+                businessParticipationDescription: "This donut chart shows the percentage of businesses contributing to food rescue, categorized by sector.",
+                
+                mealsDonated: "Meals Donated/Rescued",
+                mealsDonatedDescription: "This bar chart displays the number of meals redirected to those in need, broken down by business type. It helps identify key contributors.",
+                
+                geographicDistribution: "Geographic Distribution",
+                geographicDistributionDescription: "This map visualizes the distribution of food surplus and shortages across the Emirates, enabling targeted logistical planning and resource allocation.",
+                
+                // Chart types
+                lineChart: "Line Chart",
+                barChart: "Bar Chart",
+                areaChart: "Area Chart",
+                donutChart: "Donut Chart",
+                pieChart: "Pie Chart",
+                
+                // Legend items
+                restaurants: "Restaurants",
+                bakeries: "Bakeries",
+                supermarkets: "Supermarkets",
+                foodRetail: "Food Retail",
+                hospitality: "Hospitality",
+                foodService: "Food Service",
+                retail: "Retail",
+                
+                // AI Insights
+                aiInsights: "AI Insights",
+                smartSuggestions: "Smart Suggestions",
+                anomalyDetection: "Anomaly Detection",
+                
+                // Insight items
+                suggestion1: "Consider launching a targeted campaign in Sharjah, as participation rates are 15% lower than other Emirates.",
+                suggestion2: "The hospitality sector's donation rate has dropped by 10% this quarter. Partnering with major hotel chains could reverse this trend.",
+                warning1: "Unusually high food waste reported from the Al Ain distribution center last week. Investigate for potential spoilage issues.",
+                critical1: "Critical food shortage detected in a high-density residential area in Dubai. Immediate reallocation of resources is recommended.",
+                
+                // Bottom nav
+                dashboard: "Dashboard",
+                campaigns: "Campaigns",
+                requests: "Requests",
+                analytics: "Analytics",
+                settings: "Settings",
+                
+                // Language toggle
+                language: "English",
+                languageArabic: "العربية"
+            },
+            ar: {
+                // Page title
+                pageTitle: "نمتك - لوحة تحليلات الحكومة",
+                
+                // Header
+                platformAnalytics: "تحليلات المنصة",
+                searchPlaceholder: "بحث...",
+                
+                // Navigation tabs
+                foodSecurity: "الأمن الغذائي",
+                awarenessEngagement: "الوعي والمشاركة",
+                policySupport: "دعم السياسات",
+                
+                // Breadcrumb
+                nematuk: "نمتك",
+                foodSecurityBreadcrumb: "الأمن الغذائي",
+                
+                // Dashboard title
+                foodSecurityMetrics: "لوحة مقاييس الأمن الغذائي",
+                
+                // Time period options
+                last12Months: "آخر 12 شهرًا",
+                last6Months: "آخر 6 أشهر",
+                last30Days: "آخر 30 يومًا",
+                
+                // Emirates options
+                allEmirates: "جميع الإمارات",
+                abuDhabi: "أبوظبي",
+                dubai: "دبي",
+                sharjah: "الشارقة",
+                
+                // Download button
+                downloadReport: "تنزيل التقرير",
+                
+                // Chart titles and descriptions
+                foodWasteReduction: "خفض هدر الطعام بمرور الوقت",
+                foodWasteDescription: "يوضح هذا الرسم البياني الخطي حجم هدر الطعام المخفض بالأطنان خلال الفترة المحددة. يشير الاتجاه الهبوطي إلى نجاح مبادرات خفض الهدر.",
+                
+                businessParticipation: "مشاركة الأعمال",
+                businessParticipationDescription: "يوضح هذا الرسم البياني الدائري النسبة المئوية للأعمال التي تساهم في إنقاذ الطعام، مصنفة حسب القطاع.",
+                
+                mealsDonated: "الوجبات الممنوحة/المنقذة",
+                mealsDonatedDescription: "يعرض هذا الرسم البياني الشريطي عدد الوجبات التي تم توجيهها للمحتاجين، مصنفة حسب نوع العمل. يساعد في تحديد المساهمين الرئيسيين.",
+                
+                geographicDistribution: "التوزيع الجغرافي",
+                geographicDistributionDescription: "يصور هذا الخريطة توزيع فائض الطعام ونقصه عبر الإمارات، مما يمكّن من التخطيط اللوجستي المستهدف وتخصيص الموارد.",
+                
+                // Chart types
+                lineChart: "رسم خطي",
+                barChart: "رسم شريطي",
+                areaChart: "رسم مناطقي",
+                donutChart: "رسم دائري",
+                pieChart: "رسم دائري",
+                
+                // Legend items
+                restaurants: "المطاعم",
+                bakeries: "المخابز",
+                supermarkets: "المتاجر الكبرى",
+                foodRetail: "تجزئة الطعام",
+                hospitality: "الضيافة",
+                foodService: "خدمة الطعام",
+                retail: "تجزئة",
+                
+                // AI Insights
+                aiInsights: "رؤى الذكاء الاصطناعي",
+                smartSuggestions: "اقتراحات ذكية",
+                anomalyDetection: "كشف الشذوذ",
+                
+                // Insight items
+                suggestion1: "فكر في إطلاق حملة مستهدفة في الشارقة، حيث أن معدلات المشاركة أقل بنسبة 15% من الإمارات الأخرى.",
+                suggestion2: "انخفض معدل تبرع قطاع الضيافة بنسبة 10% هذا الربع. يمكن أن يؤدي التعاون مع سلاسل الفنادق الكبرى إلى عكس هذا الاتجاه.",
+                warning1: "تم الإبلاغ عن هدر طعام غير عادي مرتفع من مركز توزيع العين الأسبوع الماضي. ابحث عن مشاكل التلف المحتملة.",
+                critical1: "تم اكتشاف نقص حرج في الطعام في منطقة سكنية ذات كثافة عالية في دبي. يوصى بإعادة توزيع الموارد على الفور.",
+                
+                // Bottom nav
+                dashboard: "لوحة التحكم",
+                campaigns: "الحملات",
+                requests: "الطلبات",
+                analytics: "التحليلات",
+                settings: "الإعدادات",
+                
+                // Language toggle
+                language: "العربية",
+                languageArabic: "English"
+            }
+        };
+
+        // Initialize language toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageToggle = document.getElementById('languageToggle');
+            const languageText = document.getElementById('languageText');
+            
+            // Check for saved language preference
+            let currentLanguage = localStorage.getItem('language') || 'en';
+            
+            // Apply initial language
+            updateLanguage(currentLanguage);
+            
+            // Toggle language on button click
+            languageToggle.addEventListener('click', function() {
+                currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+                updateLanguage(currentLanguage);
+                localStorage.setItem('language', currentLanguage);
+            });
+            
+            // Function to update all text elements with translations
+            function updateLanguage(lang) {
+                // Update page title
+                document.title = translations[lang].pageTitle;
+                
+                // Update language toggle text
+                languageText.textContent = lang === 'en' ? translations.en.language : translations.ar.languageArabic;
+                
+                // Update body class for RTL support
+                if (lang === 'ar') {
+                    document.body.classList.add('arabic');
+                } else {
+                    document.body.classList.remove('arabic');
+                }
+                
+                // Update header elements
+                document.querySelector('.logo h1').textContent = translations[lang].platformAnalytics;
+                document.querySelector('.search-box input').placeholder = translations[lang].searchPlaceholder;
+                
+                // Update navigation tabs
+                const navTabs = document.querySelectorAll('.nav-tab');
+                navTabs[0].querySelector('span').textContent = translations[lang].foodSecurity;
+                navTabs[1].querySelector('span').textContent = translations[lang].awarenessEngagement;
+                navTabs[2].querySelector('span').textContent = translations[lang].policySupport;
+                
+                // Update breadcrumb
+                document.querySelector('.breadcrumb span:first-child').textContent = translations[lang].nematuk;
+                document.querySelector('.breadcrumb .active').textContent = translations[lang].foodSecurityBreadcrumb;
+                
+                // Update page title
+                document.querySelector('.page-title').textContent = translations[lang].foodSecurityMetrics;
+                
+                // Update select options
+                const timeSelects = document.querySelectorAll('.control-select')[0];
+                timeSelects.options[0].text = translations[lang].last12Months;
+                timeSelects.options[1].text = translations[lang].last6Months;
+                timeSelects.options[2].text = translations[lang].last30Days;
+                
+                const emiratesSelects = document.querySelectorAll('.control-select')[1];
+                emiratesSelects.options[0].text = translations[lang].allEmirates;
+                emiratesSelects.options[1].text = translations[lang].abuDhabi;
+                emiratesSelects.options[2].text = translations[lang].dubai;
+                emiratesSelects.options[3].text = translations[lang].sharjah;
+                
+                // Update download button
+                document.querySelector('.download-btn span').textContent = translations[lang].downloadReport;
+                
+                // Update chart headers and descriptions
+                const chartCards = document.querySelectorAll('.chart-card');
+                
+                // Food Waste Reduction Chart
+                chartCards[0].querySelector('.chart-info h3').textContent = translations[lang].foodWasteReduction;
+                chartCards[0].querySelector('.chart-info p').textContent = translations[lang].foodWasteDescription;
+                
+                // Business Participation Chart
+                chartCards[1].querySelector('.chart-info h3').textContent = translations[lang].businessParticipation;
+                chartCards[1].querySelector('.chart-info p').textContent = translations[lang].businessParticipationDescription;
+                
+                // Meals Donated Chart
+                chartCards[2].querySelector('.chart-info h3').textContent = translations[lang].mealsDonated;
+                chartCards[2].querySelector('.chart-info p').textContent = translations[lang].mealsDonatedDescription;
+                
+                // Geographic Distribution Chart
+                chartCards[3].querySelector('.chart-info h3').textContent = translations[lang].geographicDistribution;
+                chartCards[3].querySelector('.chart-info p').textContent = translations[lang].geographicDistributionDescription;
+                
+                // Update chart type options
+                const chartSelects = document.querySelectorAll('.chart-select');
+                if (chartSelects.length >= 3) {
+                    // Food Waste chart types
+                    chartSelects[0].options[0].text = translations[lang].lineChart;
+                    chartSelects[0].options[1].text = translations[lang].barChart;
+                    chartSelects[0].options[2].text = translations[lang].areaChart;
+                    
+                    // Business Participation chart types
+                    chartSelects[1].options[0].text = translations[lang].donutChart;
+                    chartSelects[1].options[1].text = translations[lang].pieChart;
+                    chartSelects[1].options[2].text = translations[lang].barChart;
+                    
+                    // Meals Donated chart types
+                    chartSelects[2].options[0].text = translations[lang].barChart;
+                    chartSelects[2].options[1].text = translations[lang].lineChart;
+                    chartSelects[2].options[2].text = translations[lang].pieChart;
+                }
+                
+                // Update legend items
+                const legendItems = document.querySelectorAll('.legend-item');
+                if (legendItems.length >= 3) {
+                    legendItems[0].querySelector('.legend-text').textContent = translations[lang].restaurants;
+                    legendItems[1].querySelector('.legend-text').textContent = translations[lang].bakeries;
+                    legendItems[2].querySelector('.legend-text').textContent = translations[lang].supermarkets;
+                }
+                
+                // Update AI Insights section
+                document.querySelector('.ai-header h3').textContent = translations[lang].aiInsights;
+                document.querySelectorAll('.insight-section h4')[0].textContent = translations[lang].smartSuggestions;
+                document.querySelectorAll('.insight-section h4')[1].textContent = translations[lang].anomalyDetection;
+                
+                // Update insight items
+                const insightItems = document.querySelectorAll('.insight-item span');
+                if (insightItems.length >= 4) {
+                    insightItems[0].textContent = translations[lang].suggestion1;
+                    insightItems[1].textContent = translations[lang].suggestion2;
+                    insightItems[2].textContent = translations[lang].warning1;
+                    insightItems[3].textContent = translations[lang].critical1;
+                }
+                
+                // Update bottom navigation
+                const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item span');
+                if (bottomNavItems.length >= 5) {
+                    bottomNavItems[0].textContent = translations[lang].dashboard;
+                    bottomNavItems[1].textContent = translations[lang].campaigns;
+                    bottomNavItems[2].textContent = translations[lang].requests;
+                    bottomNavItems[3].textContent = translations[lang].analytics;
+                    bottomNavItems[4].textContent = translations[lang].settings;
+                }
+            }
+        });
+
         // Chart initialization
         document.addEventListener('DOMContentLoaded', function () {
             // Food Waste Reduction Line Chart
@@ -909,17 +1266,18 @@ body {
                 }
             });
         });
+        
         // Add this to your existing script section
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle navigation clicks
-    const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Let the browser handle the navigation to the main dashboard
-            // The hash will automatically trigger the section switching there
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle navigation clicks
+            const navLinks = document.querySelectorAll('.nav-item a[href*="#"]');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Let the browser handle the navigation to the main dashboard
+                    // The hash will automatically trigger the section switching there
+                });
+            });
         });
-    });
-});
     </script>
     <nav class="bottom-nav">
     <ul class="nav-items">

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,12 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nematuk - Awareness & Engagement Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com    ">
+    <link rel="preconnect" href="https://fonts.gstatic.com    " crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="    https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css    ">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js    "></script>
     <style>
         :root {
             --bg-light: #FFFEFC;
@@ -598,11 +599,54 @@
             text-shadow: 0 0 10px var(--secondary-accent);
         }
 
-        
+        /* Language Toggle Button */
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 254, 252, 0.9);
+            box-shadow: 0 2px 10px rgba(134, 167, 137, 0.2);
+        }
+
+        .language-toggle i {
+            font-size: 1rem;
+        }
+
+        /* Arabic text styling */
+        .arabic {
+            font-family: 'Cairo', 'Poppins', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* For browsers that support Arabic fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
     </style>
 </head>
 
 <body>
+    <!-- Language Toggle Button -->
+    <div class="language-toggle" id="languageToggle">
+        <i class="fas fa-language"></i>
+        <span id="languageText">EN</span>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-top" style="padding:2rem 0;">
@@ -642,8 +686,6 @@
                 <span>Analytics</span>
                 <i class="fas fa-chevron-right"></i>
                 <span class="active">Awareness & Engagement</span>
-
-
             </nav>
 
             <!-- Page Header -->
@@ -840,6 +882,314 @@
         </div>
 
         <script>
+            // Language translations
+            const translations = {
+                en: {
+                    // Page title
+                    pageTitle: "Nematuk - Awareness & Engagement Dashboard",
+                    
+                    // Header
+                    platformAnalytics: "Platform Analytics",
+                    searchPlaceholder: "Search...",
+                    
+                    // Navigation tabs
+                    foodSecurity: "Food Security",
+                    awarenessEngagement: "Awareness & Engagement",
+                    policySupport: "Policy Support",
+                    
+                    // Breadcrumb
+                    analytics: "Analytics",
+                    awarenessEngagementBreadcrumb: "Awareness & Engagement",
+                    
+                    // Page header
+                    awarenessEngagementDashboard: "Awareness & Engagement Dashboard",
+                    download: "Download",
+                    
+                    // Chart titles
+                    campaignReach: "Campaign Reach",
+                    communityInvolvement: "Community Involvement",
+                    impactBadgesEarned: "Impact Badges Earned",
+                    educationOutcomes: "Education Outcomes",
+                    
+                    // Time period options
+                    year2024: "2024",
+                    year2023: "2023",
+                    
+                    // Emirates options
+                    allEmirates: "All Emirates",
+                    abuDhabi: "Abu Dhabi",
+                    dubai: "Dubai",
+                    
+                    // Chart controls
+                    chartTypes: {
+                        lineChart: "Line Chart",
+                        barChart: "Bar Chart",
+                        areaChart: "Area Chart",
+                        donutChart: "Donut Chart",
+                        pieChart: "Pie Chart"
+                    },
+                    
+                    // Legend items for badges
+                    ecoChampion: "Eco-Champion",
+                    wasteWarrior: "Waste Warrior",
+                    sustainableChef: "Sustainable Chef",
+                    communityLeader: "Community Leader",
+                    
+                    // Progress labels
+                    awarenessProgramCompletion: "Awareness Program Completion Rate",
+                    professionalCourseCompletion: "Professional Course Completion Rate",
+                    
+                    // AI Insights
+                    aiInsights: "AI Insights",
+                    campaignEffectivenessPredictions: "Campaign Effectiveness Predictions",
+                    highestEngagementPotential: "Highest Engagement Potential",
+                    optimalLaunchTimings: "Optimal Launch Timings",
+                    recommendationForCourses: "Recommendation for Courses",
+                    generateNewPredictions: "Generate New Predictions",
+                    generalInsights: "General Insights",
+                    
+                    // Insight content
+                    insight1: "Challenges are predicted to have the highest engagement with the 18-24 demographic in Dubai.",
+                    insight2: "Launch Social Media Campaigns before national holidays for maximum reach.",
+                    insight3: "Educational Courses show higher completion rates when launched during school semesters, targeting the 35-44 demographic.",
+                    insight4: "There's a growing interest in \"Sustainable Cooking\" workshops among the 25-34 age group in Abu Dhabi.",
+                    insight5: "Anomaly detected: Engagement in Sharjah dropped by 15% last quarter, which is unusual. Further analysis is recommended.",
+                    insight6: "Opportunity: Gamified educational content could significantly boost engagement for younger audiences (18-24).",
+                    
+                    // Bottom nav
+                    dashboard: "Dashboard",
+                    campaigns: "Campaigns",
+                    requests: "Requests",
+                    analytics: "Analytics",
+                    settings: "Settings",
+                    
+                    // Language toggle
+                    language: "English",
+                    languageArabic: "العربية"
+                },
+                ar: {
+                    // Page title
+                    pageTitle: "نمتك - لوحة الوعي والمشاركة",
+                    
+                    // Header
+                    platformAnalytics: "تحليلات المنصة",
+                    searchPlaceholder: "بحث...",
+                    
+                    // Navigation tabs
+                    foodSecurity: "الأمن الغذائي",
+                    awarenessEngagement: "الوعي والمشاركة",
+                    policySupport: "دعم السياسات",
+                    
+                    // Breadcrumb
+                    analytics: "التحليلات",
+                    awarenessEngagementBreadcrumb: "الوعي والمشاركة",
+                    
+                    // Page header
+                    awarenessEngagementDashboard: "لوحة الوعي والمشاركة",
+                    download: "تنزيل",
+                    
+                    // Chart titles
+                    campaignReach: "وصول الحملة",
+                    communityInvolvement: "مشاركة المجتمع",
+                    impactBadgesEarned: "شارات التأثير المكتسبة",
+                    educationOutcomes: "نتائج التعليم",
+                    
+                    // Time period options
+                    year2024: "2024",
+                    year2023: "2023",
+                    
+                    // Emirates options
+                    allEmirates: "جميع الإمارات",
+                    abuDhabi: "أبوظبي",
+                    dubai: "دبي",
+                    
+                    // Chart controls
+                    chartTypes: {
+                        lineChart: "رسم خطي",
+                        barChart: "رسم شريطي",
+                        areaChart: "رسم مناطقي",
+                        donutChart: "رسم دائري",
+                        pieChart: "رسم دائري"
+                    },
+                    
+                    // Legend items for badges
+                    ecoChampion: "بطل البيئة",
+                    wasteWarrior: "محارب الهدر",
+                    sustainableChef: "طاهٍ مستدام",
+                    communityLeader: "قائد المجتمع",
+                    
+                    // Progress labels
+                    awarenessProgramCompletion: "معدل إكمال برنامج التوعية",
+                    professionalCourseCompletion: "معدل إكمال الدورات المهنية",
+                    
+                    // AI Insights
+                    aiInsights: "رؤى الذكاء الاصطناعي",
+                    campaignEffectivenessPredictions: "توقعات فعالية الحملة",
+                    highestEngagementPotential: "أعلى إمكانية للتفاعل",
+                    optimalLaunchTimings: "أوقات الإطلاق المثلى",
+                    recommendationForCourses: "توصية للدورات",
+                    generateNewPredictions: "توليد توقعات جديدة",
+                    generalInsights: "رؤى عامة",
+                    
+                    // Insight content
+                    insight1: "من المتوقع أن يكون للتحديات أعلى تفاعل مع الفئة العمرية 18-24 في دبي.",
+                    insight2: "أطلق حملات وسائل التواصل الاجتماعي قبل العطلات الوطنية لتحقيق أقصى وصول.",
+                    insight3: "تُظهر الدورات التعليمية معدلات إكمال أعلى عند إطلاقها خلال فصول الدراسة، مع استهداف الفئة العمرية 35-44.",
+                    insight4: "هناك اهتمام متزايد بورش عمل \"الطهي المستدام\" بين الفئة العمرية 25-34 في أبوظبي.",
+                    insight5: "تم اكتشاف شذوذ: انخفض التفاعل في الشارقة بنسبة 15% في الربع الأخير، وهو أمر غير معتاد. يُوصى بإجراء مزيد من التحليل.",
+                    insight6: "فرصة: يمكن للمحتوى التعليمي المُلعب أن يعزز التفاعل بشكل كبير مع الجمهور الأصغر سنًا (18-24).",
+                    
+                    // Bottom nav
+                    dashboard: "لوحة التحكم",
+                    campaigns: "الحملات",
+                    requests: "الطلبات",
+                    analytics: "التحليلات",
+                    settings: "الإعدادات",
+                    
+                    // Language toggle
+                    language: "العربية",
+                    languageArabic: "English"
+                }
+            };
+
+            // Initialize language toggle functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const languageToggle = document.getElementById('languageToggle');
+                const languageText = document.getElementById('languageText');
+                
+                // Check for saved language preference
+                let currentLanguage = localStorage.getItem('language') || 'en';
+                
+                // Apply initial language
+                updateLanguage(currentLanguage);
+                
+                // Toggle language on button click
+                languageToggle.addEventListener('click', function() {
+                    currentLanguage = currentLanguage === 'en' ? 'ar' : 'en';
+                    updateLanguage(currentLanguage);
+                    localStorage.setItem('language', currentLanguage);
+                });
+                
+                // Function to update all text elements with translations
+                function updateLanguage(lang) {
+                    // Update page title
+                    document.title = translations[lang].pageTitle;
+                    
+                    // Update language toggle text
+                    languageText.textContent = lang === 'en' ? translations.en.language : translations.ar.languageArabic;
+                    
+                    // Update body class for RTL support
+                    if (lang === 'ar') {
+                        document.body.classList.add('arabic');
+                    } else {
+                        document.body.classList.remove('arabic');
+                    }
+                    
+                    // Update header elements
+                    document.querySelector('.logo h1').textContent = translations[lang].platformAnalytics;
+                    document.querySelector('.search-box input').placeholder = translations[lang].searchPlaceholder;
+                    
+                    // Update navigation tabs
+                    const navTabs = document.querySelectorAll('.nav-tab');
+                    navTabs[0].querySelector('span').textContent = translations[lang].foodSecurity;
+                    navTabs[1].querySelector('span').textContent = translations[lang].awarenessEngagement;
+                    navTabs[2].querySelector('span').textContent = translations[lang].policySupport;
+                    
+                    // Update breadcrumb
+                    document.querySelector('.breadcrumb span:first-child').textContent = translations[lang].analytics;
+                    document.querySelector('.breadcrumb .active').textContent = translations[lang].awarenessEngagementBreadcrumb;
+                    
+                    // Update page header
+                    document.querySelector('.page-title').textContent = translations[lang].awarenessEngagementDashboard;
+                    document.querySelector('.download-btn span').textContent = translations[lang].download;
+                    
+                    // Update chart titles
+                    const chartCards = document.querySelectorAll('.chart-card');
+                    if (chartCards.length >= 4) {
+                        chartCards[0].querySelector('.chart-title').textContent = translations[lang].campaignReach;
+                        chartCards[1].querySelector('.chart-title').textContent = translations[lang].communityInvolvement;
+                        chartCards[2].querySelector('.chart-title').textContent = translations[lang].impactBadgesEarned;
+                        chartCards[3].querySelector('.chart-title').textContent = translations[lang].educationOutcomes;
+                    }
+                    
+                    // Update select options for years
+                    const yearSelects = document.querySelectorAll('.chart-select');
+                    yearSelects.forEach(select => {
+                        if (select.options.length > 0 && select.options[0].text.includes('2024')) {
+                            select.options[0].text = translations[lang].year2024;
+                            if (select.options.length > 1) {
+                                select.options[1].text = translations[lang].year2023;
+                            }
+                        }
+                    });
+                    
+                    // Update select options for emirates
+                    const emiratesSelects = document.querySelectorAll('.chart-select');
+                    emiratesSelects.forEach(select => {
+                        if (select.options.length > 0 && select.options[0].text.includes('All Emirates')) {
+                            select.options[0].text = translations[lang].allEmirates;
+                            if (select.options.length > 2) {
+                                select.options[1].text = translations[lang].abuDhabi;
+                                select.options[2].text = translations[lang].dubai;
+                            }
+                        }
+                    });
+                    
+                    // Update legend items for badges
+                    const legendItems = document.querySelectorAll('.legend-item');
+                    if (legendItems.length >= 4) {
+                        legendItems[0].querySelector('.legend-left span:nth-child(2)').textContent = translations[lang].ecoChampion;
+                        legendItems[1].querySelector('.legend-left span:nth-child(2)').textContent = translations[lang].wasteWarrior;
+                        legendItems[2].querySelector('.legend-left span:nth-child(2)').textContent = translations[lang].sustainableChef;
+                        legendItems[3].querySelector('.legend-left span:nth-child(2)').textContent = translations[lang].communityLeader;
+                    }
+                    
+                    // Update progress labels
+                    const progressLabels = document.querySelectorAll('.progress-label');
+                    if (progressLabels.length >= 2) {
+                        progressLabels[0].textContent = translations[lang].awarenessProgramCompletion;
+                        progressLabels[1].textContent = translations[lang].professionalCourseCompletion;
+                    }
+                    
+                    // Update AI Insights section
+                    document.querySelector('.ai-header h3').textContent = translations[lang].aiInsights;
+                    document.querySelector('.insight-section h4').textContent = translations[lang].campaignEffectivenessPredictions;
+                    document.querySelector('.general-insights h4').textContent = translations[lang].generalInsights;
+                    document.querySelector('.generate-btn').textContent = translations[lang].generateNewPredictions;
+                    
+                    // Update insight items
+                    const insightItems = document.querySelectorAll('.insight-item');
+                    if (insightItems.length >= 3) {
+                        insightItems[0].querySelector('h5').textContent = translations[lang].highestEngagementPotential;
+                        insightItems[0].querySelector('p').innerHTML = translations[lang].insight1.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                        
+                        insightItems[1].querySelector('h5').textContent = translations[lang].optimalLaunchTimings;
+                        insightItems[1].querySelector('p').innerHTML = translations[lang].insight2.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                        
+                        insightItems[2].querySelector('h5').textContent = translations[lang].recommendationForCourses;
+                        insightItems[2].querySelector('p').innerHTML = translations[lang].insight3.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                    }
+                    
+                    // Update general insights
+                    const generalInsights = document.querySelectorAll('.general-insight');
+                    if (generalInsights.length >= 3) {
+                        generalInsights[0].querySelector('span').innerHTML = translations[lang].insight4.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                        generalInsights[1].querySelector('span').innerHTML = translations[lang].insight5.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                        generalInsights[2].querySelector('span').innerHTML = translations[lang].insight6.replace(/<strong>(.*?)<\/strong>/g, '<strong>$1</strong>');
+                    }
+                    
+                    // Update bottom navigation
+                    const bottomNavItems = document.querySelectorAll('.bottom-nav .nav-item span');
+                    if (bottomNavItems.length >= 5) {
+                        bottomNavItems[0].textContent = translations[lang].dashboard;
+                        bottomNavItems[1].textContent = translations[lang].campaigns;
+                        bottomNavItems[2].textContent = translations[lang].requests;
+                        bottomNavItems[3].textContent = translations[lang].analytics;
+                        bottomNavItems[4].textContent = translations[lang].settings;
+                    }
+                }
+            });
+
             // Initialize charts when page loads
             document.addEventListener('DOMContentLoaded', function () {
                 // Campaign Reach Bar Chart
@@ -933,6 +1283,7 @@
                     }
                 });
             });
+            
             // Add this to your existing script section
             document.addEventListener('DOMContentLoaded', function () {
                 // Handle navigation clicks
