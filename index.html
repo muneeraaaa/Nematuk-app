@@ -550,9 +550,7 @@
                     <img src="./img/logo.png" alt="Ne'matuk Logo" class="hero-logo-img">
                     <h1>Ne'matuk</h1>
                     <h2 class="arabic-title">نعمتك</h2>
-                    <p style="margin-bottom: 0;" id="hero-paragraph">Rescue delicious meals before they go to waste. Join thousands in the
-                        UAE saving money and fighting climate change, one bite at a time. It's the tastiest way to make
-                        a difference.</p>
+                    <p style="margin-bottom: 0;" id="hero-paragraph">Together across the UAE, we're creating a brighter, greener future—one delicious meal at a time. Save money, reduce waste, and make every bite count toward a happier planet.</p>
                     <div class="hero-social-links">
                         <a href="#" class="social-icon-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" class="social-icon-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -560,7 +558,7 @@
                         <a href="#" class="social-icon-link" aria-label="LinkedIn"><i
                                 class="fab fa-linkedin-in"></i></a>
                     </div>
-                    <a href="./auth.html" class="join-movement-btn"><span>Join the Movement</span><i
+                    <a href="./auth.html" class="join-movement-btn" id="joinmovbtn"><span>Join the Movement</span><i
                             class="fas fa-arrow-right"></i></a>
                 </div>
             </section>
@@ -597,7 +595,6 @@
             <section id="how-it-works" class="swiper-slide slide-background">
                 <div class="overlay"></div>
                 <div class="container">
-                    <span class="section-tag" id="how-tag">How It Works</span>
                     <h2 id="how-title">Taste the Difference in 5 Steps</h2>
                 </div>
                 <div class="swiper horizontal-swiper how-swiper">
@@ -715,7 +712,7 @@
                     <h2 id="join-title">Join The Community</h2>
                     <p id="join-paragraph">Create an account to track your impact, save your favorite stores, and be part of our growing
                         movement against food waste.</p>
-                    <a href="./auth.html" class="join-movement-btn"><span>Join the Movement</span><i
+                    <a href="./auth.html" class="join-movement-btn" id="joinmovbtn"><span>Join the Movement</span><i
                             class="fas fa-arrow-right"></i></a>
                     <h3 id="subscribe-title">Subscribe to Our Newsletter</h3>
                     <p id="newsletter-paragraph">Get the latest news, success stories, and special offers delivered right to your inbox.</p>
@@ -739,7 +736,7 @@
         const translations = {
             en: {
                 // Hero section
-                'hero-paragraph': 'Rescue delicious meals before they go to waste. Join thousands in the UAE saving money and fighting climate change, one bite at a time. It\'s the tastiest way to make a difference.',
+                'hero-paragraph': 'Together across the UAE, we\'re creating a brighter, greener future one delicious meal at a time. Save money, reduce waste, and make every bite count toward a happier planet.',
                 
                 // About section
                 'about-tag': 'Our Mission',
@@ -753,7 +750,6 @@
                 'mission3-desc': 'Join a movement of conscious consumers building a more sustainable future for the UAE.',
                 
                 // How It Works section
-                'how-tag': 'How It Works',
                 'how-title': 'Taste the Difference in 5 Steps',
                 'step1-title': 'Explore Your City',
                 'step1-desc': 'Open the app and discover a live map of surplus \'Magic Bags\' from amazing eateries near you.',
@@ -783,6 +779,7 @@
                 'advantage6-desc': 'Join forums, share rescued food recipes, and connect with fellow Food Heroes in our integrated hub.',
                 
                 // Join section
+                'joinmovbtn':'Join the Movement',
                 'join-tag': 'Become a Food Hero',
                 'join-title': 'Join The Community',
                 'join-paragraph': 'Create an account to track your impact, save your favorite stores, and be part of our growing movement against food waste.',
@@ -791,8 +788,9 @@
             },
             ar: {
                 // Hero section
-                'hero-paragraph': 'أنقذ الوجبات الشهية قبل أن تضيع. انضم إلى آلاف الأشخاص في الإمارات الذين يوفرون المال ويخففون من تغير المناخ، جرعة واحدة في كل مرة. إنها الطريقة الأكثر لذة لصنع فرق.',
-                
+                'hero-paragraph': 'معًا عبر الإمارات العربية المتحدة، نحن نخلق مستقبلًا أكثر إشراقًا وخضرة،وجبة لذيذة في كل مرة. وفر المال، قلل من النفايات، واجعل كل لقمة تحسب نحو كوكب أكثر سعادة.',
+                'joinmovbtn':'كن من صناع التغيير',
+
                 // About section
                 'about-tag': 'مهمتنا',
                 'about-title': 'تمكين مجتمعنا',
@@ -805,10 +803,9 @@
                 'mission3-desc': 'انضم إلى حركة من المستهلكين الواعين الذين يبنون مستقبلًا أكثر استدامة للإمارات العربية المتحدة.',
                 
                 // How It Works section
-                'how-tag': 'كيف يعمل',
                 'how-title': 'جرّب الفرق في 5 خطوات',
                 'step1-title': 'استكشف مدينتك',
-                'step1-desc': 'افتح التطبيق واكتشف خريطة حية للحقائب "السحرية" الفائضة من المطاعم الرائعة القريبة منك.',
+                'step1-desc': 'افتح التطبيق واكتشف خريطة حية لحقائب سحرية مليئة بوجبات اليوم الطازجة من المطاعم القريبة.',
                 'step2-title': 'احجز حقيبتك',
                 'step2-desc': 'احجز وجبتك بنقرة واحدة. ادفع بأمان من خلال التطبيق واستعد لمفاجأة لذيذة.',
                 'step3-title': 'اجمعها مع ابتسامة',
@@ -816,7 +813,7 @@
                 'step4-title': 'تتبع أثرك',
                 'step4-desc': 'شاهد مدخراتك تنمو وشاهد تأثيرك البيئي على لوحة مراقبتك الشخصية.',
                 'step5-title': 'شارك الحب',
-                'step5-desc': 'ادعُ أصدقاءك للانضمام إلى الحركة وكسب مكافآت إضافية مع نمو مجتمعنا بشكل أقوى معًا.',
+                'step5-desc': ' ادعُ أصدقاءك للانضمام إلى رحلتنا وكسب مكافآت إضافية مع نمو مجتمعنا بشكل أقوى معًا.',
                 
                 // Why Different section
                 'why-tag': 'لماذا نحن أفضل',
@@ -836,6 +833,7 @@
                 
                 // Join section
                 'join-tag': 'كن بطل طعام',
+                'joinmovbtn':'كن من صناع التغيير',
                 'join-title': 'انضم إلى المجتمع',
                 'join-paragraph': 'أنشئ حسابًا لتتبع تأثيرك، وحفظ متاجر المفضلة لديك، وكن جزءًا من حركتنا المتنامية ضد إهدار الطعام.',
                 'subscribe-title': 'اشترك في النشرة الإخبارية',
